@@ -1,30 +1,39 @@
-import { createElemDOM } from './../../../assets/ts/createElementDom';
+import { createElemDOM } from '../../../utils/utils';
 import './../../../assets/styles/components/products.scss';
 
 export class ProductsView {
   private static drawCard(data: ProductData): HTMLElement {
     const card = createElemDOM('div', 'card');
-    card.appendChild(createElemDOM('h3', '', data.title));
-    const img = createElemDOM('img', 'card__img') as HTMLImageElement;
-    card.appendChild(img);
-    img.alt = data.title;
-    img.src = data.images[0];
-    card.appendChild(createElemDOM('p', '', data.price.toString()));
-
+    const title = createElemDOM('h3', '', data.title);
+    const img = createElemDOM('img', 'card__img');
+    const price = createElemDOM('p', '', data.price.toString());
     const button = createElemDOM('button', 'button', 'Add to cart');
-    card.appendChild(button);
+
+    if (img instanceof HTMLImageElement) {
+      img.alt = data.title;
+      img.src = data.images[0];
+    }
+
+    card.append(title, img, price, button);
     // TODO add event listener Cart.addTocart()
+
     return card;
   }
-  public static draw(data: ProductData[]): void {
-    const fragment: DocumentFragment = document.createDocumentFragment();
 
-    if (data.length === 0) {
+  public static draw(data: ProductData[]): void {
+    const fragment = document.createDocumentFragment();
+    const container = document.querySelector('.products');
+    if (!container) throw new Error("Can't find element with class 'products'");
+
+    if (!data.length) {
       fragment.append(createElemDOM('p', '', 'No products to display'));
     } else {
-      data.map((product) => fragment.append(this.drawCard(product)));
+      data.forEach((product) =>
+        fragment.append(ProductsView.drawCard(product))
+      );
     }
-    (<HTMLDivElement>document.querySelector('.products')).innerHTML = '';
-    (<HTMLDivElement>document.querySelector('.products')).appendChild(fragment);
+
+    container.textContent = '';
+    container.append(fragment);
   }
 }
