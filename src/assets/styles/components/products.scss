@@ -1,7 +1,10 @@
 .card {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  width: 10rem;
 }
-.button {
-  color: red;
+.card__img {
+  object-fit: cover;
+  width: 100%;
 }
