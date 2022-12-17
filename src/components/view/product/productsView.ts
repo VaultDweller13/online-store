@@ -1,4 +1,4 @@
-import { createElemDOM } from './../../../assets/ts/createElementDom';
+import { createElemDOM } from '../../../utils/utils';
 import './../../../assets/styles/components/products.scss';
 
 export class ProductsView {

@@ -1,4 +1,4 @@
-import { createElemDOM } from './../assets/ts/createElementDom';
+import { createElemDOM } from '../utils/utils';
 import { Loader } from './../components/controller/loader';
 import { ProductsView } from './../components/view/product/productsView';
 import productsData from '../mock/products.json';
