@@ -29,6 +29,7 @@ export class FilterPage {
     const brands = Array.from(new Set(data.map((product) => product.brand)));
 
     categoriesBlock.append(
+      createElemDOM('h3', 'filter-block_header', 'Категории'),
       ...categories.map((item) => {
         const itemName = `${item[0].toUpperCase()}${item.slice(1)}`;
         const div = createElemDOM('div', 'categories-item');
@@ -44,6 +45,7 @@ export class FilterPage {
     );
 
     brandsBlock.append(
+      createElemDOM('h3', 'filter-block_header', 'Бренды'),
       ...brands.map((item) => {
         const itemName = `${item[0].toUpperCase()}${item.slice(1)}`;
         const div = createElemDOM('div', 'brands-item');
