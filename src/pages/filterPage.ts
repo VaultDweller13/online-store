@@ -1,24 +1,43 @@
 import { createElemDOM } from '../utils/utils';
 import { ProductsView } from './../components/view/product/productsView';
 import '../assets/styles/pages/filterPage.scss';
+import Filter from '../components/controller/filter';
 
 export class FilterPage {
-  draw(data: ProductData[]): void {
+  data: ProductData[];
+  filterBlock: HTMLElement;
+  filter: Filter;
+
+  constructor(data: ProductData[]) {
+    this.data = data;
+    this.filterBlock = this.createFiltersBlock(data);
+    this.filter = new Filter(data);
+    this.filter.setListener(this.filterBlock, (filteredData: ProductData[]) => {
+      this.data = filteredData;
+      this.draw();
+    });
+  }
+
+  draw(): void {
     const main = document.querySelector('.main');
     if (!main) throw new Error("Can't find element with class 'main'");
 
-    main.innerHTML = '';
+    this.clear();
+
     const page = createElemDOM('div', 'filter-page');
-    page.append(
-      this.createFiltersBlock(data),
-      createElemDOM('section', 'products')
-    );
+    page.append(this.filterBlock, createElemDOM('section', 'products'));
     main.append(page);
 
-    ProductsView.draw(data);
+    ProductsView.draw(this.data);
   }
 
-  private createFiltersBlock(data: ProductData[]) {
+  private clear() {
+    const main = document.querySelector('.main');
+    if (!main) throw new Error("Can't find element with class 'main'");
+    main.innerHTML = '';
+  }
+
+  private createFiltersBlock(data: ProductData[]): HTMLElement {
     const container = createElemDOM('aside', 'filter-block');
     const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
     const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
@@ -37,6 +56,8 @@ export class FilterPage {
         const label = createElemDOM('label', 'categories-item_label', itemName);
         input.setAttribute('type', 'checkbox');
         input.setAttribute('id', item);
+        input.setAttribute('name', 'category');
+        input.setAttribute('value', item);
         label.setAttribute('for', item);
 
         div.append(input, label);
@@ -53,6 +74,8 @@ export class FilterPage {
         const label = createElemDOM('label', 'brands-item_label', itemName);
         input.setAttribute('type', 'checkbox');
         input.setAttribute('id', item);
+        input.setAttribute('name', 'brand');
+        input.setAttribute('value', item);
         label.setAttribute('for', item);
 
         div.append(input, label);
