@@ -7,15 +7,19 @@ export class FilterPage {
     const main = document.querySelector('.main');
     if (!main) throw new Error("Can't find element with class 'main'");
 
-    const fragment = document.createDocumentFragment();
-    fragment.append(createElemDOM('section', 'products'));
     main.innerHTML = '';
-    main.append(fragment, this.createFiltersBlock(data));
+    const page = createElemDOM('div', 'filter-page');
+    page.append(
+      this.createFiltersBlock(data),
+      createElemDOM('section', 'products')
+    );
+    main.append(page);
+
     ProductsView.draw(data);
   }
 
   private createFiltersBlock(data: ProductData[]) {
-    const container = createElemDOM('div', 'filter-block');
+    const container = createElemDOM('aside', 'filter-block');
     const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
     const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
 
