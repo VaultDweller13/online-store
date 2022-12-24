@@ -10,7 +10,51 @@ export class FilterPage {
     const fragment = document.createDocumentFragment();
     fragment.append(createElemDOM('section', 'products'));
     main.innerHTML = '';
-    main.appendChild(fragment);
+    main.append(fragment, this.createFiltersBlock(data));
     ProductsView.draw(data);
+  }
+
+  private createFiltersBlock(data: ProductData[]) {
+    const container = createElemDOM('div', 'filter-block');
+    const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
+    const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
+
+    const categories = Array.from(
+      new Set(data.map((product) => product.category))
+    );
+    const brands = Array.from(new Set(data.map((product) => product.brand)));
+
+    categoriesBlock.append(
+      ...categories.map((item) => {
+        const itemName = `${item[0].toUpperCase()}${item.slice(1)}`;
+        const div = createElemDOM('div', 'categories-item');
+        const input = createElemDOM('input', 'categories-item_input');
+        const label = createElemDOM('label', 'categories-item_label', itemName);
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('id', item);
+        label.setAttribute('for', item);
+
+        div.append(input, label);
+        return div;
+      })
+    );
+
+    brandsBlock.append(
+      ...brands.map((item) => {
+        const itemName = `${item[0].toUpperCase()}${item.slice(1)}`;
+        const div = createElemDOM('div', 'brands-item');
+        const input = createElemDOM('input', 'brands-item_input', item);
+        const label = createElemDOM('label', 'brands-item_label', itemName);
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('id', item);
+        label.setAttribute('for', item);
+
+        div.append(input, label);
+        return div;
+      })
+    );
+
+    container.append(categoriesBlock, brandsBlock);
+    return container;
   }
 }
