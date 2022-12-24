@@ -1,3 +1,12 @@
+.filter-page {
+  display: flex;
+  width: 100vw;
+}
+
+.filter-block {
+  min-width: 20%;
+}
+
 .products {
   display: flex;
   flex-wrap: wrap;
