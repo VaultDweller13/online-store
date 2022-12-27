@@ -22,3 +22,8 @@ type ProductsJSON = {
 interface JSONLoader {
   getProducts(): ProductData[];
 }
+
+type filterOptions = {
+  category: string[];
+  brand: string[];
+};

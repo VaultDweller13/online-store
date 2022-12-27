@@ -1,7 +1,17 @@
+.filter-page {
+  display: flex;
+  width: 100vw;
+}
+
+.filter-block {
+  min-width: 20%;
+}
+
 .products {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  align-content: flex-start;
 }

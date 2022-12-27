@@ -10,10 +10,10 @@ export class Controller {
   constructor() {
     this.loader = new Loader(productsData);
     this.products = this.loader.getProducts();
-    this.filterPage = new FilterPage();
+    this.filterPage = new FilterPage(this.products);
   }
 
   drawFilterPage() {
-    this.filterPage.draw(this.products);
+    this.filterPage.draw();
   }
 }
