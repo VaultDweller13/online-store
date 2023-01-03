@@ -6,6 +6,7 @@ import DualSLiderFactory from './dualSliderFactory';
 export default class DualSlider {
   static getSlider(
     name: string,
+    heading: string,
     min: number,
     max: number,
     currentMin: number,
@@ -13,6 +14,7 @@ export default class DualSlider {
   ) {
     const slider = new DualSLiderFactory(
       name,
+      heading,
       min,
       max,
       currentMin,

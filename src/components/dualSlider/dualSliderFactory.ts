@@ -15,6 +15,7 @@ export default class DualSLiderFactory {
 
   constructor(
     name: string,
+    heading: string,
     min: number,
     max: number,
     currentMin: number,
@@ -27,7 +28,7 @@ export default class DualSLiderFactory {
     this.maxThumb = document.createElement('input');
     this.currentMin = currentMin;
     this.currentMax = currentMax;
-    this.slider = this.getSlider();
+    this.slider = this.getSlider(heading);
     const textInputs = Array.from(
       this.slider.querySelectorAll('.controls_input')
     );
@@ -35,15 +36,16 @@ export default class DualSLiderFactory {
     this.maxValueInput = textInputs[1] as HTMLInputElement;
   }
 
-  private getSlider(): HTMLElement {
+  private getSlider(heading: string): HTMLElement {
     const container = createElemDOM('div', 'dual-slider');
+    const h3 = createElemDOM('h3', 'dual-slider_heading', heading);
     const slider = this.createSlider();
     const rangeContainer = createElemDOM('div', 'controls-container');
     const minRangeInput = this.createRangeInput('От', this.currentMin);
     const maxRangeInput = this.createRangeInput('До', this.currentMax);
     rangeContainer.append(minRangeInput, maxRangeInput);
 
-    container.append(slider, rangeContainer);
+    container.append(h3, slider, rangeContainer);
 
     return container;
   }

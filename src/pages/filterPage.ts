@@ -44,6 +44,7 @@ export class FilterPage {
     const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
     const priceSlider = DualSlider.getSlider(
       'priceSlider',
+      'Цена',
       0,
       this.filter.maxPrice,
       this.filter.minPrice,
