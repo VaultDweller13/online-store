@@ -10,6 +10,8 @@ export default class DualSLiderFactory {
   maxThumb: HTMLInputElement;
   currentMin: number;
   currentMax: number;
+  minValueInput: HTMLInputElement;
+  maxValueInput: HTMLInputElement;
 
   constructor(
     name: string,
@@ -26,14 +28,19 @@ export default class DualSLiderFactory {
     this.currentMin = currentMin;
     this.currentMax = currentMax;
     this.slider = this.getSlider();
+    const textInputs = Array.from(
+      this.slider.querySelectorAll('.controls_input')
+    );
+    this.minValueInput = textInputs[0] as HTMLInputElement;
+    this.maxValueInput = textInputs[1] as HTMLInputElement;
   }
 
   private getSlider(): HTMLElement {
     const container = createElemDOM('div', 'dual-slider');
     const slider = this.createSlider();
     const rangeContainer = createElemDOM('div', 'controls-container');
-    const minRangeInput = this.createRangeInput();
-    const maxRangeInput = this.createRangeInput();
+    const minRangeInput = this.createRangeInput('От', this.currentMin);
+    const maxRangeInput = this.createRangeInput('До', this.currentMax);
     rangeContainer.append(minRangeInput, maxRangeInput);
 
     container.append(slider, rangeContainer);
@@ -62,14 +69,13 @@ export default class DualSLiderFactory {
     return slider;
   }
 
-  private createRangeInput(): HTMLElement {
+  private createRangeInput(labelText: string, value: number): HTMLElement {
     const fieldset = createElemDOM('fieldset', 'controls');
-    const label = createElemDOM('label', 'controls_label');
+    const label = createElemDOM('label', 'controls_label', labelText);
     const input = createElemDOM('input', 'controls_input');
 
-    input.setAttribute('type', 'number');
-    input.setAttribute('min', 'this.min');
-    input.setAttribute('max', 'this.max');
+    input.setAttribute('type', 'text');
+    input.setAttribute('value', `${value}`);
 
     label.append(input);
     fieldset.append(label);

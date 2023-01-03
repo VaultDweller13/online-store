@@ -27,11 +27,19 @@ export default class DualSlider {
 
   private static setListener(slider: DualSLiderFactory) {
     slider.minThumb.addEventListener('input', () => {
-      this.processMinThumb(slider.minThumb, slider.maxThumb);
+      this.processMinThumb(slider);
     });
 
     slider.maxThumb.addEventListener('input', () => {
-      this.processMaxThumb(slider, slider.minThumb, slider.maxThumb);
+      this.processMaxThumb(slider);
+    });
+
+    slider.minValueInput.addEventListener('input', () => {
+      this.processMinValueInput(slider);
+    });
+
+    slider.maxValueInput.addEventListener('input', () => {
+      this.processMaxValueInput(slider);
     });
   }
 
@@ -54,26 +62,39 @@ export default class DualSlider {
       ${Colors.sliderDefault} 100%)`;
   }
 
-  private static processMinThumb(
-    minThumb: HTMLInputElement,
-    maxThumb: HTMLInputElement
-  ) {
-    this.fillSlider(minThumb, maxThumb, maxThumb);
-    if (+minThumb.value > +maxThumb.value) {
-      minThumb.value = maxThumb.value;
+  private static processMinThumb(slider: DualSLiderFactory) {
+    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
+    if (+slider.minThumb.value > +slider.maxThumb.value) {
+      slider.minThumb.value = slider.maxThumb.value;
     }
+    slider.minValueInput.value = slider.minThumb.value;
   }
 
-  private static processMaxThumb(
-    slider: DualSLiderFactory,
-    minThumb: HTMLInputElement,
-    maxThumb: HTMLInputElement
-  ) {
-    this.fillSlider(minThumb, maxThumb, maxThumb);
-    this.setToggleAccessible(slider, maxThumb);
-    if (+maxThumb.value < +minThumb.value) {
-      maxThumb.value = minThumb.value;
+  private static processMaxThumb(slider: DualSLiderFactory) {
+    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
+    this.setToggleAccessible(slider, slider.maxThumb);
+    if (+slider.maxThumb.value < +slider.minThumb.value) {
+      slider.maxThumb.value = slider.minThumb.value;
     }
+    slider.maxValueInput.value = slider.maxThumb.value;
+  }
+
+  private static processMinValueInput(slider: DualSLiderFactory) {
+    if (+slider.minValueInput.value > +slider.maxValueInput.value) {
+      slider.minValueInput.value = slider.maxValueInput.value;
+    }
+
+    slider.minThumb.value = slider.minValueInput.value;
+    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
+  }
+
+  private static processMaxValueInput(slider: DualSLiderFactory) {
+    if (+slider.maxValueInput.value < +slider.minValueInput.value) {
+      slider.maxValueInput.value = slider.minValueInput.value;
+    }
+
+    slider.maxThumb.value = slider.maxValueInput.value;
+    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
   }
 
   private static setToggleAccessible(
