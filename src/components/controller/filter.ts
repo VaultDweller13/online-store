@@ -4,10 +4,13 @@ export default class Filter {
   data: ProductData[];
   maxPrice: number;
   minPrice: number;
+  minStock: number;
+  maxStock: number;
 
   constructor(data: ProductData[]) {
     this.data = data;
-    [this.minPrice, this.maxPrice] = this.getPriceRange();
+    [this.minPrice, this.maxPrice] = this.getRange('price');
+    [this.minStock, this.maxStock] = this.getRange('stock');
   }
 
   filter(options: filterOptions) {
@@ -28,6 +31,11 @@ export default class Filter {
     filteredData = filteredData.filter(
       (product) =>
         product.price >= options.minPrice && product.price <= options.maxPrice
+    );
+
+    filteredData = filteredData.filter(
+      (product) =>
+        product.stock >= options.minStock && product.stock <= options.maxStock
     );
 
     return filteredData;
@@ -59,9 +67,9 @@ export default class Filter {
     });
   }
 
-  private getPriceRange() {
-    const prices = this.data.map((item) => item.price).sort((a, b) => a - b);
-    return [prices[0], prices[prices.length - 1]];
+  private getRange(prop: 'price' | 'stock') {
+    const arr = this.data.map((item) => item[prop]).sort((a, b) => a - b);
+    return [arr[0], arr[arr.length - 1]];
   }
 
   private getFilterOptions(): filterOptions {
@@ -70,13 +78,15 @@ export default class Filter {
       brand: [],
       minPrice: 0,
       maxPrice: 0,
+      minStock: 0,
+      maxStock: 0,
     };
 
     const categories = Array.from(
       document.querySelectorAll('.categories-item_input')
     );
     const brands = Array.from(document.querySelectorAll('.brands-item_input'));
-    const priceInputs = Array.from(
+    const controlInputs = Array.from(
       document.querySelectorAll('.controls_input')
     );
 
@@ -92,12 +102,20 @@ export default class Filter {
       }
     });
 
-    if (priceInputs[0] instanceof HTMLInputElement) {
-      options.minPrice = +priceInputs[0].value;
+    if (controlInputs[0] instanceof HTMLInputElement) {
+      options.minPrice = +controlInputs[0].value;
     }
 
-    if (priceInputs[1] instanceof HTMLInputElement) {
-      options.maxPrice = +priceInputs[1].value;
+    if (controlInputs[1] instanceof HTMLInputElement) {
+      options.maxPrice = +controlInputs[1].value;
+    }
+
+    if (controlInputs[2] instanceof HTMLInputElement) {
+      options.minStock = +controlInputs[2].value;
+    }
+
+    if (controlInputs[3] instanceof HTMLInputElement) {
+      options.maxStock = +controlInputs[3].value;
     }
 
     return options;

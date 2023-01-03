@@ -28,4 +28,6 @@ type filterOptions = {
   brand: string[];
   minPrice: number;
   maxPrice: number;
+  minStock: number;
+  maxStock: number;
 };

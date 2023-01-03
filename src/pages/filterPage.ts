@@ -51,6 +51,15 @@ export class FilterPage {
       this.filter.maxPrice
     );
 
+    const stockSlider = DualSlider.getSlider(
+      'stockSlider',
+      'Количество на складе',
+      0,
+      this.filter.maxStock,
+      this.filter.minStock,
+      this.filter.maxStock
+    );
+
     const categories = Array.from(
       new Set(data.map((product) => product.category))
     );
@@ -92,7 +101,7 @@ export class FilterPage {
       })
     );
 
-    container.append(categoriesBlock, brandsBlock, priceSlider);
+    container.append(categoriesBlock, brandsBlock, priceSlider, stockSlider);
     return container;
   }
 }
