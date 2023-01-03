@@ -1,4 +1,5 @@
 // import { createElemDOM } from '../../utils/utils';
+import { Colors } from '../../types/enums';
 import './dual-slider.scss';
 import DualSLiderFactory from './dualSliderFactory';
 
@@ -45,12 +46,12 @@ export default class DualSlider {
 
     currentTopSlider.style.background = `linear-gradient(
       to right,
-      gray 0%,
-      gray ${(startPosition / distance) * 100}%,
-      blue ${(startPosition / distance) * 100}%,
-      blue ${(endPosition / distance) * 100}%, 
-      gray ${(endPosition / distance) * 100}%, 
-      gray 100%)`;
+      ${Colors.sliderDefault} 0%,
+      ${Colors.sliderDefault} ${(startPosition / distance) * 100}%,
+      ${Colors.sliderRange} ${(startPosition / distance) * 100}%,
+      ${Colors.sliderRange} ${(endPosition / distance) * 100}%, 
+      ${Colors.sliderDefault} ${(endPosition / distance) * 100}%, 
+      ${Colors.sliderDefault} 100%)`;
   }
 
   private static processMinThumb(
