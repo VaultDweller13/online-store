@@ -11,8 +11,8 @@ export class FilterPage {
 
   constructor(data: ProductData[]) {
     this.data = data;
-    this.filterBlock = this.createFiltersBlock(data);
     this.filter = new Filter(data);
+    this.filterBlock = this.createFiltersBlock(data);
     this.filter.setListener(this.filterBlock, (filteredData: ProductData[]) => {
       this.data = filteredData;
       this.draw();
@@ -42,7 +42,13 @@ export class FilterPage {
     const container = createElemDOM('aside', 'filter-block');
     const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
     const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
-    const priceSlider = DualSlider.getSlider('priceSlider', 0, 1000, 200, 500);
+    const priceSlider = DualSlider.getSlider(
+      'priceSlider',
+      0,
+      this.filter.maxPrice,
+      this.filter.minPrice,
+      this.filter.maxPrice
+    );
 
     const categories = Array.from(
       new Set(data.map((product) => product.category))

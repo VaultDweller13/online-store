@@ -26,4 +26,6 @@ interface JSONLoader {
 type filterOptions = {
   category: string[];
   brand: string[];
+  minPrice: number;
+  maxPrice: number;
 };
