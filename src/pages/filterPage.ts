@@ -2,7 +2,7 @@ import { createElemDOM } from '../utils/utils';
 import { ProductsView } from './../components/view/product/productsView';
 import '../assets/styles/pages/filterPage.scss';
 import Filter from '../components/controller/filter';
-import DualSLider from '../components/controller/dualSlider';
+import DualSlider from '../components/dualSlider/dualSlider';
 
 export class FilterPage {
   data: ProductData[];
@@ -42,7 +42,7 @@ export class FilterPage {
     const container = createElemDOM('aside', 'filter-block');
     const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
     const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
-    const priceSlider = DualSLider.getSlider(0, 1000);
+    const priceSlider = DualSlider.getSlider('priceSlider', 0, 1000, 200, 500);
 
     const categories = Array.from(
       new Set(data.map((product) => product.category))
