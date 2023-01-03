@@ -81,19 +81,21 @@ export default class DualSlider {
 
   private static processMinValueInput(slider: DualSLiderFactory) {
     if (+slider.minValueInput.value > +slider.maxValueInput.value) {
-      slider.minValueInput.value = slider.maxValueInput.value;
+      slider.minThumb.value = slider.maxThumb.value;
+    } else {
+      slider.minThumb.value = slider.minValueInput.value;
     }
 
-    slider.minThumb.value = slider.minValueInput.value;
     this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
   }
 
   private static processMaxValueInput(slider: DualSLiderFactory) {
     if (+slider.maxValueInput.value < +slider.minValueInput.value) {
-      slider.maxValueInput.value = slider.minValueInput.value;
+      slider.maxThumb.value = slider.minThumb.value;
+    } else {
+      slider.maxThumb.value = slider.maxValueInput.value;
     }
 
-    slider.maxThumb.value = slider.maxValueInput.value;
     this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
   }
 
