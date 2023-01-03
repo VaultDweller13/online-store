@@ -8,6 +8,8 @@ export default class DualSLiderFactory {
   slider: HTMLElement;
   minThumb: HTMLInputElement;
   maxThumb: HTMLInputElement;
+  currentMin: number;
+  currentMax: number;
 
   constructor(
     name: string,
@@ -21,9 +23,8 @@ export default class DualSLiderFactory {
     this.max = max;
     this.minThumb = document.createElement('input');
     this.maxThumb = document.createElement('input');
-    this.minThumb.setAttribute('value', `${currentMin}`);
-    this.maxThumb.setAttribute('value', `${currentMax}`);
-    // this.maxThumb.value = currentMax.toString();
+    this.currentMin = currentMin;
+    this.currentMax = currentMax;
     this.slider = this.getSlider();
   }
 
@@ -53,6 +54,8 @@ export default class DualSLiderFactory {
 
     this.minThumb.id = `${this.name}_minThumb`;
     this.maxThumb.id = `${this.name}_maxThumb`;
+    this.minThumb.setAttribute('value', `${this.currentMin}`);
+    this.maxThumb.setAttribute('value', `${this.currentMax}`);
 
     slider.append(this.minThumb, this.maxThumb);
 

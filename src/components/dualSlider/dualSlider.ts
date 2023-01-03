@@ -27,16 +27,10 @@ export default class DualSlider {
   private static setListener(slider: DualSLiderFactory) {
     slider.minThumb.addEventListener('input', () => {
       this.processMinThumb(slider.minThumb, slider.maxThumb);
-      console.log(
-        `min: ${slider.minThumb.value}, max: ${slider.maxThumb.value}`
-      );
     });
 
     slider.maxThumb.addEventListener('input', () => {
       this.processMaxThumb(slider, slider.minThumb, slider.maxThumb);
-      console.log(
-        `min: ${slider.minThumb.value}, max: ${slider.maxThumb.value}`
-      );
     });
   }
 
