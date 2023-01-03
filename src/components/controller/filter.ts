@@ -31,8 +31,8 @@ export default class Filter {
   ) {
     element.addEventListener('click', (e) => {
       const target = e.target;
-      if (!(target instanceof HTMLElement)) return;
-      if (target.tagName !== Elements.input) return;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (target.type !== Elements.checkbox) return;
 
       const data = this.filter(this.getFilterOptions());
 
