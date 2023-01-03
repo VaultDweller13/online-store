@@ -27,3 +27,7 @@ type filterOptions = {
   category: string[];
   brand: string[];
 };
+type CartProduct = {
+  productData: ProductData;
+  count: number;
+};

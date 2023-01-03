@@ -9,5 +9,9 @@ export default class App {
 
   start() {
     this.controller.drawFilterPage();
+    const viewCart: HTMLDivElement = <HTMLDivElement>(
+      document.querySelector('.to-cart')
+    );
+    viewCart.addEventListener('click', () => this.controller.drawCartPage());
   }
 }
