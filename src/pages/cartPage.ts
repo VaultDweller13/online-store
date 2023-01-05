@@ -1,16 +1,15 @@
-import { Loader } from './../components/controller/loader';
-import { Cart } from './../components/cart/cart';
+// import { Loader } from './../components/controller/loader';
+// import { Cart } from './../components/cart/cart';
 import { CartController } from './../components/controller/cartController';
 import { CartView } from './../components/view/cart/cartView';
 import { createElemDOM } from './../utils/utils';
 export class CartPage {
   // data: CartProduct[];
-  cart: Cart;
+
   cartController: CartController;
 
-  constructor(cart: Cart, loader: Loader) {
-    this.cart = cart;
-    this.cartController = new CartController(cart, loader);
+  constructor(cartController: CartController) {
+    this.cartController = cartController;
   }
   draw(): void {
     const main = document.querySelector('.main');
@@ -21,10 +20,10 @@ export class CartPage {
     main.append(page);
     page.addEventListener('click', (e: Event) => {
       this.cartController.changeCart(e, () =>
-        CartView.draw(this.cart.cartProducts)
+        CartView.draw(this.cartController.cart.cartProducts)
       );
     });
-    CartView.draw(this.cart.cartProducts);
+    CartView.draw(this.cartController.cart.cartProducts);
   }
 
   private clear() {

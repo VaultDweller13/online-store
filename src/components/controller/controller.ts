@@ -1,3 +1,4 @@
+import { CartController } from './cartController';
 import { Cart } from './../cart/cart';
 import { CartPage } from './../../pages/cartPage';
 import { Loader } from './loader';
@@ -10,14 +11,16 @@ export class Controller {
   private cart: Cart;
   private filterPage: FilterPage;
   private cartPage: CartPage;
+  private cartController: CartController;
 
   constructor() {
     this.loader = new Loader(productsData);
     this.products = this.loader.getProducts();
     this.cart = new Cart();
-    this.filterPage = new FilterPage(this.products);
+    this.cartController = new CartController(this.cart, this.loader);
+    this.filterPage = new FilterPage(this.products, this.cartController);
 
-    this.cartPage = new CartPage(this.cart, this.loader);
+    this.cartPage = new CartPage(this.cartController);
   }
 
   drawFilterPage() {
@@ -25,13 +28,5 @@ export class Controller {
   }
   drawCartPage() {
     this.cartPage.draw();
-  }
-  addToCart(e: Event, className: string): void {
-    if (!e.target || !e.currentTarget) throw new Error('target is null');
-    const target: HTMLElement = <HTMLElement>e.target;
-    if (target.classList.contains(className)) {
-      const productId: string = <string>target.getAttribute('data-product-id');
-      this.cart.addProduct(this.loader.getProduct(productId));
-    }
   }
 }

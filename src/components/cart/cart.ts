@@ -8,25 +8,20 @@ export class Cart {
     }
   }
   addProduct(product: ProductData): number {
-    const searchProduct = this.cartProducts.filter(
+    const searchProduct = this.cartProducts.find(
       (cartProduct) => cartProduct.productData.id === product.id
-    )[0];
+    );
     if (searchProduct && searchProduct.count === product.stock) {
       throw new Error('Unable to add this item to cart');
     }
-    let count = 1;
+
     if (!searchProduct) {
       this.cartProducts.push({ count: 1, productData: product });
     } else {
-      this.cartProducts.forEach((cartProduct) => {
-        if (cartProduct.productData.id === product.id) {
-          cartProduct.count += 1;
-          count = cartProduct.count;
-        }
-      });
+      searchProduct.count += 1;
     }
     localStorage.setItem('cart-online', JSON.stringify(this.cartProducts));
-    return count;
+    return searchProduct?.count || 1;
   }
   deleteProduct(product: ProductData): number {
     let count = 0;
@@ -42,13 +37,19 @@ export class Cart {
     localStorage.setItem('cart-online', JSON.stringify(this.cartProducts));
     return count;
   }
-  // getProductCount(product: ProductData): number {
-
-  // }
+  getProductCount(product: ProductData): number {
+    const searchProduct = this.cartProducts.find(
+      (cartProduct) => cartProduct.productData.id === product.id
+    );
+    return searchProduct?.count || 0;
+  }
   getSumCart(): number {
     return this.cartProducts.reduce(
-      (sum, curr) => sum + curr.productData.price,
+      (sum, curr) => sum + curr.productData.price * curr.count,
       0
     );
+  }
+  getCountCart(): number {
+    return this.cartProducts.reduce((sum, curr) => sum + curr.count, 0);
   }
 }

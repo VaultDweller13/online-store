@@ -1,3 +1,4 @@
+import { CartController } from './../components/controller/cartController';
 import { createElemDOM } from '../utils/utils';
 import { ProductsView } from './../components/view/product/productsView';
 import '../assets/styles/pages/filterPage.scss';
@@ -7,8 +8,9 @@ export class FilterPage {
   data: ProductData[];
   filterBlock: HTMLElement;
   filter: Filter;
+  cartController: CartController;
 
-  constructor(data: ProductData[]) {
+  constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
     this.filterBlock = this.createFiltersBlock(data);
     this.filter = new Filter(data);
@@ -16,6 +18,7 @@ export class FilterPage {
       this.data = filteredData;
       this.draw();
     });
+    this.cartController = cartController;
   }
 
   draw(): void {
@@ -25,10 +28,15 @@ export class FilterPage {
     this.clear();
 
     const page = createElemDOM('div', 'filter-page');
-    page.append(this.filterBlock, createElemDOM('section', 'products'));
+    const products = createElemDOM('section', 'products');
+    page.append(this.filterBlock, products);
     main.append(page);
-
-    ProductsView.draw(this.data);
+    products.addEventListener('click', (e: Event) =>
+      this.cartController.addToCart(e)
+    );
+    this.cartController.refreshTotalCount();
+    this.cartController.refreshTotalSum();
+    ProductsView.draw(this.data, this.cartController.cart);
   }
 
   private clear() {
