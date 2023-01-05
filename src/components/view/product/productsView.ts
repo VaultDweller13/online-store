@@ -8,15 +8,13 @@ export class ProductsView {
     const img = createElemDOM('img', 'card__img');
     const price = createElemDOM('p', '', data.price.toString());
     const button = createElemDOM('button', 'button', 'Add to cart');
-
+    button.setAttribute('data-product-id', data.id.toString());
     if (img instanceof HTMLImageElement) {
       img.alt = data.title;
       img.src = data.images[0];
     }
 
     card.append(title, img, price, button);
-    // TODO add event listener Cart.addTocart()
-
     return card;
   }
 
