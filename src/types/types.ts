@@ -31,3 +31,5 @@ type filterOptions = {
   minStock: number;
   maxStock: number;
 };
+
+type sortOption = 'price' | 'rating';

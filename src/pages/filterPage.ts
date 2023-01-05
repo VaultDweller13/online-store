@@ -4,6 +4,7 @@ import '../assets/styles/pages/filterPage.scss';
 import Filter from '../components/filter/filter';
 import DualSlider from '../components/filter/dualSlider/dualSlider';
 import { Elements } from '../types/enums';
+import { Sorter } from '../components/filter/sorter';
 
 export class FilterPage {
   data: ProductData[];
@@ -11,6 +12,7 @@ export class FilterPage {
   filter: Filter;
   priceSlider: DualSlider;
   stockSlider: DualSlider;
+  sorter: Sorter;
 
   constructor(data: ProductData[]) {
     this.data = data;
@@ -30,6 +32,7 @@ export class FilterPage {
     );
     this.filterBlock = this.createFiltersBlock(data);
     this.filter = new Filter(data);
+    this.sorter = new Sorter(data);
 
     this.setListeners();
   }
@@ -41,7 +44,11 @@ export class FilterPage {
     this.clear();
 
     const page = createElemDOM('div', 'filter-page');
-    page.append(this.filterBlock, createElemDOM('section', 'products'));
+    page.append(
+      this.filterBlock,
+      this.sorter.element,
+      createElemDOM('section', 'products')
+    );
     main.append(page);
 
     ProductsView.draw(this.data);
@@ -156,6 +163,11 @@ export class FilterPage {
         );
       }
 
+      this.draw();
+    });
+
+    this.sorter.setListener((sortedData: ProductData[]) => {
+      this.data = sortedData;
       this.draw();
     });
   }
