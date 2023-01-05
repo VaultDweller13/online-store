@@ -1,4 +1,4 @@
-import { Colors } from '../../types/enums';
+import { Colors } from '../../../types/enums';
 import './dual-slider.scss';
 import DualSliderFactory from './dualSliderFactory';
 

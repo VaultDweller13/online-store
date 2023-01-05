@@ -1,4 +1,4 @@
-import { createElemDOM } from '../../utils/utils';
+import { createElemDOM } from '../../../utils/utils';
 import './dual-slider.scss';
 
 export default class DualSliderFactory {

@@ -1,8 +1,8 @@
 import { createElemDOM, getMinValue, getMaxValue } from '../utils/utils';
 import { ProductsView } from './../components/view/product/productsView';
 import '../assets/styles/pages/filterPage.scss';
-import Filter from '../components/controller/filter';
-import DualSlider from '../components/dualSlider/dualSlider';
+import Filter from '../components/filter/filter';
+import DualSlider from '../components/filter/dualSlider/dualSlider';
 import { Elements } from '../types/enums';
 
 export class FilterPage {
