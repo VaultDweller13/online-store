@@ -1,4 +1,5 @@
 import { Elements } from '../../types/enums';
+import { getMaxValue, getMinValue } from '../../utils/utils';
 
 export default class Filter {
   data: ProductData[];
@@ -6,36 +7,65 @@ export default class Filter {
   minPrice: number;
   minStock: number;
   maxStock: number;
+  currentFilterOptions: filterOptions;
 
   constructor(data: ProductData[]) {
     this.data = data;
-    [this.minPrice, this.maxPrice] = this.getRange('price');
-    [this.minStock, this.maxStock] = this.getRange('stock');
+    [this.minPrice, this.maxPrice] = this.getRange(data, 'price');
+    [this.minStock, this.maxStock] = this.getRange(data, 'stock');
+    this.currentFilterOptions = this.initFilterOptions();
   }
 
-  filter(options: filterOptions) {
+  setCategoryFilter() {
+    const { category } = this.getFilterOptions();
+    this.currentFilterOptions.category = category;
+  }
+
+  setBrandFilter() {
+    const { brand } = this.getFilterOptions();
+    this.currentFilterOptions.brand = brand;
+  }
+
+  setPriceFilter() {
+    const { minPrice, maxPrice } = this.getFilterOptions();
+    [this.currentFilterOptions.minPrice, this.currentFilterOptions.maxPrice] = [
+      minPrice,
+      maxPrice,
+    ];
+  }
+
+  setStockFilter() {
+    const { minStock, maxStock } = this.getFilterOptions();
+    [this.currentFilterOptions.minStock, this.currentFilterOptions.maxStock] = [
+      minStock,
+      maxStock,
+    ];
+  }
+
+  filter() {
+    const { category, brand, minPrice, maxPrice, minStock, maxStock } =
+      this.currentFilterOptions;
     let filteredData = this.data;
 
-    if (options.category.length) {
+    console.log(this.currentFilterOptions);
+    if (category.length) {
       filteredData = filteredData.filter((product) =>
-        options.category.includes(product.category)
+        category.includes(product.category)
       );
     }
 
-    if (options.brand.length) {
+    if (brand.length) {
       filteredData = filteredData.filter((product) =>
-        options.brand.includes(product.brand)
+        brand.includes(product.brand)
       );
     }
 
     filteredData = filteredData.filter(
-      (product) =>
-        product.price >= options.minPrice && product.price <= options.maxPrice
+      (product) => product.price >= minPrice && product.price <= maxPrice
     );
 
     filteredData = filteredData.filter(
-      (product) =>
-        product.stock >= options.minStock && product.stock <= options.maxStock
+      (product) => product.stock >= minStock && product.stock <= maxStock
     );
 
     return filteredData;
@@ -50,8 +80,9 @@ export default class Filter {
       if (!(target instanceof HTMLInputElement)) return;
       if (target.type !== Elements.checkbox) return;
 
-      const data = this.filter(this.getFilterOptions());
+      const data = this.filter();
 
+      // this.updateInputs(data);
       callback(data);
     });
 
@@ -61,14 +92,14 @@ export default class Filter {
       if (target.type !== Elements.textInput && target.type !== Elements.range)
         return;
 
-      const data = this.filter(this.getFilterOptions());
+      const data = this.filter();
 
       callback(data);
     });
   }
 
-  private getRange(prop: 'price' | 'stock') {
-    const arr = this.data.map((item) => item[prop]).sort((a, b) => a - b);
+  private getRange(data: ProductData[], prop: 'price' | 'stock') {
+    const arr = data.map((item) => item[prop]).sort((a, b) => a - b);
     return [arr[0], arr[arr.length - 1]];
   }
 
@@ -86,9 +117,8 @@ export default class Filter {
       document.querySelectorAll('.categories-item_input')
     );
     const brands = Array.from(document.querySelectorAll('.brands-item_input'));
-    const controlInputs = Array.from(
-      document.querySelectorAll('.controls_input')
-    );
+
+    const inputs = Array.from(document.querySelectorAll('.controls_input'));
 
     categories.forEach((item) => {
       if (item instanceof HTMLInputElement && item.checked) {
@@ -102,22 +132,33 @@ export default class Filter {
       }
     });
 
-    if (controlInputs[0] instanceof HTMLInputElement) {
-      options.minPrice = +controlInputs[0].value;
+    if (inputs[0] instanceof HTMLInputElement) {
+      options.minPrice = +inputs[0].value;
     }
 
-    if (controlInputs[1] instanceof HTMLInputElement) {
-      options.maxPrice = +controlInputs[1].value;
+    if (inputs[1] instanceof HTMLInputElement) {
+      options.maxPrice = +inputs[1].value;
     }
 
-    if (controlInputs[2] instanceof HTMLInputElement) {
-      options.minStock = +controlInputs[2].value;
+    if (inputs[2] instanceof HTMLInputElement) {
+      options.minStock = +inputs[2].value;
     }
 
-    if (controlInputs[3] instanceof HTMLInputElement) {
-      options.maxStock = +controlInputs[3].value;
+    if (inputs[3] instanceof HTMLInputElement) {
+      options.maxStock = +inputs[3].value;
     }
 
     return options;
+  }
+
+  private initFilterOptions(): filterOptions {
+    const category = this.data.map((item) => item.category);
+    const brand = this.data.map((item) => item.brand);
+    const minPrice = getMinValue(this.data, 'price');
+    const maxPrice = getMaxValue(this.data, 'price');
+    const minStock = getMinValue(this.data, 'stock');
+    const maxStock = getMaxValue(this.data, 'stock');
+
+    return { category, brand, minPrice, maxPrice, minStock, maxStock };
   }
 }

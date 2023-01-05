@@ -1,7 +1,7 @@
 import { createElemDOM } from '../../utils/utils';
 import './dual-slider.scss';
 
-export default class DualSLiderFactory {
+export default class DualSliderFactory {
   name: string;
   min: number;
   max: number;
@@ -16,6 +16,7 @@ export default class DualSLiderFactory {
   constructor(
     name: string,
     heading: string,
+    dataAttr: string,
     min: number,
     max: number,
     currentMin: number,
@@ -28,7 +29,7 @@ export default class DualSLiderFactory {
     this.maxThumb = document.createElement('input');
     this.currentMin = currentMin;
     this.currentMax = currentMax;
-    this.slider = this.getSlider(heading);
+    this.slider = this.getSlider(heading, dataAttr);
     const textInputs = Array.from(
       this.slider.querySelectorAll('.controls_input')
     );
@@ -36,10 +37,10 @@ export default class DualSLiderFactory {
     this.maxValueInput = textInputs[1] as HTMLInputElement;
   }
 
-  private getSlider(heading: string): HTMLElement {
+  private getSlider(heading: string, dataAttr: string): HTMLElement {
     const container = createElemDOM('div', 'dual-slider');
     const h3 = createElemDOM('h3', 'dual-slider_heading', heading);
-    const slider = this.createSlider();
+    const slider = this.createSlider(dataAttr);
     const rangeContainer = createElemDOM('div', 'controls-container');
     const minRangeInput = this.createRangeInput('От', this.currentMin);
     const maxRangeInput = this.createRangeInput('До', this.currentMax);
@@ -50,12 +51,13 @@ export default class DualSLiderFactory {
     return container;
   }
 
-  private createSlider(): HTMLElement {
+  private createSlider(dataAttr: string): HTMLElement {
     const slider = createElemDOM('fieldset', 'slider');
     this.minThumb.classList.add('slider_input', 'minThumb');
     this.maxThumb.classList.add('slider_input', 'maxThumb');
 
     [this.minThumb, this.maxThumb].forEach((input) => {
+      input.dataset.type = dataAttr;
       input.setAttribute('type', 'range');
       input.setAttribute('min', `${this.min}`);
       input.setAttribute('max', `${this.max}`);

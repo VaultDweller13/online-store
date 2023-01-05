@@ -1,51 +1,70 @@
-// import { createElemDOM } from '../../utils/utils';
 import { Colors } from '../../types/enums';
 import './dual-slider.scss';
-import DualSLiderFactory from './dualSliderFactory';
+import DualSliderFactory from './dualSliderFactory';
 
 export default class DualSlider {
-  static getSlider(
+  el: HTMLElement;
+  minThumb: HTMLInputElement;
+  maxThumb: HTMLInputElement;
+  minValueInput: HTMLInputElement;
+  maxValueInput: HTMLInputElement;
+
+  constructor(
     name: string,
     heading: string,
+    dataAttr: string,
     min: number,
     max: number,
     currentMin: number,
     currentMax: number
   ) {
-    const slider = new DualSLiderFactory(
+    const slider = new DualSliderFactory(
       name,
       heading,
+      dataAttr,
       min,
       max,
       currentMin,
       currentMax
     );
-    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
-    this.setToggleAccessible(slider, slider.maxThumb);
-    this.setListener(slider);
+    this.el = slider.slider;
+    this.minThumb = slider.minThumb;
+    this.maxThumb = slider.maxThumb;
+    this.minValueInput = slider.minValueInput;
+    this.maxValueInput = slider.maxValueInput;
 
-    return slider.slider;
+    this.fillSlider(this.minThumb, this.maxThumb, this.maxThumb);
+    this.setToggleAccessible(this.maxThumb);
+    this.setListeners();
   }
 
-  private static setListener(slider: DualSLiderFactory) {
-    slider.minThumb.addEventListener('input', () => {
-      this.processMinThumb(slider);
+  setRange(min: number, max: number) {
+    this.minThumb.value = min.toString();
+    this.maxThumb.value = max.toString();
+
+    this.processMinThumb();
+    this.processMaxThumb();
+  }
+
+  private setListeners() {
+    this.minThumb.addEventListener('input', () => {
+      this.processMinThumb();
     });
 
-    slider.maxThumb.addEventListener('input', () => {
-      this.processMaxThumb(slider);
+    this.maxThumb.addEventListener('input', () => {
+      this.processMaxThumb();
     });
 
-    slider.minValueInput.addEventListener('input', () => {
-      this.processMinValueInput(slider);
+    this.minValueInput.addEventListener('input', () => {
+      this.processMinValueInput();
     });
 
-    slider.maxValueInput.addEventListener('input', () => {
-      this.processMaxValueInput(slider);
+    this.maxValueInput.addEventListener('input', () => {
+      this.processMaxValueInput();
     });
   }
 
-  private static fillSlider(
+  private fillSlider(
     start: HTMLInputElement,
     end: HTMLInputElement,
     currentTopSlider: HTMLInputElement
@@ -64,51 +83,48 @@ export default class DualSlider {
       ${Colors.sliderDefault} 100%)`;
   }
 
-  private static processMinThumb(slider: DualSLiderFactory) {
-    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
-    if (+slider.minThumb.value > +slider.maxThumb.value) {
-      slider.minThumb.value = slider.maxThumb.value;
+  private processMinThumb() {
+    this.fillSlider(this.minThumb, this.maxThumb, this.maxThumb);
+    if (+this.minThumb.value > +this.maxThumb.value) {
+      this.minThumb.value = this.maxThumb.value;
     }
-    slider.minValueInput.value = slider.minThumb.value;
+    this.minValueInput.value = this.minThumb.value;
   }
 
-  private static processMaxThumb(slider: DualSLiderFactory) {
-    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
-    this.setToggleAccessible(slider, slider.maxThumb);
-    if (+slider.maxThumb.value < +slider.minThumb.value) {
-      slider.maxThumb.value = slider.minThumb.value;
+  private processMaxThumb() {
+    this.fillSlider(this.minThumb, this.maxThumb, this.maxThumb);
+    this.setToggleAccessible(this.maxThumb);
+    if (+this.maxThumb.value < +this.minThumb.value) {
+      this.maxThumb.value = this.minThumb.value;
     }
-    slider.maxValueInput.value = slider.maxThumb.value;
+    this.maxValueInput.value = this.maxThumb.value;
   }
 
-  private static processMinValueInput(slider: DualSLiderFactory) {
-    if (+slider.minValueInput.value > +slider.maxValueInput.value) {
-      slider.minThumb.value = slider.maxThumb.value;
+  private processMinValueInput() {
+    if (+this.minValueInput.value > +this.maxValueInput.value) {
+      this.minThumb.value = this.maxThumb.value;
     } else {
-      slider.minThumb.value = slider.minValueInput.value;
+      this.minThumb.value = this.minValueInput.value;
     }
 
-    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
+    this.fillSlider(this.minThumb, this.maxThumb, this.maxThumb);
   }
 
-  private static processMaxValueInput(slider: DualSLiderFactory) {
-    if (+slider.maxValueInput.value < +slider.minValueInput.value) {
-      slider.maxThumb.value = slider.minThumb.value;
+  private processMaxValueInput() {
+    if (+this.maxValueInput.value < +this.minValueInput.value) {
+      this.maxThumb.value = this.minThumb.value;
     } else {
-      slider.maxThumb.value = slider.maxValueInput.value;
+      this.maxThumb.value = this.maxValueInput.value;
     }
 
-    this.fillSlider(slider.minThumb, slider.maxThumb, slider.maxThumb);
+    this.fillSlider(this.minThumb, this.maxThumb, this.maxThumb);
   }
 
-  private static setToggleAccessible(
-    slider: DualSLiderFactory,
-    currentTarget: HTMLInputElement
-  ) {
+  private setToggleAccessible(currentTarget: HTMLInputElement) {
     if (+currentTarget.value <= 0) {
-      slider.maxThumb.style.zIndex = '2';
+      this.maxThumb.style.zIndex = '2';
     } else {
-      slider.maxThumb.style.zIndex = '0';
+      this.maxThumb.style.zIndex = '0';
     }
   }
 }
