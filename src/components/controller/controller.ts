@@ -16,7 +16,8 @@ export class Controller {
     this.products = this.loader.getProducts();
     this.cart = new Cart();
     this.filterPage = new FilterPage(this.products);
-    this.cartPage = new CartPage(this.cart.cartProducts);
+
+    this.cartPage = new CartPage(this.cart, this.loader);
   }
 
   drawFilterPage() {
@@ -24,5 +25,13 @@ export class Controller {
   }
   drawCartPage() {
     this.cartPage.draw();
+  }
+  addToCart(e: Event, className: string): void {
+    if (!e.target || !e.currentTarget) throw new Error('target is null');
+    const target: HTMLElement = <HTMLElement>e.target;
+    if (target.classList.contains(className)) {
+      const productId: string = <string>target.getAttribute('data-product-id');
+      this.cart.addProduct(this.loader.getProduct(productId));
+    }
   }
 }

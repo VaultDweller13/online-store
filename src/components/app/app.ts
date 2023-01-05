@@ -9,9 +9,16 @@ export default class App {
 
   start() {
     this.controller.drawFilterPage();
-    const viewCart: HTMLDivElement = <HTMLDivElement>(
+    const btnCart: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.to-cart')
     );
-    viewCart.addEventListener('click', () => this.controller.drawCartPage());
+    btnCart.addEventListener('click', () => this.controller.drawCartPage());
+    const products: HTMLDivElement = <HTMLDivElement>(
+      document.querySelector('.products')
+    );
+
+    products.addEventListener('click', (e: Event) =>
+      this.controller.addToCart(e, 'button')
+    );
   }
 }
