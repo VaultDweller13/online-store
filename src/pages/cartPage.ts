@@ -1,3 +1,4 @@
+import { CartSum } from './../components/view/cart/cartSum';
 // import { Loader } from './../components/controller/loader';
 // import { Cart } from './../components/cart/cart';
 import { CartController } from './../components/controller/cartController';
@@ -17,13 +18,21 @@ export class CartPage {
     this.clear();
     const page = createElemDOM('div', 'cart-page');
     page.append(createElemDOM('div', 'cart'));
+    page.append(createElemDOM('div', 'cart__total'));
     main.append(page);
     page.addEventListener('click', (e: Event) => {
-      this.cartController.changeCart(e, () =>
-        CartView.draw(this.cartController.cart.cartProducts)
+      this.cartController.changeCart(
+        e,
+        () => {
+          CartView.draw(this.cartController.cart.cartProducts);
+        },
+        () => {
+          CartSum.draw(this.cartController.cart);
+        }
       );
     });
     CartView.draw(this.cartController.cart.cartProducts);
+    CartSum.draw(this.cartController.cart);
   }
 
   private clear() {

@@ -34,7 +34,11 @@ export class CartController {
     }
   }
 
-  changeCart(e: Event, callback: () => void): void {
+  changeCart(
+    e: Event,
+    callbackIfNull: () => void,
+    callBack?: () => void
+  ): void {
     if (!e.target || !e.currentTarget) throw new Error('target is null');
     const target = <HTMLElement>e.target;
     if (
@@ -58,8 +62,9 @@ export class CartController {
     }
     this.refreshCardCount(card, count);
     if (count === 0) {
-      callback();
+      callbackIfNull();
     }
+    callBack ? callBack() : undefined;
     this.refreshTotalCount();
     this.refreshTotalSum();
   }
