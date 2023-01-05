@@ -13,29 +13,20 @@ export class FilterPage {
   stockSlider: DualSlider;
 
   constructor(data: ProductData[]) {
-    const maxPrice = getMaxValue(data, 'price');
-    const minPrice = getMinValue(data, 'price');
-    const maxStock = getMaxValue(data, 'stock');
-    const minStock = getMinValue(data, 'stock');
-
     this.data = data;
     this.priceSlider = new DualSlider(
       'priceSlider',
       'Цена',
       'price',
-      minPrice,
-      maxPrice,
-      minPrice,
-      maxPrice
+      getMinValue(data, 'price'),
+      getMaxValue(data, 'price')
     );
     this.stockSlider = new DualSlider(
       'stockSlider',
       'Количество на складе',
       'stock',
-      minStock,
-      maxStock,
-      minStock,
-      maxStock
+      getMinValue(data, 'stock'),
+      getMaxValue(data, 'stock')
     );
     this.filterBlock = this.createFiltersBlock(data);
     this.filter = new Filter(data);

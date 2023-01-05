@@ -8,8 +8,6 @@ export default class DualSliderFactory {
   slider: HTMLElement;
   minThumb: HTMLInputElement;
   maxThumb: HTMLInputElement;
-  currentMin: number;
-  currentMax: number;
   minValueInput: HTMLInputElement;
   maxValueInput: HTMLInputElement;
 
@@ -18,17 +16,13 @@ export default class DualSliderFactory {
     heading: string,
     dataAttr: string,
     min: number,
-    max: number,
-    currentMin: number,
-    currentMax: number
+    max: number
   ) {
     this.name = name;
     this.min = min;
     this.max = max;
     this.minThumb = document.createElement('input');
     this.maxThumb = document.createElement('input');
-    this.currentMin = currentMin;
-    this.currentMax = currentMax;
     this.slider = this.getSlider(heading, dataAttr);
     const textInputs = Array.from(
       this.slider.querySelectorAll('.controls_input')
@@ -42,8 +36,8 @@ export default class DualSliderFactory {
     const h3 = createElemDOM('h3', 'dual-slider_heading', heading);
     const slider = this.createSlider(dataAttr);
     const rangeContainer = createElemDOM('div', 'controls-container');
-    const minRangeInput = this.createRangeInput('От', this.currentMin);
-    const maxRangeInput = this.createRangeInput('До', this.currentMax);
+    const minRangeInput = this.createRangeInput('От', this.min);
+    const maxRangeInput = this.createRangeInput('До', this.max);
     rangeContainer.append(minRangeInput, maxRangeInput);
 
     container.append(h3, slider, rangeContainer);
@@ -65,8 +59,8 @@ export default class DualSliderFactory {
 
     this.minThumb.id = `${this.name}_minThumb`;
     this.maxThumb.id = `${this.name}_maxThumb`;
-    this.minThumb.setAttribute('value', `${this.currentMin}`);
-    this.maxThumb.setAttribute('value', `${this.currentMax}`);
+    this.minThumb.setAttribute('value', `${this.min}`);
+    this.maxThumb.setAttribute('value', `${this.max}`);
 
     slider.append(this.minThumb, this.maxThumb);
 

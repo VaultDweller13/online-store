@@ -14,19 +14,9 @@ export default class DualSlider {
     heading: string,
     dataAttr: string,
     min: number,
-    max: number,
-    currentMin: number,
-    currentMax: number
+    max: number
   ) {
-    const slider = new DualSliderFactory(
-      name,
-      heading,
-      dataAttr,
-      min,
-      max,
-      currentMin,
-      currentMax
-    );
+    const slider = new DualSliderFactory(name, heading, dataAttr, min, max);
     this.el = slider.slider;
     this.minThumb = slider.minThumb;
     this.maxThumb = slider.maxThumb;
