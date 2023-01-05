@@ -6,15 +6,17 @@ export class CartView {
     const title = createElemDOM('h3', '', data.productData.title);
     const img = createElemDOM('img', 'card__img');
     const price = createElemDOM('p', '', data.productData.price.toString());
-    const button = createElemDOM('button', 'button', 'Add to cart');
+    const count = createElemDOM('p', 'card__count', data.count.toString());
+    const buttonInc = createElemDOM('button', 'button button_inc', '+');
+    const buttonDec = createElemDOM('button', 'button button_dec', '-');
+    card.setAttribute('data-product-id', data.productData.id.toString());
 
     if (img instanceof HTMLImageElement) {
       img.alt = data.productData.title;
       img.src = data.productData.images[0];
     }
 
-    card.append(title, img, price, button);
-    // TODO add event listener Cart.addTocart()
+    card.append(title, img, price, buttonDec, count, buttonInc);
 
     return card;
   }
