@@ -28,9 +28,10 @@ export default class DualSlider {
     this.setListeners();
   }
 
-  setRange(min: number, max: number) {
+  public setRange(min: number, max: number) {
     this.minThumb.value = min.toString();
     this.maxThumb.value = max.toString();
+    // this.minValueInput
 
     this.processMinThumb();
     this.processMaxThumb();

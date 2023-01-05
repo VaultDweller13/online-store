@@ -1,4 +1,3 @@
-import { Elements } from '../../types/enums';
 import { getMaxValue, getMinValue } from '../../utils/utils';
 
 export default class Filter {
@@ -16,17 +15,17 @@ export default class Filter {
     this.currentFilterOptions = this.initFilterOptions();
   }
 
-  setCategoryFilter() {
+  public setCategoryFilter() {
     const { category } = this.getFilterOptions();
     this.currentFilterOptions.category = category;
   }
 
-  setBrandFilter() {
+  public setBrandFilter() {
     const { brand } = this.getFilterOptions();
     this.currentFilterOptions.brand = brand;
   }
 
-  setPriceFilter() {
+  public setPriceFilter() {
     const { minPrice, maxPrice } = this.getFilterOptions();
     [this.currentFilterOptions.minPrice, this.currentFilterOptions.maxPrice] = [
       minPrice,
@@ -34,7 +33,7 @@ export default class Filter {
     ];
   }
 
-  setStockFilter() {
+  public setStockFilter() {
     const { minStock, maxStock } = this.getFilterOptions();
     [this.currentFilterOptions.minStock, this.currentFilterOptions.maxStock] = [
       minStock,
@@ -42,12 +41,11 @@ export default class Filter {
     ];
   }
 
-  filter() {
+  public filter() {
     const { category, brand, minPrice, maxPrice, minStock, maxStock } =
       this.currentFilterOptions;
     let filteredData = this.data;
 
-    console.log(this.currentFilterOptions);
     if (category.length) {
       filteredData = filteredData.filter((product) =>
         category.includes(product.category)
@@ -69,33 +67,6 @@ export default class Filter {
     );
 
     return filteredData;
-  }
-
-  setListener(
-    element: HTMLElement,
-    callback: (filteredData: ProductData[]) => void
-  ) {
-    element.addEventListener('click', (e) => {
-      const target = e.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (target.type !== Elements.checkbox) return;
-
-      const data = this.filter();
-
-      // this.updateInputs(data);
-      callback(data);
-    });
-
-    element.addEventListener('change', (e) => {
-      const target = e.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (target.type !== Elements.textInput && target.type !== Elements.range)
-        return;
-
-      const data = this.filter();
-
-      callback(data);
-    });
   }
 
   private getRange(data: ProductData[], prop: 'price' | 'stock') {
