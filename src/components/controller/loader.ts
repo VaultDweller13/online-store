@@ -17,6 +17,11 @@ export class Loader implements JSONLoader {
     return this.products;
   }
 
+  getProduct(productId: string): ProductData {
+    const id = Number(productId);
+    return this.products.filter((product) => product.id === id)[0];
+  }
+
   private isProductsJSON(data: ProductsJSON | unknown): data is ProductsJSON {
     return (data as ProductsJSON).products !== undefined;
   }

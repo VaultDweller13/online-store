@@ -23,3 +23,10 @@
   grid-column: 2 / 3;
   grid-row: 2 / 3;
 }
+
+.hide {
+  display: none;
+}
+.cart__sum_old {
+  text-decoration: line-through;
+}

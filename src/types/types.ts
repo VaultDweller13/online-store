@@ -31,5 +31,14 @@ type filterOptions = {
   minStock: number;
   maxStock: number;
 };
+type CartProduct = {
+  productData: ProductData;
+  count: number;
+};
+
+type Promo = {
+  name: string;
+  discount: number;
+};
 
 type sortOption = 'price' | 'rating';

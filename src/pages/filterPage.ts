@@ -1,3 +1,4 @@
+import { CartController } from './../components/controller/cartController';
 import { createElemDOM, getMinValue, getMaxValue } from '../utils/utils';
 import { ProductsView } from './../components/view/product/productsView';
 import '../assets/styles/pages/filterPage.scss';
@@ -10,11 +11,12 @@ export class FilterPage {
   data: ProductData[];
   filterBlock: HTMLElement;
   filter: Filter;
+  cartController: CartController;
   priceSlider: DualSlider;
   stockSlider: DualSlider;
   sorter: Sorter;
 
-  constructor(data: ProductData[]) {
+  constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
     this.priceSlider = new DualSlider(
       'priceSlider',
@@ -32,6 +34,8 @@ export class FilterPage {
     );
     this.filterBlock = this.createFiltersBlock(data);
     this.filter = new Filter(data);
+
+    this.cartController = cartController;
     this.sorter = new Sorter(data);
 
     this.setListeners();
@@ -44,14 +48,16 @@ export class FilterPage {
     this.clear();
 
     const page = createElemDOM('div', 'filter-page');
-    page.append(
-      this.filterBlock,
-      this.sorter.element,
-      createElemDOM('section', 'products')
-    );
-    main.append(page);
+    const products = createElemDOM('section', 'products');
 
-    ProductsView.draw(this.data);
+    page.append(this.filterBlock, this.sorter.element, products);
+    main.append(page);
+    products.addEventListener('click', (e: Event) =>
+      this.cartController.addToCart(e)
+    );
+    this.cartController.refreshTotalCount();
+    this.cartController.refreshTotalSum();
+    ProductsView.draw(this.data, this.cartController.cart);
   }
 
   private clear(): void {
