@@ -6,6 +6,7 @@ import Filter from '../components/filter/filter';
 import DualSlider from '../components/filter/dualSlider/dualSlider';
 import { Elements } from '../types/enums';
 import { Sorter } from '../components/filter/sorter';
+import { SearchBar } from '../components/filter/searchBar';
 
 export class FilterPage {
   data: ProductData[];

@@ -57,6 +57,12 @@
   grid-row: 1 / 3;
 }
 
+.top-panel {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .products {
   display: flex;
   flex-wrap: wrap;
