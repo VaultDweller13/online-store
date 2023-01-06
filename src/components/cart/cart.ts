@@ -75,11 +75,11 @@ export class Cart {
     this.appliedPromo.splice(searchPromoIdx, 1);
   }
   getSumWithPromo(): number {
-    return (
+    return Math.floor(
       (this.getSumCart() *
         (100 -
           this.appliedPromo.reduce((sum, curr) => sum + curr.discount, 0))) /
-      100
+        100
     );
   }
 }

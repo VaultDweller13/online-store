@@ -50,11 +50,7 @@ export class FilterPage {
     const page = createElemDOM('div', 'filter-page');
     const products = createElemDOM('section', 'products');
 
-    page.append(
-      this.filterBlock,
-      this.sorter.element,
-      createElemDOM('section', 'products')
-    );
+    page.append(this.filterBlock, this.sorter.element, products);
     main.append(page);
     products.addEventListener('click', (e: Event) =>
       this.cartController.addToCart(e)

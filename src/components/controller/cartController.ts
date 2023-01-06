@@ -111,6 +111,7 @@ export class CartController {
         const helper = form?.querySelector('.promo__helper');
 
         if (this.cart.applyPromo(promoVal)) {
+          callBack();
           const sumWithPromo = form?.querySelector('.cart__sumWithPromo');
 
           // if (sumWithPromo instanceof HTMLElement) {
@@ -124,7 +125,6 @@ export class CartController {
           (<HTMLElement>helper).textContent = 'No such promo';
         }
       }
-
     }
   }
 }

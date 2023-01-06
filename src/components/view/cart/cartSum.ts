@@ -33,11 +33,20 @@ export class CartSum {
     form.append(createElemDOM('p', '', 'Total count: '));
     form.append(createElemDOM('p', '', cart.getCountCart().toString()));
     form.append(createElemDOM('p', '', 'Total cost: '));
-    form.append(createElemDOM('p', 'cart__sum', cart.getSumCart().toString()));
+    const sumCart = cart.getSumCart();
+    const sumCartPromo = cart.getSumWithPromo();
+
+    form.append(
+      createElemDOM(
+        'p',
+        `cart__sum ${sumCart == sumCartPromo ? '' : 'cart__sum_old'}`,
+        sumCart.toString()
+      )
+    );
     const sumWithPromo = createElemDOM(
       'p',
-      'cart__sumWithPromo',
-      cart.getSumWithPromo().toString()
+      `cart__sumWithPromo ${sumCart == sumCartPromo ? 'hide' : ''}`,
+      sumCartPromo.toString()
     );
     form.append(sumWithPromo);
     form.append(createElemDOM('div', 'cart__promos'));
@@ -52,22 +61,6 @@ export class CartSum {
     );
     const helper = createElemDOM('p', 'promo__helper', '');
     form.append(helper);
-
-    // aplyPromoBtn.addEventListener('click', (e) => {
-    //   e.preventDefault();
-    //   if (input instanceof HTMLInputElement) {
-    //     const promoVal = input.value;
-
-    //     if (cart.applyPromo(promoVal)) {
-    //       sumWithPromo.textContent = cart.getSumWithPromo().toString();
-
-    //       input.value = '';
-    //       helper.textContent = '';
-    //     } else {
-    //       helper.textContent = 'No such promo';
-    //     }
-    //   }
-    // });
 
     form.append(aplyPromoBtn);
     const applyBtn = createElemDOM('button', 'button button__buy', 'Buy now');
