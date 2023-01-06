@@ -1,4 +1,5 @@
 import { getMaxValue, getMinValue } from '../../utils/utils';
+// import { SearchBar } from './searchBar';
 
 export default class Filter {
   data: ProductData[];
@@ -6,12 +7,14 @@ export default class Filter {
   minPrice: number;
   minStock: number;
   maxStock: number;
+  // searchBar: SearchBar;
   currentFilterOptions: filterOptions;
 
   constructor(data: ProductData[]) {
     this.data = data;
     [this.minPrice, this.maxPrice] = this.getRange(data, 'price');
     [this.minStock, this.maxStock] = this.getRange(data, 'stock');
+    // this.searchBar = new SearchBar(data, )
     this.currentFilterOptions = this.initFilterOptions();
   }
 
@@ -41,10 +44,10 @@ export default class Filter {
     ];
   }
 
-  public filter() {
+  public filter(data: ProductData[]) {
     const { category, brand, minPrice, maxPrice, minStock, maxStock } =
       this.currentFilterOptions;
-    let filteredData = this.data;
+    let filteredData = data;
 
     if (category.length) {
       filteredData = filteredData.filter((product) =>
@@ -66,7 +69,7 @@ export default class Filter {
       (product) => product.stock >= minStock && product.stock <= maxStock
     );
 
-    return filteredData;
+    return filteredData.length ? filteredData : this.data;
   }
 
   private getRange(data: ProductData[], prop: 'price' | 'stock') {

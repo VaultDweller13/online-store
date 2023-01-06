@@ -10,6 +10,7 @@ import { SearchBar } from '../components/filter/searchBar';
 
 export class FilterPage {
   data: ProductData[];
+  filteredData: ProductData[];
   filterBlock: HTMLElement;
   filter: Filter;
   cartController: CartController;
@@ -20,6 +21,7 @@ export class FilterPage {
 
   constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
+    this.filteredData = data;
     this.priceSlider = new DualSlider(
       'priceSlider',
       'Цена',
@@ -40,7 +42,10 @@ export class FilterPage {
     this.cartController = cartController;
     this.sorter = new Sorter();
     this.sorter.sort(this.data);
-    this.searchBar = new SearchBar();
+    this.searchBar = new SearchBar(this.data, (data: ProductData[]) => {
+      this.filteredData = data;
+      this.update();
+    });
 
     this.setListeners();
   }
@@ -77,7 +82,7 @@ export class FilterPage {
     const products = document.querySelector('.products');
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
-    ProductsView.draw(this.data, this.cartController.cart);
+    ProductsView.draw(this.filteredData, this.cartController.cart);
   }
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
@@ -147,7 +152,7 @@ export class FilterPage {
         ? this.filter.setCategoryFilter()
         : this.filter.setBrandFilter();
 
-      this.data = this.filter.filter();
+      this.data = this.filter.filter(this.data);
 
       this.priceSlider.setRange(
         getMinValue(this.data, 'price'),
@@ -169,14 +174,14 @@ export class FilterPage {
       if (target.dataset.type === 'price') {
         console.log('price');
         this.filter.setPriceFilter();
-        this.data = this.filter.filter();
+        this.data = this.filter.filter(this.data);
         this.stockSlider.setRange(
           getMinValue(this.data, 'stock'),
           getMaxValue(this.data, 'stock')
         );
       } else {
         this.filter.setStockFilter();
-        this.data = this.filter.filter();
+        this.data = this.filter.filter(this.data);
         this.priceSlider.setRange(
           getMinValue(this.data, 'price'),
           getMaxValue(this.data, 'price')
@@ -192,33 +197,6 @@ export class FilterPage {
 
       this.sorter.sort(this.data, target);
       this.draw();
-    });
-
-    const backupData = this.data;
-
-    this.searchBar.element.addEventListener('focusin', (e) => {
-      const target = e.target;
-      if (!(target instanceof HTMLInputElement)) return;
-
-      if (!target.value) this.searchBar.data = this.data;
-    });
-
-    this.searchBar.element.addEventListener('focusout', (e) => {
-      const target = e.target;
-      if (!(target instanceof HTMLInputElement)) return;
-
-      if (!target.value) {
-        this.data = backupData;
-        this.update();
-      }
-    });
-
-    this.searchBar.element.addEventListener('input', (e: Event) => {
-      const target = e.target;
-      if (!(target instanceof HTMLInputElement)) return;
-
-      this.data = this.searchBar.search(target.value);
-      this.update();
     });
   }
 }
