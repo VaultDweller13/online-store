@@ -17,10 +17,13 @@ export class CartPage {
     if (!main) throw new Error("Can't find element with class 'main'");
     this.clear();
     const page = createElemDOM('div', 'cart-page');
-    page.append(createElemDOM('div', 'cart'));
-    page.append(createElemDOM('div', 'cart__total'));
+    const cart = createElemDOM('div', 'cart');
+    page.append(cart);
+    const cartForm = createElemDOM('div', 'cart__total');
+    page.append(cartForm);
+
     main.append(page);
-    page.addEventListener('click', (e: Event) => {
+    cart.addEventListener('click', (e: Event) => {
       this.cartController.changeCart(
         e,
         () => {
@@ -31,6 +34,12 @@ export class CartPage {
         }
       );
     });
+    cartForm.addEventListener('click', (e: Event) => {
+      this.cartController.cartFormHandler(e, () =>
+        CartSum.draw(this.cartController.cart)
+      );
+    });
+
     CartView.draw(this.cartController.cart.cartProducts);
     CartSum.draw(this.cartController.cart);
   }

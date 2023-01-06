@@ -10,7 +10,7 @@ export class CartController {
 
   addToCart(e: Event): void {
     if (!e.target || !e.currentTarget) throw new Error('target is null');
-    const target: HTMLElement = <HTMLElement>e.target;
+    const target = <HTMLElement>e.target;
     const card = target.closest('.card');
 
     if (!(card instanceof HTMLElement))
@@ -89,5 +89,42 @@ export class CartController {
       throw new Error("Can't find element with class 'card__count'");
 
     countHTML.textContent = count.toString();
+  }
+  cartFormHandler(e: Event, callBack: () => void): void {
+    e.preventDefault();
+    if (!e.target || !e.currentTarget) throw new Error('target is null');
+    const target = <HTMLElement>e.target;
+    if (target.classList.contains('promo__btnDrop')) {
+      const promo = target.dataset.promo;
+      if (!promo) throw new Error('No datset value promo');
+      this.cart.deletePromo(promo);
+      callBack();
+    }
+    if (target.classList.contains('button__buy')) {
+      alert('buy');
+    }
+    if (target.classList.contains('promo__btnApply')) {
+      const form = target.closest('.cart__form');
+      const input = form?.querySelector('input');
+      if (input instanceof HTMLInputElement) {
+        const promoVal = input.value;
+        const helper = form?.querySelector('.promo__helper');
+
+        if (this.cart.applyPromo(promoVal)) {
+          const sumWithPromo = form?.querySelector('.cart__sumWithPromo');
+
+          // if (sumWithPromo instanceof HTMLElement) {
+          (<HTMLElement>sumWithPromo).textContent = this.cart
+            .getSumWithPromo()
+            .toString();
+          // }
+          input.value = '';
+          (<HTMLElement>helper).textContent = '';
+        } else {
+          (<HTMLElement>helper).textContent = 'No such promo';
+        }
+      }
+
+    }
   }
 }

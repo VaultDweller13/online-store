@@ -31,3 +31,8 @@ type CartProduct = {
   productData: ProductData;
   count: number;
 };
+
+type Promo = {
+  name: string;
+  discount: number;
+};
