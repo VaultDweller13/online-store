@@ -6,6 +6,7 @@ import Filter from '../components/filter/filter';
 import DualSlider from '../components/filter/dualSlider/dualSlider';
 import { Elements } from '../types/enums';
 import { Sorter } from '../components/filter/sorter';
+import { SearchBar } from '../components/filter/searchBar';
 
 export class FilterPage {
   data: ProductData[];
@@ -15,6 +16,7 @@ export class FilterPage {
   priceSlider: DualSlider;
   stockSlider: DualSlider;
   sorter: Sorter;
+  searchBar: SearchBar;
 
   constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
@@ -38,6 +40,7 @@ export class FilterPage {
     this.cartController = cartController;
     this.sorter = new Sorter();
     this.sorter.sort(this.data);
+    this.searchBar = new SearchBar();
 
     this.setListeners();
   }
@@ -49,9 +52,11 @@ export class FilterPage {
     this.clear();
 
     const page = createElemDOM('div', 'filter-page');
+    const topControlsPanel = createElemDOM('div', 'top-panel');
     const products = createElemDOM('section', 'products');
 
-    page.append(this.filterBlock, this.sorter.element, products);
+    topControlsPanel.append(this.sorter.element, this.searchBar.element);
+    page.append(this.filterBlock, topControlsPanel, products);
     main.append(page);
     products.addEventListener('click', (e: Event) =>
       this.cartController.addToCart(e)
@@ -173,11 +178,40 @@ export class FilterPage {
       this.draw();
     });
 
-    this.sorter.element.addEventListener('change', (e: Event) => {
+    this.sorter.element.addEventListener('input', (e: Event) => {
       const target = e.target;
       if (!(target instanceof HTMLSelectElement)) return;
 
       this.sorter.sort(this.data, target);
+      this.draw();
+    });
+
+    let backupData = this.data;
+
+    this.searchBar.element.addEventListener('focusin', () => {
+      backupData = this.data;
+      this.searchBar.data = this.data;
+      // console.log('set backup data: ', backupData);
+    });
+
+    this.searchBar.element.addEventListener('focusout', (e) => {
+      console.log('focusout');
+      const target = e.target;
+      if (!(target instanceof HTMLInputElement)) return;
+
+      if (!target.value) {
+        this.data = backupData;
+        console.log('restore backup data: ', backupData);
+
+        this.draw();
+      }
+    });
+
+    this.searchBar.element.addEventListener('input', (e: Event) => {
+      const target = e.target;
+      if (!(target instanceof HTMLInputElement)) return;
+
+      this.data = this.searchBar.search(target.value);
       this.draw();
     });
   }
