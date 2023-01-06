@@ -2,10 +2,8 @@ import { createElemDOM } from '../../utils/utils';
 
 export class Sorter {
   element: HTMLElement;
-  data: ProductData[];
 
-  constructor(data: ProductData[]) {
-    this.data = data;
+  constructor() {
     this.element = this.createElement();
   }
 
@@ -33,36 +31,17 @@ export class Sorter {
     return option;
   }
 
-  public setListener(callback: (data: ProductData[]) => void) {
-    this.sort('price', 'ascending');
+  public sort(data: ProductData[], selector?: HTMLSelectElement) {
+    let [prop, order] = ['price', 'ascending'] as sortOptions;
 
-    this.element.addEventListener('change', (e) => {
-      const target = e.target;
+    if (selector) [prop, order] = selector.value.split('-') as sortOptions;
 
-      if (!(target instanceof HTMLSelectElement)) return;
-
-      const option = target.value.split('-')[0];
-      const order = target.value.split('-')[1];
-
-      if (
-        (option !== 'price' && option !== 'rating') ||
-        (order !== 'ascending' && order !== 'descending')
-      )
-        return;
-
-      this.sort(option, order);
-
-      callback(this.data);
-    });
-  }
-
-  public sort(option: 'price' | 'rating', order: 'ascending' | 'descending') {
     switch (order) {
       case 'ascending':
-        this.data.sort((a, b) => a[option] - b[option]);
+        data.sort((a, b) => a[prop] - b[prop]);
         break;
       case 'descending':
-        this.data.sort((a, b) => b[option] - a[option]);
+        data.sort((a, b) => b[prop] - a[prop]);
         break;
     }
   }

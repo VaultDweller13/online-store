@@ -36,7 +36,8 @@ export class FilterPage {
     this.filter = new Filter(data);
 
     this.cartController = cartController;
-    this.sorter = new Sorter(data);
+    this.sorter = new Sorter();
+    this.sorter.sort(this.data);
 
     this.setListeners();
   }
@@ -172,8 +173,11 @@ export class FilterPage {
       this.draw();
     });
 
-    this.sorter.setListener((sortedData: ProductData[]) => {
-      this.data = sortedData;
+    this.sorter.element.addEventListener('change', (e: Event) => {
+      const target = e.target;
+      if (!(target instanceof HTMLSelectElement)) return;
+
+      this.sorter.sort(this.data, target);
       this.draw();
     });
   }
