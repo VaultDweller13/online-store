@@ -7,7 +7,10 @@ export class ProductsView {
     const card = createElemDOM('div', 'card');
     const title = createElemDOM('h3', '', data.title);
     const img = createElemDOM('img', 'card__img');
-    const price = createElemDOM('p', '', data.price.toString());
+
+    const price = createElemDOM('p', '', `Price: ${data.price}`);
+    const stock = createElemDOM('p', '', `Stock: ${data.stock}`);
+
 
     const button = createElemDOM(
       'button',
@@ -31,7 +34,7 @@ export class ProductsView {
     const buttonView = createElemDOM('button', 'button', 'details');
 
     inCartWrapper.append(buttonDec, count, buttonInc);
-    card.append(title, img, price, button, inCartWrapper, buttonView);
+    card.append(title, img, price, stock, button, inCartWrapper, buttonView);
     return card;
   }
 
