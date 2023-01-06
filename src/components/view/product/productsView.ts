@@ -6,7 +6,8 @@ export class ProductsView {
     const card = createElemDOM('div', 'card');
     const title = createElemDOM('h3', '', data.title);
     const img = createElemDOM('img', 'card__img');
-    const price = createElemDOM('p', '', data.price.toString());
+    const price = createElemDOM('p', '', `Price: ${data.price}`);
+    const stock = createElemDOM('p', '', `Stock: ${data.stock}`);
     const button = createElemDOM('button', 'button', 'Add to cart');
 
     if (img instanceof HTMLImageElement) {
@@ -14,7 +15,7 @@ export class ProductsView {
       img.src = data.images[0];
     }
 
-    card.append(title, img, price, button);
+    card.append(title, img, price, stock, button);
     // TODO add event listener Cart.addTocart()
 
     return card;

@@ -26,4 +26,10 @@ interface JSONLoader {
 type filterOptions = {
   category: string[];
   brand: string[];
+  minPrice: number;
+  maxPrice: number;
+  minStock: number;
+  maxStock: number;
 };
+
+type sortOption = 'price' | 'rating';

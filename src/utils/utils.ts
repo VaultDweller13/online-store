@@ -11,3 +11,11 @@ export const createElemDOM = (
   if (inner) node.innerHTML = inner;
   return node;
 };
+
+export function getMinValue(data: ProductData[], prop: 'price' | 'stock') {
+  return Math.min(...data.map((item) => item[prop]));
+}
+
+export function getMaxValue(data: ProductData[], prop: 'price' | 'stock') {
+  return Math.max(...data.map((item) => item[prop]));
+}
