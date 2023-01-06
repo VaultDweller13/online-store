@@ -21,7 +21,6 @@ export class SearchBar {
   }
 
   search(value: string): ProductData[] {
-    // console.log(document.activeElement, data);
     const result = this.data.filter((item) => {
       const keys = Object.keys(item);
       const values = Object.values(item);
@@ -32,6 +31,6 @@ export class SearchBar {
       );
     });
 
-    return result.length !== 0 ? result : this.data;
+    return result;
   }
 }

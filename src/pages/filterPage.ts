@@ -72,6 +72,14 @@ export class FilterPage {
     main.innerHTML = '';
   }
 
+  private update() {
+    console.log(this.data.length);
+    const products = document.querySelector('.products');
+    if (!products) throw new Error("Can't find element with class 'main'");
+    products.innerHTML = '';
+    ProductsView.draw(this.data, this.cartController.cart);
+  }
+
   private createFiltersBlock(data: ProductData[]): HTMLElement {
     const container = createElemDOM('aside', 'filter-block');
     const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
@@ -186,24 +194,22 @@ export class FilterPage {
       this.draw();
     });
 
-    let backupData = this.data;
+    const backupData = this.data;
 
-    this.searchBar.element.addEventListener('focusin', () => {
-      backupData = this.data;
-      this.searchBar.data = this.data;
-      // console.log('set backup data: ', backupData);
+    this.searchBar.element.addEventListener('focusin', (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLInputElement)) return;
+
+      if (!target.value) this.searchBar.data = this.data;
     });
 
     this.searchBar.element.addEventListener('focusout', (e) => {
-      console.log('focusout');
       const target = e.target;
       if (!(target instanceof HTMLInputElement)) return;
 
       if (!target.value) {
         this.data = backupData;
-        console.log('restore backup data: ', backupData);
-
-        this.draw();
+        this.update();
       }
     });
 
@@ -212,7 +218,7 @@ export class FilterPage {
       if (!(target instanceof HTMLInputElement)) return;
 
       this.data = this.searchBar.search(target.value);
-      this.draw();
+      this.update();
     });
   }
 }
