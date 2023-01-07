@@ -68,12 +68,14 @@
     &_grid {
       width: 36px;
       height: 36px;
+      cursor: pointer;
     }
 
     &_list {
       background: url('./list-icon.svg') center / cover;
 
-      &:hover {
+      &:hover,
+      &.view-active {
         background: url('./list-icon-active.svg') center / cover;
       }
     }
@@ -81,9 +83,14 @@
     &_grid {
       background: url('./grid-icon.svg') center / cover;
 
-      &:hover {
+      &:hover,
+      &.view-active {
         background: url('./grid-icon-active.svg') center / cover;
       }
+    }
+
+    .view-active {
+      pointer-events: none;
     }
   }
 }

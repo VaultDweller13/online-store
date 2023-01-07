@@ -71,6 +71,7 @@ export class FilterPage {
     this.cartController.refreshTotalCount();
     this.cartController.refreshTotalSum();
     ProductsView.draw(this.data, this.cartController.cart);
+    ProductsView.setView();
   }
 
   private clear(): void {
@@ -85,6 +86,7 @@ export class FilterPage {
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
     ProductsView.draw(this.data, this.cartController.cart);
+    ProductsView.setView();
   }
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
@@ -144,8 +146,14 @@ export class FilterPage {
 
   private createViewSwitcher(): HTMLElement {
     const container = createElemDOM('div', 'switch-view');
-    const listView = createElemDOM('div', 'switch-view_list');
-    const gridView = createElemDOM('div', 'switch-view_grid');
+    const listView = createElemDOM(
+      'div',
+      'switch-view_button switch-view_list'
+    );
+    const gridView = createElemDOM(
+      'div',
+      'switch-view_button switch-view_grid view-active'
+    );
 
     container.append(listView, gridView);
     return container;
@@ -155,12 +163,31 @@ export class FilterPage {
     this.filterBlock.addEventListener('click', (e) => this.applyFilters(e));
     this.filterBlock.addEventListener('change', (e) => this.applyFilters(e));
     this.searchBar.addEventListener('input', (e) => this.applyFilters(e));
-    this.sorter.element.addEventListener('input', (e: Event) => {
+    this.sorter.element.addEventListener('input', (e) => {
       const target = e.target;
       if (!(target instanceof HTMLSelectElement)) return;
 
       this.sorter.sort(this.data);
       this.update();
+    });
+    this.viewSwitcher.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const listButton = document.querySelector('.switch-view_list');
+      const gridButton = document.querySelector('.switch-view_grid');
+
+      if (target === listButton || target === gridButton) {
+        const productCards = document.querySelectorAll('.card');
+
+        productCards.forEach((card) => {
+          card.classList.toggle('card-big');
+          card.classList.toggle('card-small');
+        });
+        listButton?.classList.remove('view-active');
+        gridButton?.classList.remove('view-active');
+        target.classList.add('view-active');
+      }
     });
   }
 

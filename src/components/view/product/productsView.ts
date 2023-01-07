@@ -4,7 +4,7 @@ import './../../../assets/styles/components/products.scss';
 
 export class ProductsView {
   private static drawCard(data: ProductData, countInCart: number): HTMLElement {
-    const card = createElemDOM('div', 'card');
+    const card = createElemDOM('div', 'card card-small');
     const title = createElemDOM('h3', 'card__title', data.title);
     const img = createElemDOM('img', 'card__img');
 
@@ -57,5 +57,18 @@ export class ProductsView {
 
     container.textContent = '';
     container.append(fragment);
+  }
+
+  public static setView() {
+    const viewButton = document.querySelector('.view-active');
+    const className = viewButton?.classList.contains('switch-view_list')
+      ? 'card-big'
+      : 'card-small';
+
+    const productCards = document.querySelectorAll('.card');
+    productCards.forEach((card) => {
+      card.classList.remove('card-big', 'card-small');
+      card.classList.add(className);
+    });
   }
 }
