@@ -38,7 +38,6 @@ export default class Filter {
     const { category, brand } = this.getFilterOptions();
     const { minPrice, maxPrice, minStock, maxStock } =
       this.currentFilterOptions;
-
     return this.searchBar
       .search()
       .filter((item) => category.includes(item.category))
