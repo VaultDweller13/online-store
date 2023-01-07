@@ -90,7 +90,7 @@ export class CartController {
 
     countHTML.textContent = count.toString();
     const sumCountHTML = card.querySelector('.card__price');
-    if (sumCountHTML && price)
+    if (sumCountHTML && price && document.querySelector('.cart'))
       sumCountHTML.textContent = '$' + (count * price).toString();
   }
   cartFormHandler(e: Event, callBack: () => void): void {
