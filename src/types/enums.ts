@@ -7,6 +7,6 @@ export enum Elements {
 }
 
 export enum Colors {
-  sliderRange = 'blue',
-  sliderDefault = 'gray',
+  sliderRange = '#244d4d',
+  sliderDefault = '#e3e3e3',
 }
