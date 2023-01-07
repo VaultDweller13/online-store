@@ -6,7 +6,6 @@ import Filter from '../components/filter/filter';
 import DualSlider from '../components/filter/dualSlider/dualSlider';
 import { Elements } from '../types/enums';
 import { Sorter } from '../components/filter/sorter';
-import { SearchBar } from '../components/filter/searchBar';
 
 export class FilterPage {
   data: ProductData[];
@@ -79,7 +78,7 @@ export class FilterPage {
     const products = document.querySelector('.products');
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
-    ProductsView.draw(this.filteredData, this.cartController.cart);
+    ProductsView.draw(this.data, this.cartController.cart);
   }
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
