@@ -22,10 +22,23 @@ export class SearchBar {
 
   search(): ProductData[] {
     const value = this.parseInput().toLowerCase();
+    const keys = [
+      'title',
+      'description',
+      'price',
+      'discountPercentage',
+      'rating',
+      'stock',
+      'brand',
+      'category',
+    ];
 
     return this.data.filter((item) => {
-      const keys = Object.keys(item);
-      const values = Object.values(item);
+      const values: string[] = [];
+
+      for (const [k, v] of Object.entries(item)) {
+        if (keys.includes(k)) values.push(v.toString());
+      }
 
       return (
         keys.some((k) => k.toLowerCase().includes(value)) ||
