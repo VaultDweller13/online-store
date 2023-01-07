@@ -9,8 +9,8 @@ export class PaginationView {
   pagination: Pagination<CartProduct>;
   constructor(pagination: Pagination<CartProduct>) {
     this.pagination = pagination;
-    this.btnInc = createElemDOM('button', 'button button_paginInc', '+');
-    this.btnDec = createElemDOM('button', 'button button_paginDec', '-');
+    this.btnInc = createElemDOM('button', 'button button_paginInc');
+    this.btnDec = createElemDOM('button', 'button button_paginDec');
     this.elemsOnPage = this.createElemsOnPage();
     this.currPage = createElemDOM(
       'p',
@@ -21,9 +21,18 @@ export class PaginationView {
   }
 
   draw() {
-    const pagin = createElemDOM('div', '');
+    const pagin = createElemDOM('div', 'pagin__menu');
+    pagin.append(createElemDOM('h2', 'h2', 'Products in Cart'));
+    pagin.append(createElemDOM('p', 'text', 'Limit:'));
+    const page = createElemDOM('p', 'text', 'Page:');
 
-    pagin.append(this.elemsOnPage, this.btnDec, this.currPage, this.btnInc);
+    pagin.append(
+      this.elemsOnPage,
+      page,
+      this.btnDec,
+      this.currPage,
+      this.btnInc
+    );
     return pagin;
   }
   private setListeners() {
@@ -46,9 +55,11 @@ export class PaginationView {
     });
   }
   createElemsOnPage(): HTMLInputElement {
-    const elem = createElemDOM('input', '');
+    const elem = createElemDOM('input', 'input pagin__input');
     if (!(elem instanceof HTMLInputElement))
       throw new Error("Couldn't create input element");
+    elem.type = 'number';
+    elem.value = this.pagination.elemsOnPage.toString();
     return elem;
   }
 }

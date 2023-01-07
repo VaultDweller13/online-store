@@ -3,20 +3,47 @@ import { createElemDOM } from './../../../utils/utils';
 export class CartView {
   private static drawCard(data: CartProduct) {
     const card = createElemDOM('div', 'card');
-    const title = createElemDOM('h3', '', data.productData.title);
+
     const img = createElemDOM('img', 'card__img');
-    const price = createElemDOM('p', '', data.productData.price.toString());
+    const price = createElemDOM(
+      'p',
+      'card__priceText',
+      `Price: <span class="card__price">$${(
+        data.productData.price * data.count
+      ).toString()}</span>`
+    );
+    const wrapp = createElemDOM('div', 'card__wrapper_desc');
+
+    const title = createElemDOM('h3', 'card__title', data.productData.title);
+    const categ = createElemDOM('p', 'card__categ', data.productData.category);
+    const brand = createElemDOM('p', 'card__categ', data.productData.brand);
+    const description = createElemDOM(
+      'p',
+      'card__description',
+      data.productData.description
+    );
+    const costWrapp = createElemDOM('div', 'card__wrapper');
+    const cartWrapp = createElemDOM('div', 'card__cart');
+
     const count = createElemDOM('p', 'card__count', data.count.toString());
     const buttonInc = createElemDOM('button', 'button button_inc', '+');
     const buttonDec = createElemDOM('button', 'button button_dec', '-');
-    card.setAttribute('data-product-id', data.productData.id.toString());
 
+    card.setAttribute('data-product-id', data.productData.id.toString());
+    cartWrapp.append(buttonDec, count, buttonInc);
     if (img instanceof HTMLImageElement) {
       img.alt = data.productData.title;
       img.src = data.productData.images[0];
     }
+    const stock = createElemDOM(
+      'p',
+      '',
+      `Stock: ${data.productData.stock.toString()}`
+    );
 
-    card.append(title, img, price, buttonDec, count, buttonInc);
+    wrapp.append(title, categ, description, brand);
+    costWrapp.append(price, cartWrapp, stock);
+    card.append(img, wrapp, costWrapp);
 
     return card;
   }

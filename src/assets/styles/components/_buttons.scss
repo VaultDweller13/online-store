@@ -1,0 +1,44 @@
+.button {
+  border: 1.5px solid $border-grey;
+  background-color: transparent;
+  color: $color-f-active;
+  padding: 1rem;
+  font-family: $font-text;
+  cursor: pointer;
+  transition: ease-in-out 0.5s;
+  &:hover,
+  &:active {
+    background-color: $middle;
+  }
+}
+
+.button_add,
+.button__buy {
+  border: none;
+  background-color: $dark;
+  color: $white;
+  &:hover,
+  &:active {
+    background-color: $color-f-green;
+  }
+}
+
+.button_paginInc,
+.button_paginDec {
+  border-radius: 50%;
+  border: none;
+  background-color: $bg-light;
+  width: 1rem;
+  height: 1rem;
+  background-image: url('/src/assets/svg/arrow.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  &:hover,
+  &:active {
+    background-color: $border-grey;
+  }
+}
+
+.button_paginDec {
+  transform: rotate(180deg);
+}

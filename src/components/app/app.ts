@@ -1,4 +1,3 @@
-// import { CartController } from './../controller/cartController';
 import { Controller } from '../controller/controller';
 
 export default class App {
@@ -14,12 +13,5 @@ export default class App {
       document.querySelector('.to-cart')
     );
     btnCart.addEventListener('click', () => this.controller.drawCartPage());
-    // const products: HTMLDivElement = <HTMLDivElement>(
-    //   document.querySelector('.products')
-    // );
-
-    // products.addEventListener('click', (e: Event) =>
-    //   this.cartController.addToCart(e, 'button')
-    // );
   }
 }

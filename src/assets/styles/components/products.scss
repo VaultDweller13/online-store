@@ -1,10 +1,19 @@
+@import '../main.scss';
 .card {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 10rem;
+  // width: 15rem;
+  box-shadow: $shadow;
 }
 .card__img {
   object-fit: cover;
   width: 100%;
+}
+
+.card__cart {
+  display: flex;
+  align-items: center;
+
+  gap: 1rem;
 }

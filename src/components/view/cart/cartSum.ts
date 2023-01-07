@@ -6,13 +6,14 @@ export class CartSum {
     const container = document.querySelector('.cart__promos');
     if (!container)
       throw new Error("Can't find element with class 'cart__promos'");
-
+    if (cart.appliedPromo.length)
+      fragment.append(createElemDOM('p', '', 'Applied promos:'));
     cart.appliedPromo.map((promo) => {
-      const promoWrapper = createElemDOM('div', 'promo__wrapper');
+      const promoWrapper = createElemDOM('div', 'promos__wrapp_input');
       promoWrapper.append(
         createElemDOM('p', 'promo__text', `${promo.name}-${promo.discount}%`)
       );
-      const btn = createElemDOM('p', 'button promo__btnDrop', 'Drop');
+      const btn = createElemDOM('button', 'button promo__btnDrop', 'Drop');
       btn.dataset.promo = promo.name;
       promoWrapper.append(btn);
       fragment.append(promoWrapper);
@@ -29,9 +30,11 @@ export class CartSum {
     const form = createElemDOM('form', 'cart__form');
     fragment.append(form);
 
-    form.append(createElemDOM('h3', '', 'total'));
+    form.append(createElemDOM('h2', 'h2', 'Total'));
     form.append(createElemDOM('p', '', 'Total count: '));
-    form.append(createElemDOM('p', '', cart.getCountCart().toString()));
+    form.append(
+      createElemDOM('p', 'cart__count', cart.getCountCart().toString())
+    );
     form.append(createElemDOM('p', '', 'Total cost: '));
     const sumCart = cart.getSumCart();
     const sumCartPromo = cart.getSumWithPromo();
@@ -40,31 +43,37 @@ export class CartSum {
       createElemDOM(
         'p',
         `cart__sum ${sumCart == sumCartPromo ? '' : 'cart__sum_old'}`,
-        sumCart.toString()
+        `$${sumCart.toString()}`
       )
     );
     const sumWithPromo = createElemDOM(
       'p',
       `cart__sumWithPromo ${sumCart == sumCartPromo ? 'hide' : ''}`,
-      sumCartPromo.toString()
+      `$${sumCartPromo.toString()}`
     );
-    form.append(sumWithPromo);
-    form.append(createElemDOM('div', 'cart__promos'));
+    form.append(sumWithPromo, createElemDOM('div', 'cart__promos'));
 
-    const input = createElemDOM('input', '');
+    const promosWrapp = createElemDOM('div', 'promos__wrapp_input');
+
+    const input = createElemDOM('input', 'input');
     (<HTMLInputElement>input).placeholder = 'Enter promo code';
-    form.append(input);
+
     const aplyPromoBtn = createElemDOM(
       'button',
       'button promo__btnApply',
       'Apply'
     );
-    const helper = createElemDOM('p', 'promo__helper', '');
-    form.append(helper);
 
-    form.append(aplyPromoBtn);
+    const helper = createElemDOM('p', 'promo__helper', '');
+    const hint = createElemDOM(
+      'p',
+      'promo__helper',
+      'Promo for test: RS, Disc'
+    );
+
     const applyBtn = createElemDOM('button', 'button button__buy', 'Buy now');
-    form.append(applyBtn);
+    promosWrapp.append(input, aplyPromoBtn);
+    form.append(promosWrapp, helper, hint, applyBtn);
 
     container.textContent = '';
     container.append(fragment);

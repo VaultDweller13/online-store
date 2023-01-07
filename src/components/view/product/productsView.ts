@@ -5,12 +5,11 @@ import './../../../assets/styles/components/products.scss';
 export class ProductsView {
   private static drawCard(data: ProductData, countInCart: number): HTMLElement {
     const card = createElemDOM('div', 'card');
-    const title = createElemDOM('h3', '', data.title);
+    const title = createElemDOM('h3', 'card__title', data.title);
     const img = createElemDOM('img', 'card__img');
 
-    const price = createElemDOM('p', '', `Price: ${data.price}`);
-    const stock = createElemDOM('p', '', `Stock: ${data.stock}`);
-
+    const price = createElemDOM('p', 'card__price', `Price: ${data.price}`);
+    const stock = createElemDOM('p', 'card__stock', `Stock: ${data.stock}`);
 
     const button = createElemDOM(
       'button',
@@ -31,10 +30,14 @@ export class ProductsView {
     const count = createElemDOM('p', 'card__count', countInCart.toString());
     const buttonInc = createElemDOM('button', 'button button_inc', '+');
     const buttonDec = createElemDOM('button', 'button button_dec', '-');
-    const buttonView = createElemDOM('button', 'button', 'details');
+    const buttonView = createElemDOM(
+      'button',
+      'button button_details',
+      'Details'
+    );
 
     inCartWrapper.append(buttonDec, count, buttonInc);
-    card.append(title, img, price, stock, button, inCartWrapper, buttonView);
+    card.append(img, title, price, stock, button, inCartWrapper, buttonView);
     return card;
   }
 
