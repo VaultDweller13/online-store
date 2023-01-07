@@ -126,10 +126,15 @@ export class FilterPage {
   ): HTMLElement[] {
     const heading = createElemDOM('h3', 'filter-block_header', title);
     const items = array.map((item) => {
-      const div = createElemDOM('div', `${prefix}-item`);
+      // const div = createElemDOM('div', `${prefix}-item`);
       const itemName = `${item[0].toUpperCase()}${item.slice(1)}`;
       const input = createElemDOM('input', `${prefix}-item_input`);
-      const label = createElemDOM('label', `${prefix}-item_label`, itemName);
+      const label = createElemDOM(
+        'label',
+        `${prefix}-item_label checkbox-container`,
+        itemName
+      );
+      const box = createElemDOM('span', 'checkbox');
       input.dataset.type = filterType;
       input.setAttribute('type', 'checkbox');
       input.setAttribute('id', item);
@@ -137,8 +142,9 @@ export class FilterPage {
       input.setAttribute('value', item);
       label.setAttribute('for', item);
 
-      div.append(input, label);
-      return div;
+      label.append(input, box);
+      // div.append(label);
+      return label;
     });
 
     return [heading, ...items];

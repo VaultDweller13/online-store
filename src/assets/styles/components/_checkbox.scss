@@ -1,0 +1,37 @@
+.checkbox-container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  padding-left: 30px;
+  margin-bottom: 10px;
+  line-height: 22px;
+
+  .checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgb(227, 227, 227);
+  }
+
+  input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    width: 0;
+    height: 0;
+  }
+
+  &:hover input ~ .checkbox {
+    border-color: #244d4d;
+  }
+
+  input:checked ~ .checkbox {
+    background-color: #244d4d;
+    border-color: #244d4d;
+    outline: 1px solid #ffffff;
+    outline-offset: -2px;
+  }
+}
