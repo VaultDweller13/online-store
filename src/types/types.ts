@@ -41,4 +41,7 @@ type Promo = {
   discount: number;
 };
 
-type sortOption = 'price' | 'rating';
+type sortOptions = [
+  prop: 'price' | 'rating',
+  order: 'ascending' | 'descending'
+];
