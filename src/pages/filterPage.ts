@@ -6,7 +6,6 @@ import Filter from '../components/filter/filter';
 import DualSlider from '../components/filter/dualSlider/dualSlider';
 import { Elements } from '../types/enums';
 import { Sorter } from '../components/filter/sorter';
-import { SearchBar } from '../components/filter/searchBar';
 
 export class FilterPage {
   data: ProductData[];
@@ -17,7 +16,7 @@ export class FilterPage {
   priceSlider: DualSlider;
   stockSlider: DualSlider;
   sorter: Sorter;
-  searchBar: SearchBar;
+  searchBar: HTMLElement;
 
   constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
@@ -42,10 +41,7 @@ export class FilterPage {
     this.cartController = cartController;
     this.sorter = new Sorter();
     this.sorter.sort(this.data);
-    this.searchBar = new SearchBar(this.data, (data: ProductData[]) => {
-      this.filteredData = data;
-      this.update();
-    });
+    this.searchBar = this.filter.searchBar.element;
 
     this.setListeners();
   }
@@ -60,7 +56,7 @@ export class FilterPage {
     const topControlsPanel = createElemDOM('div', 'top-panel');
     const products = createElemDOM('section', 'products');
 
-    topControlsPanel.append(this.sorter.element, this.searchBar.element);
+    topControlsPanel.append(this.sorter.element, this.searchBar);
     page.append(this.filterBlock, topControlsPanel, products);
     main.append(page);
     products.addEventListener('click', (e: Event) =>
@@ -82,7 +78,7 @@ export class FilterPage {
     const products = document.querySelector('.products');
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
-    ProductsView.draw(this.filteredData, this.cartController.cart);
+    ProductsView.draw(this.data, this.cartController.cart);
   }
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
@@ -90,10 +86,8 @@ export class FilterPage {
     const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
     const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
 
-    const categories = Array.from(
-      new Set(data.map((product) => product.category))
-    );
-    const brands = Array.from(new Set(data.map((product) => product.brand)));
+    const categories = [...new Set(data.map((product) => product.category))];
+    const brands = [...new Set(data.map((product) => product.brand))];
 
     categoriesBlock.append(
       ...this.createCheckboxBlock(
@@ -143,17 +137,28 @@ export class FilterPage {
   }
 
   private setListeners(): void {
-    this.filterBlock.addEventListener('click', (e) => {
+    this.filterBlock.addEventListener('click', (e) => this.applyFilters(e));
+    this.filterBlock.addEventListener('change', (e) => this.applyFilters(e));
+    this.searchBar.addEventListener('input', (e) => this.applyFilters(e));
+    this.sorter.element.addEventListener('input', (e: Event) => {
       const target = e.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (target.type !== Elements.checkbox) return;
+      if (!(target instanceof HTMLSelectElement)) return;
 
-      target.dataset.type === 'category'
-        ? this.filter.setCategoryFilter()
-        : this.filter.setBrandFilter();
+      this.sorter.sort(this.data, target);
+      this.update();
+    });
+  }
 
-      this.data = this.filter.filter(this.data);
+  applyFilters(e: Event) {
+    const target = e.target;
 
+    if (!(target instanceof HTMLInputElement)) return;
+    this.data = this.filter.filter();
+
+    if (
+      target.type === Elements.checkbox ||
+      target.type === Elements.textInput
+    ) {
       this.priceSlider.setRange(
         getMinValue(this.data, 'price'),
         getMaxValue(this.data, 'price')
@@ -162,41 +167,15 @@ export class FilterPage {
         getMinValue(this.data, 'stock'),
         getMaxValue(this.data, 'stock')
       );
-      this.draw();
-    });
+    }
 
-    this.filterBlock.addEventListener('change', (e) => {
-      const target = e.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (target.type !== Elements.textInput && target.type !== Elements.range)
-        return;
+    if (
+      /*target.type === Elements.textInput || */ target.type === Elements.range
+    ) {
+      this.filter.setPriceRange();
+      this.filter.setStockRange();
+    }
 
-      if (target.dataset.type === 'price') {
-        console.log('price');
-        this.filter.setPriceFilter();
-        this.data = this.filter.filter(this.data);
-        this.stockSlider.setRange(
-          getMinValue(this.data, 'stock'),
-          getMaxValue(this.data, 'stock')
-        );
-      } else {
-        this.filter.setStockFilter();
-        this.data = this.filter.filter(this.data);
-        this.priceSlider.setRange(
-          getMinValue(this.data, 'price'),
-          getMaxValue(this.data, 'price')
-        );
-      }
-
-      this.draw();
-    });
-
-    this.sorter.element.addEventListener('input', (e: Event) => {
-      const target = e.target;
-      if (!(target instanceof HTMLSelectElement)) return;
-
-      this.sorter.sort(this.data, target);
-      this.draw();
-    });
+    this.update();
   }
 }
