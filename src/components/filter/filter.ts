@@ -1,4 +1,5 @@
 import { getMaxValue, getMinValue } from '../../utils/utils';
+import { SearchBar } from './searchBar';
 
 export default class Filter {
   data: ProductData[];
@@ -6,26 +7,18 @@ export default class Filter {
   minPrice: number;
   minStock: number;
   maxStock: number;
+  searchBar: SearchBar;
   currentFilterOptions: filterOptions;
 
   constructor(data: ProductData[]) {
     this.data = data;
     [this.minPrice, this.maxPrice] = this.getRange(data, 'price');
     [this.minStock, this.maxStock] = this.getRange(data, 'stock');
+    this.searchBar = new SearchBar(data);
     this.currentFilterOptions = this.initFilterOptions();
   }
 
-  public setCategoryFilter() {
-    const { category } = this.getFilterOptions();
-    this.currentFilterOptions.category = category;
-  }
-
-  public setBrandFilter() {
-    const { brand } = this.getFilterOptions();
-    this.currentFilterOptions.brand = brand;
-  }
-
-  public setPriceFilter() {
+  public setPriceRange() {
     const { minPrice, maxPrice } = this.getFilterOptions();
     [this.currentFilterOptions.minPrice, this.currentFilterOptions.maxPrice] = [
       minPrice,
@@ -33,7 +26,7 @@ export default class Filter {
     ];
   }
 
-  public setStockFilter() {
+  public setStockRange() {
     const { minStock, maxStock } = this.getFilterOptions();
     [this.currentFilterOptions.minStock, this.currentFilterOptions.maxStock] = [
       minStock,
@@ -42,31 +35,15 @@ export default class Filter {
   }
 
   public filter() {
-    const { category, brand, minPrice, maxPrice, minStock, maxStock } =
+    const { category, brand } = this.getFilterOptions();
+    const { minPrice, maxPrice, minStock, maxStock } =
       this.currentFilterOptions;
-    let filteredData = this.data;
-
-    if (category.length) {
-      filteredData = filteredData.filter((product) =>
-        category.includes(product.category)
-      );
-    }
-
-    if (brand.length) {
-      filteredData = filteredData.filter((product) =>
-        brand.includes(product.brand)
-      );
-    }
-
-    filteredData = filteredData.filter(
-      (product) => product.price >= minPrice && product.price <= maxPrice
-    );
-
-    filteredData = filteredData.filter(
-      (product) => product.stock >= minStock && product.stock <= maxStock
-    );
-
-    return filteredData;
+    return this.searchBar
+      .search()
+      .filter((item) => category.includes(item.category))
+      .filter((item) => brand.includes(item.brand))
+      .filter((item) => item.price >= minPrice && item.price <= maxPrice)
+      .filter((item) => item.stock >= minStock && item.stock <= maxStock);
   }
 
   private getRange(data: ProductData[], prop: 'price' | 'stock') {
@@ -75,33 +52,28 @@ export default class Filter {
   }
 
   private getFilterOptions(): filterOptions {
-    const options: filterOptions = {
-      category: [],
-      brand: [],
-      minPrice: 0,
-      maxPrice: 0,
-      minStock: 0,
-      maxStock: 0,
-    };
+    const options = this.initFilterOptions();
+    const parsedCategories: string[] = [];
+    const parsedBrands: string[] = [];
 
-    const categories = Array.from(
-      document.querySelectorAll('.categories-item_input')
-    );
-    const brands = Array.from(document.querySelectorAll('.brands-item_input'));
-
-    const inputs = Array.from(document.querySelectorAll('.controls_input'));
+    const categories = [...document.querySelectorAll('.categories-item_input')];
+    const brands = [...document.querySelectorAll('.brands-item_input')];
+    const inputs = [...document.querySelectorAll('.controls_input')];
 
     categories.forEach((item) => {
       if (item instanceof HTMLInputElement && item.checked) {
-        options.category.push(item.value);
+        parsedCategories.push(item.value);
       }
     });
 
     brands.forEach((item) => {
       if (item instanceof HTMLInputElement && item.checked) {
-        options.brand.push(item.value);
+        parsedBrands.push(item.value);
       }
     });
+
+    if (parsedCategories.length) options.category = parsedCategories;
+    if (parsedBrands.length) options.brand = parsedBrands;
 
     if (inputs[0] instanceof HTMLInputElement) {
       options.minPrice = +inputs[0].value;
