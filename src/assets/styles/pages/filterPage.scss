@@ -4,7 +4,6 @@
   grid-template-rows: 2rem auto;
   justify-items: start;
 
-  // width: 100vw;
   .card {
     display: grid;
 
@@ -73,20 +72,18 @@
 
     &_list {
       background: url('./list-icon.svg') center / cover;
-
-      &:hover,
-      &.view-active {
-        background: url('./list-icon-active.svg') center / cover;
-      }
     }
 
     &_grid {
       background: url('./grid-icon.svg') center / cover;
+    }
 
-      &:hover,
-      &.view-active {
-        background: url('./grid-icon-active.svg') center / cover;
-      }
+    &_list:hover,
+    &_grid:hover,
+    .view-active {
+      filter: brightness(0) saturate(100%) invert(22%) sepia(54%) saturate(442%)
+        hue-rotate(131deg) brightness(92%) contrast(100%);
+      transition: 0.3s ease-in;
     }
 
     .view-active {
