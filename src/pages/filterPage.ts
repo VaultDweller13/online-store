@@ -144,7 +144,7 @@ export class FilterPage {
       const target = e.target;
       if (!(target instanceof HTMLSelectElement)) return;
 
-      this.sorter.sort(this.data, target);
+      this.sorter.sort(this.data);
       this.update();
     });
   }
@@ -176,6 +176,7 @@ export class FilterPage {
       this.filter.setStockRange();
     }
 
+    this.sorter.sort(this.data);
     this.update();
   }
 }

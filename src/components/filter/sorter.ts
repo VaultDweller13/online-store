@@ -31,10 +31,9 @@ export class Sorter {
     return option;
   }
 
-  public sort(data: ProductData[], selector?: HTMLSelectElement) {
-    let [prop, order] = ['price', 'ascending'] as sortOptions;
-
-    if (selector) [prop, order] = selector.value.split('-') as sortOptions;
+  public sort(data: ProductData[]) {
+    const selector = this.element.querySelector('select') as HTMLSelectElement;
+    const [prop, order] = selector.value.split('-') as sortOptions;
 
     switch (order) {
       case 'ascending':
