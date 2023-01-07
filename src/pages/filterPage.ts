@@ -153,11 +153,22 @@ export class FilterPage {
     const target = e.target;
 
     if (!(target instanceof HTMLInputElement)) return;
+
+    if (
+      (target.type === Elements.textInput &&
+        target.classList.contains('controls_input')) ||
+      target.type === Elements.range
+    ) {
+      this.filter.setPriceRange();
+      this.filter.setStockRange();
+    }
+
     this.data = this.filter.filter();
 
     if (
       target.type === Elements.checkbox ||
-      target.type === Elements.textInput
+      (target.type === Elements.textInput &&
+        !target.classList.contains('controls_input'))
     ) {
       this.priceSlider.setRange(
         getMinValue(this.data, 'price'),
@@ -167,13 +178,6 @@ export class FilterPage {
         getMinValue(this.data, 'stock'),
         getMaxValue(this.data, 'stock')
       );
-    }
-
-    if (
-      /*target.type === Elements.textInput || */ target.type === Elements.range
-    ) {
-      this.filter.setPriceRange();
-      this.filter.setStockRange();
     }
 
     this.sorter.sort(this.data);
