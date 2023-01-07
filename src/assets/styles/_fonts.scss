@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'DM_Sans';
+  src: url('/src/assets/fonts/DM_Sans/DMSans-Bold.ttf');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/src/assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf');
+  font-weight: 400;
+}
+
+$font-header: 'DM_Sans', sans-serif;
+$font-text: 'Montserrat', sans-serif;
+
+h1,
+h2,
+h3 {
+  font-family: $font-header;
+}
+p,
+input {
+  font-family: $font-text;
+}
