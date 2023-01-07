@@ -13,8 +13,7 @@ export class CartController {
     const target = <HTMLElement>e.target;
     const card = target.closest('.card');
 
-    if (!(card instanceof HTMLElement))
-      throw new Error("Can't find element with class 'card'");
+    if (!(card instanceof HTMLElement)) return;
 
     if (target.classList.contains('button_add')) {
       const productId = card.dataset.productId;
@@ -60,7 +59,8 @@ export class CartController {
     } else if (target.classList.contains('button_dec')) {
       count = this.cart.deleteProduct(product);
     }
-    this.refreshCardCount(card, count);
+    const price = product.price;
+    this.refreshCardCount(card, count, price);
     if (count === 0) {
       callbackIfNull();
     }
@@ -83,12 +83,15 @@ export class CartController {
     const totalSum = this.cart.getSumCart();
     totalCountHTML.textContent = totalSum ? totalSum.toString() : '';
   }
-  refreshCardCount(card: HTMLElement, count: number): void {
-    const countHTML = card?.querySelector('.card__count');
+  refreshCardCount(card: HTMLElement, count: number, price?: number): void {
+    const countHTML = card.querySelector('.card__count');
     if (!countHTML)
       throw new Error("Can't find element with class 'card__count'");
 
     countHTML.textContent = count.toString();
+    const sumCountHTML = card.querySelector('.card__price');
+    if (sumCountHTML && price)
+      sumCountHTML.textContent = '$' + (count * price).toString();
   }
   cartFormHandler(e: Event, callBack: () => void): void {
     e.preventDefault();
