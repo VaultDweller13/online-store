@@ -4,6 +4,8 @@ import { CartSum } from './../components/view/cart/cartSum';
 import { CartController } from './../components/controller/cartController';
 import { CartView } from './../components/view/cart/cartView';
 import { createElemDOM } from './../utils/utils';
+import '../assets/styles/pages/cartPage.scss';
+
 export class CartPage {
   cartController: CartController;
   pagination: Pagination<CartProduct>;
@@ -23,8 +25,11 @@ export class CartPage {
     if (!main) throw new Error("Can't find element with class 'main'");
     this.clear();
     const page = createElemDOM('div', 'cart-page');
-    page.append(this.paginationView.draw(), this.cart);
-    page.append(this.cartForm);
+    const paginWrapp = createElemDOM('div', 'pagin__wrapp');
+
+    paginWrapp.append(this.paginationView.draw(), this.cart);
+
+    page.append(paginWrapp, this.cartForm);
     this.setListeners();
     main.append(page);
     CartView.draw(this.pagination.getCurrPageColl());
