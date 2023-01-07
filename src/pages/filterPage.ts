@@ -17,6 +17,7 @@ export class FilterPage {
   stockSlider: DualSlider;
   sorter: Sorter;
   searchBar: HTMLElement;
+  viewSwitcher: HTMLElement;
 
   constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
@@ -42,6 +43,7 @@ export class FilterPage {
     this.sorter = new Sorter();
     this.sorter.sort(this.data);
     this.searchBar = this.filter.searchBar.element;
+    this.viewSwitcher = this.createViewSwitcher();
 
     this.setListeners();
   }
@@ -56,7 +58,11 @@ export class FilterPage {
     const topControlsPanel = createElemDOM('div', 'top-panel');
     const products = createElemDOM('section', 'products');
 
-    topControlsPanel.append(this.sorter.element, this.searchBar);
+    topControlsPanel.append(
+      this.sorter.element,
+      this.searchBar,
+      this.viewSwitcher
+    );
     page.append(this.filterBlock, topControlsPanel, products);
     main.append(page);
     products.addEventListener('click', (e: Event) =>
@@ -134,6 +140,15 @@ export class FilterPage {
     });
 
     return [heading, ...items];
+  }
+
+  private createViewSwitcher(): HTMLElement {
+    const container = createElemDOM('div', 'switch-view');
+    const listView = createElemDOM('div', 'switch-view_list');
+    const gridView = createElemDOM('div', 'switch-view_grid');
+
+    container.append(listView, gridView);
+    return container;
   }
 
   private setListeners(): void {

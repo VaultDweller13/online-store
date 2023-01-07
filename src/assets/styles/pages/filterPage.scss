@@ -58,9 +58,34 @@
 }
 
 .top-panel {
-  width: 100%;
   display: flex;
   justify-content: space-between;
+  justify-self: stretch;
+
+  .switch-view {
+    display: flex;
+    &_list,
+    &_grid {
+      width: 36px;
+      height: 36px;
+    }
+
+    &_list {
+      background: url('./list-icon.svg') center / cover;
+
+      &:hover {
+        background: url('./list-icon-active.svg') center / cover;
+      }
+    }
+
+    &_grid {
+      background: url('./grid-icon.svg') center / cover;
+
+      &:hover {
+        background: url('./grid-icon-active.svg') center / cover;
+      }
+    }
+  }
 }
 
 .products {
