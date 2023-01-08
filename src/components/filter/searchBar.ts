@@ -57,6 +57,9 @@ export class SearchBar {
 
   public setInput(value: string): void {
     const input = document.querySelector('.search-bar_input');
-    if (input instanceof HTMLInputElement && value) input.value = value;
+    if (!(input instanceof HTMLInputElement)) return;
+    if (value) {
+      input.value = value;
+    } else input.value = '';
   }
 }

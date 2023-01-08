@@ -16,18 +16,24 @@ export default class Router {
     this.params.delete(name);
     const url = this.params.toString()
       ? `?${this.params.toString()}`
-      : this.url;
+      : this.url.origin;
     window.history.replaceState(null, '', url);
   }
 
   getQuery(name: string): string | null {
     const value = this.params.get(name);
-    console.log(value);
     return value;
   }
 
   getQueryString(): string | null {
     const value = this.params.toString();
+    console.log(value);
     return value;
+  }
+
+  resetURL() {
+    window.history.replaceState(null, '', this.url.origin);
+    // this.url.search = '';
+    this.params = new URLSearchParams(this.url.search);
   }
 }

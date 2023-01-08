@@ -11,6 +11,7 @@ import FilterPageRouter from '../components/controller/filterPageRouter';
 export class FilterPage {
   data: ProductData[];
   filteredData: ProductData[];
+  buttonsBlock: HTMLElement;
   filterBlock: HTMLElement;
   filter: Filter;
   cartController: CartController;
@@ -39,6 +40,7 @@ export class FilterPage {
       getMinValue(data, 'stock'),
       getMaxValue(data, 'stock')
     );
+    this.buttonsBlock = this.createResetCopyButtons();
     this.filterBlock = this.createFiltersBlock(data);
     this.filter = new Filter(data);
 
@@ -98,7 +100,6 @@ export class FilterPage {
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
     const container = createElemDOM('aside', 'filter-block');
-    const buttonsBlock = this.createResetCopyButtons();
     const categoriesBlock = createElemDOM('div', 'filter-block-container');
     const categoriesFieldset = createElemDOM(
       'fieldset',
@@ -127,7 +128,7 @@ export class FilterPage {
     brandsBlock.append(brandsHeading, brandsFieldset);
 
     container.append(
-      buttonsBlock,
+      this.buttonsBlock,
       categoriesBlock,
       brandsBlock,
       this.priceSlider.el,
@@ -216,6 +217,21 @@ export class FilterPage {
         this.router.setView();
       }
     });
+
+    this.buttonsBlock.addEventListener('click', (e) => {
+      const target = e.target;
+
+      if (!(target instanceof HTMLButtonElement)) return;
+
+      if (target.dataset.type === 'reset') {
+        console.log('reset');
+        this.router.resetURL();
+        this.router.getQueryString();
+        this.restoreInputs();
+        this.data = this.filter.filter();
+        this.update();
+      }
+    });
   }
 
   private applyFilters(e: Event) {
@@ -259,6 +275,7 @@ export class FilterPage {
   }
 
   private restoreInputs(): void {
+    console.log(this.router.url);
     const categories = this.router.getValues('categories');
     const brands = this.router.getValues('brands');
     const price = this.router.getValues('price');
@@ -272,25 +289,28 @@ export class FilterPage {
     ];
     const brandsInputs = [...document.querySelectorAll('.brands-item_input')];
 
-    categoriesInputs
-      .filter((input) =>
-        categories?.includes((input as HTMLInputElement).value.toLowerCase())
-      )
-      .forEach((input) => ((input as HTMLInputElement).checked = true));
+    categoriesInputs.forEach((input) => {
+      if (input instanceof HTMLInputElement) {
+        if (categories?.includes(input.value.toLowerCase())) {
+          input.checked = true;
+        } else input.checked = false;
+      }
+    });
 
-    brandsInputs
-      .filter((input) =>
-        brands?.includes((input as HTMLInputElement).value.toLowerCase())
-      )
-      .forEach((input) => ((input as HTMLInputElement).checked = true));
-    console.log(price[0], price[1]);
+    brandsInputs.forEach((input) => {
+      if (input instanceof HTMLInputElement) {
+        if (brands?.includes(input.value.toLowerCase())) {
+          input.checked = true;
+        } else input.checked = false;
+      }
+    });
 
+    this.priceSlider.reset();
+    this.stockSlider.reset();
     this.priceSlider.setRange(+price[0], +price[1]);
     this.filter.setPriceRange();
     this.stockSlider.setRange(+stock[0], +stock[1]);
     this.filter.setStockRange();
-    console.log(this.priceSlider.maxThumb.value);
-    console.log(this.priceSlider.minThumb.value);
 
     this.filter.searchBar.setInput(search[0]);
 
@@ -300,6 +320,9 @@ export class FilterPage {
     if (isListView) {
       listButton?.classList.add('view-active');
       gridButton?.classList.remove('view-active');
+    } else {
+      listButton?.classList.remove('view-active');
+      gridButton?.classList.add('view-active');
     }
 
     this.sorter.setValue(sorting);
@@ -317,6 +340,9 @@ export class FilterPage {
       'button-reset button',
       'Copy filters'
     );
+
+    resetButton.dataset.type = 'reset';
+    copyButton.dataset.type = 'copy';
 
     container.append(resetButton, copyButton);
 
