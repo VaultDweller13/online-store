@@ -22,6 +22,7 @@ export default class Router {
 
   getQuery(name: string): string | null {
     const value = this.params.get(name);
+    console.log(value);
     return value;
   }
 

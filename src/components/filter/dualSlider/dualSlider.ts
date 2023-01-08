@@ -29,9 +29,10 @@ export default class DualSlider {
   }
 
   public setRange(min: number, max: number) {
+    if (!min || !max) return;
+
     this.minThumb.value = min.toString();
     this.maxThumb.value = max.toString();
-    // this.minValueInput
 
     this.processMinThumb();
     this.processMaxThumb();

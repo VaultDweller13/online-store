@@ -281,11 +281,14 @@ export class FilterPage {
         brands?.includes((input as HTMLInputElement).value.toLowerCase())
       )
       .forEach((input) => ((input as HTMLInputElement).checked = true));
+    console.log(price[0], price[1]);
 
     this.priceSlider.setRange(+price[0], +price[1]);
     this.filter.setPriceRange();
     this.stockSlider.setRange(+stock[0], +stock[1]);
     this.filter.setStockRange();
+    console.log(this.priceSlider.maxThumb.value);
+    console.log(this.priceSlider.minThumb.value);
 
     this.filter.searchBar.setInput(search[0]);
 
