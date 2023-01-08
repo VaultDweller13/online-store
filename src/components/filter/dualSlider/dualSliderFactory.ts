@@ -32,21 +32,23 @@ export default class DualSliderFactory {
   }
 
   private getSlider(heading: string, dataAttr: string): HTMLElement {
-    const container = createElemDOM('div', 'dual-slider');
+    const container = createElemDOM('div', 'dual-slider-container');
+    const fieldset = createElemDOM('fieldset', 'dual-slider');
     const h3 = createElemDOM('h3', 'dual-slider_heading', heading);
     const slider = this.createSlider(dataAttr);
     const rangeContainer = createElemDOM('div', 'controls-container');
-    const minRangeInput = this.createRangeInput('От', dataAttr, this.min);
-    const maxRangeInput = this.createRangeInput('До', dataAttr, this.max);
+    const minRangeInput = this.createRangeInput('From', dataAttr, this.min);
+    const maxRangeInput = this.createRangeInput('To', dataAttr, this.max);
     rangeContainer.append(minRangeInput, maxRangeInput);
 
-    container.append(h3, slider, rangeContainer);
+    fieldset.append(slider, rangeContainer);
+    container.append(h3, fieldset);
 
     return container;
   }
 
   private createSlider(dataAttr: string): HTMLElement {
-    const slider = createElemDOM('fieldset', 'slider');
+    const slider = createElemDOM('div', 'slider');
     this.minThumb.classList.add('slider_input', 'minThumb');
     this.maxThumb.classList.add('slider_input', 'maxThumb');
 
@@ -72,7 +74,7 @@ export default class DualSliderFactory {
     dataAttr: string,
     value: number
   ): HTMLElement {
-    const fieldset = createElemDOM('fieldset', 'controls');
+    const div = createElemDOM('div', 'controls');
     const label = createElemDOM('label', 'controls_label', labelText);
     const input = createElemDOM('input', 'controls_input');
     input.dataset.type = dataAttr;
@@ -81,8 +83,8 @@ export default class DualSliderFactory {
     input.setAttribute('value', `${value}`);
 
     label.append(input);
-    fieldset.append(label);
+    div.append(label);
 
-    return fieldset;
+    return div;
   }
 }
