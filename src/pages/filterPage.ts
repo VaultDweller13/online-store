@@ -276,7 +276,6 @@ export class FilterPage {
   }
 
   private restoreInputs(): void {
-    console.log(this.router.url);
     const categories = this.router.getValues('categories');
     const brands = this.router.getValues('brands');
     const price = this.router.getValues('price');

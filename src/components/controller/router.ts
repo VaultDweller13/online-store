@@ -10,6 +10,7 @@ export default class Router {
   setQuery(name: string, value: string): void {
     this.params.set(name, value);
     window.history.replaceState(null, '', `?${this.params.toString()}`);
+    // this.url = new URL(window.location.href);
   }
 
   deleteQuery(name: string) {
@@ -27,17 +28,16 @@ export default class Router {
 
   getQueryString(): string | null {
     const value = this.params.toString();
-    console.log(value);
     return value;
   }
 
   resetURL() {
     window.history.replaceState(null, '', this.url.origin);
+    this.url.search = '';
     this.params = new URLSearchParams(this.url.search);
   }
 
   copyURL() {
-    console.log(window.location.href);
     navigator.clipboard.writeText(window.location.href).then(
       () => console.log('Copied!'),
       () => console.log('Failed to copy')
