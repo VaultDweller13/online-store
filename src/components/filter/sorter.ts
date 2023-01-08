@@ -44,4 +44,9 @@ export class Sorter {
         break;
     }
   }
+
+  public setValue(value: string) {
+    const selector = this.element.querySelector('select');
+    if (selector instanceof HTMLSelectElement && value) selector.value = value;
+  }
 }

@@ -23,7 +23,7 @@ export class SearchBar {
     return container;
   }
 
-  search(): ProductData[] {
+  public search(): ProductData[] {
     this.value = this.parseInput().toLowerCase();
     const keys = [
       'title',
@@ -50,8 +50,13 @@ export class SearchBar {
     });
   }
 
-  parseInput(): string {
+  public parseInput(): string {
     return (document.querySelector('.search-bar_input') as HTMLInputElement)
       .value;
+  }
+
+  public setInput(value: string): void {
+    const input = document.querySelector('.search-bar_input');
+    if (input instanceof HTMLInputElement && value) input.value = value;
   }
 }

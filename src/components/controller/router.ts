@@ -19,4 +19,14 @@ export default class Router {
       : this.url;
     window.history.replaceState(null, '', url);
   }
+
+  getQuery(name: string): string | null {
+    const value = this.params.get(name);
+    return value;
+  }
+
+  getQueryString(): string | null {
+    const value = this.params.toString();
+    return value;
+  }
 }

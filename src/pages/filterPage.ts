@@ -44,7 +44,6 @@ export class FilterPage {
 
     this.cartController = cartController;
     this.sorter = new Sorter();
-    this.sorter.sort(this.data);
     this.searchBar = this.filter.searchBar.element;
     this.viewSwitcher = this.createViewSwitcher();
 
@@ -73,6 +72,10 @@ export class FilterPage {
     );
     this.cartController.refreshTotalCount();
     this.cartController.refreshTotalSum();
+
+    this.restoreInputs();
+    this.data = this.filter.filter();
+    this.sorter.sort(this.data);
     ProductsView.draw(this.data, this.cartController.cart);
     ProductsView.setView();
   }
@@ -88,6 +91,7 @@ export class FilterPage {
     const products = document.querySelector('.products');
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
+    this.sorter.sort(this.data);
     ProductsView.draw(this.data, this.cartController.cart);
     ProductsView.setView();
   }
@@ -212,7 +216,7 @@ export class FilterPage {
     });
   }
 
-  applyFilters(e: Event) {
+  private applyFilters(e: Event) {
     const target = e.target;
 
     if (!(target instanceof HTMLInputElement)) return;
@@ -249,7 +253,50 @@ export class FilterPage {
     if (target.dataset.type === 'stock') this.router.setStock();
     if (target.dataset.type === 'search') this.router.setSearch();
 
-    this.sorter.sort(this.data);
     this.update();
+  }
+
+  private restoreInputs(): void {
+    const categories = this.router.getValues('categories');
+    const brands = this.router.getValues('brands');
+    const price = this.router.getValues('price');
+    const stock = this.router.getValues('stock');
+    const search = this.router.getValues('search');
+    const isListView = this.router.getView();
+    const sorting = this.router.getSorting();
+
+    const categoriesInputs = [
+      ...document.querySelectorAll('.categories-item_input'),
+    ];
+    const brandsInputs = [...document.querySelectorAll('.brands-item_input')];
+
+    categoriesInputs
+      .filter((input) =>
+        categories?.includes((input as HTMLInputElement).value.toLowerCase())
+      )
+      .forEach((input) => ((input as HTMLInputElement).checked = true));
+
+    brandsInputs
+      .filter((input) =>
+        brands?.includes((input as HTMLInputElement).value.toLowerCase())
+      )
+      .forEach((input) => ((input as HTMLInputElement).checked = true));
+
+    this.priceSlider.setRange(+price[0], +price[1]);
+    this.filter.setPriceRange();
+    this.stockSlider.setRange(+stock[0], +stock[1]);
+    this.filter.setStockRange();
+
+    this.filter.searchBar.setInput(search[0]);
+
+    const gridButton = document.querySelector('.switch-view_grid');
+    const listButton = document.querySelector('.switch-view_list');
+
+    if (isListView) {
+      listButton?.classList.add('view-active');
+      gridButton?.classList.remove('view-active');
+    }
+
+    this.sorter.setValue(sorting);
   }
 }
