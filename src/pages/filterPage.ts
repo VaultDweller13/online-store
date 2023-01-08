@@ -98,6 +98,7 @@ export class FilterPage {
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
     const container = createElemDOM('aside', 'filter-block');
+    const buttonsBlock = this.createResetCopyButtons();
     const categoriesBlock = createElemDOM('div', 'filter-block-container');
     const categoriesFieldset = createElemDOM(
       'fieldset',
@@ -126,6 +127,7 @@ export class FilterPage {
     brandsBlock.append(brandsHeading, brandsFieldset);
 
     container.append(
+      buttonsBlock,
       categoriesBlock,
       brandsBlock,
       this.priceSlider.el,
@@ -301,5 +303,23 @@ export class FilterPage {
     }
 
     this.sorter.setValue(sorting);
+  }
+
+  private createResetCopyButtons(): HTMLElement {
+    const container = createElemDOM('div', 'reset-block');
+    const resetButton = createElemDOM(
+      'button',
+      'button-reset button',
+      'Reset filters'
+    );
+    const copyButton = createElemDOM(
+      'button',
+      'button-reset button',
+      'Copy filters'
+    );
+
+    container.append(resetButton, copyButton);
+
+    return container;
   }
 }
