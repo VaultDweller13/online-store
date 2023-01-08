@@ -224,12 +224,13 @@ export class FilterPage {
       if (!(target instanceof HTMLButtonElement)) return;
 
       if (target.dataset.type === 'reset') {
-        console.log('reset');
         this.router.resetURL();
         this.router.getQueryString();
         this.restoreInputs();
         this.data = this.filter.filter();
         this.update();
+      } else if (target.dataset.type === 'copy') {
+        this.router.copyURL();
       }
     });
   }

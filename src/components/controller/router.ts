@@ -33,7 +33,14 @@ export default class Router {
 
   resetURL() {
     window.history.replaceState(null, '', this.url.origin);
-    // this.url.search = '';
     this.params = new URLSearchParams(this.url.search);
+  }
+
+  copyURL() {
+    console.log(window.location.href);
+    navigator.clipboard.writeText(window.location.href).then(
+      () => console.log('Copied!'),
+      () => console.log('Failed to copy')
+    );
   }
 }
