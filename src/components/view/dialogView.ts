@@ -1,5 +1,5 @@
 import { createElemDOM } from '../../utils/utils';
-import '../../assets/styles/pages/order.scss';
+import '../../assets/styles/pages/modal.scss';
 export class DialogView {
   static draw(content: HTMLElement): void {
     const container = document.querySelector('.body');
@@ -9,7 +9,10 @@ export class DialogView {
     const dialogContent = createElemDOM('div', 'dialog__content');
     dialogContent.append(content);
     modal.append(dialogContent);
-    modal.addEventListener('click', () => {
+    modal.addEventListener('click', (e) => {
+      if (!e.target || !e.currentTarget) return;
+      if (!(<HTMLElement>e.target).classList.contains('dialog')) return;
+
       DialogView.close();
     });
     container.append(modal);

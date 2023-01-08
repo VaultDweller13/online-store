@@ -1,17 +1,6 @@
-.dialog {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  display: flex;
-}
-.dialog__content {
-  margin: auto;
-  background: white;
-  border-radius: 15px;
-  min-height: 50px;
-  min-width: 300px;
-  padding: 2rem;
+@import '../main.scss';
+.input__error {
+  color: $color-err;
+  margin: 0.5rem 5px;
+  font-size: smaller;
 }
