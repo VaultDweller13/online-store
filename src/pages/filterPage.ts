@@ -6,6 +6,7 @@ import Filter from '../components/filter/filter';
 import DualSlider from '../components/filter/dualSlider/dualSlider';
 import { Elements } from '../types/enums';
 import { Sorter } from '../components/filter/sorter';
+import FilterPageRouter from '../components/controller/filterPageRouter';
 
 export class FilterPage {
   data: ProductData[];
@@ -18,9 +19,11 @@ export class FilterPage {
   sorter: Sorter;
   searchBar: HTMLElement;
   viewSwitcher: HTMLElement;
+  router: FilterPageRouter;
 
   constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
+    this.router = new FilterPageRouter();
     this.filteredData = data;
     this.priceSlider = new DualSlider(
       'priceSlider',
@@ -56,7 +59,6 @@ export class FilterPage {
 
     const page = createElemDOM('div', 'filter-page');
     const topControlsPanel = createElemDOM('div', 'top-panel');
-    // const wrapper = createElemDOM('div', 'content-wrapper');
     const products = createElemDOM('section', 'products');
 
     topControlsPanel.append(
@@ -64,7 +66,6 @@ export class FilterPage {
       this.searchBar,
       this.viewSwitcher
     );
-    // wrapper.append(topControlsPanel, products);
     page.append(this.filterBlock, topControlsPanel, products);
     main.append(page);
     products.addEventListener('click', (e: Event) =>
@@ -168,6 +169,9 @@ export class FilterPage {
       'switch-view_button switch-view_grid view-active'
     );
 
+    listView.dataset.type = 'list';
+    gridView.dataset.type = 'grid';
+
     container.append(listView, gridView);
     return container;
   }
@@ -182,7 +186,9 @@ export class FilterPage {
 
       this.sorter.sort(this.data);
       this.update();
+      this.router.setSorting();
     });
+
     this.viewSwitcher.addEventListener('click', (e) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
@@ -200,6 +206,8 @@ export class FilterPage {
         listButton?.classList.remove('view-active');
         gridButton?.classList.remove('view-active');
         target.classList.add('view-active');
+
+        this.router.setView();
       }
     });
   }
@@ -234,6 +242,12 @@ export class FilterPage {
         getMaxValue(this.data, 'stock')
       );
     }
+
+    if (target.dataset.type === 'category') this.router.setCategories();
+    if (target.dataset.type === 'brand') this.router.setBrands();
+    if (target.dataset.type === 'price') this.router.setPrice();
+    if (target.dataset.type === 'stock') this.router.setStock();
+    if (target.dataset.type === 'search') this.router.setSearch();
 
     this.sorter.sort(this.data);
     this.update();

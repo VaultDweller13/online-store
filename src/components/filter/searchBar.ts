@@ -3,10 +3,12 @@ import { createElemDOM } from '../../utils/utils';
 export class SearchBar {
   element: HTMLElement;
   data: ProductData[];
+  value: string;
 
   constructor(data: ProductData[]) {
     this.element = this.createElement();
     this.data = data;
+    this.value = '';
   }
 
   private createElement(): HTMLElement {
@@ -14,6 +16,7 @@ export class SearchBar {
     const input = createElemDOM('input', 'search-bar_input');
     input.setAttribute('type', 'text');
     input.setAttribute('placeholder', 'Найти товар');
+    input.dataset.type = 'search';
 
     container.append(input);
 
@@ -21,7 +24,7 @@ export class SearchBar {
   }
 
   search(): ProductData[] {
-    const value = this.parseInput().toLowerCase();
+    this.value = this.parseInput().toLowerCase();
     const keys = [
       'title',
       'description',
@@ -41,8 +44,8 @@ export class SearchBar {
       }
 
       return (
-        keys.some((k) => k.toLowerCase().includes(value)) ||
-        values.some((v) => v.toString().toLowerCase().includes(value))
+        keys.some((k) => k.toLowerCase().includes(this.value)) ||
+        values.some((v) => v.toString().toLowerCase().includes(this.value))
       );
     });
   }
