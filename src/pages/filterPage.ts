@@ -17,20 +17,21 @@ export class FilterPage {
   stockSlider: DualSlider;
   sorter: Sorter;
   searchBar: HTMLElement;
+  viewSwitcher: HTMLElement;
 
   constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
     this.filteredData = data;
     this.priceSlider = new DualSlider(
       'priceSlider',
-      'Цена',
+      'Price',
       'price',
       getMinValue(data, 'price'),
       getMaxValue(data, 'price')
     );
     this.stockSlider = new DualSlider(
       'stockSlider',
-      'Количество на складе',
+      'Stock',
       'stock',
       getMinValue(data, 'stock'),
       getMaxValue(data, 'stock')
@@ -42,6 +43,7 @@ export class FilterPage {
     this.sorter = new Sorter();
     this.sorter.sort(this.data);
     this.searchBar = this.filter.searchBar.element;
+    this.viewSwitcher = this.createViewSwitcher();
 
     this.setListeners();
   }
@@ -56,7 +58,11 @@ export class FilterPage {
     const topControlsPanel = createElemDOM('div', 'top-panel');
     const products = createElemDOM('section', 'products');
 
-    topControlsPanel.append(this.sorter.element, this.searchBar);
+    topControlsPanel.append(
+      this.sorter.element,
+      this.searchBar,
+      this.viewSwitcher
+    );
     page.append(this.filterBlock, topControlsPanel, products);
     main.append(page);
     products.addEventListener('click', (e: Event) =>
@@ -65,6 +71,7 @@ export class FilterPage {
     this.cartController.refreshTotalCount();
     this.cartController.refreshTotalSum();
     ProductsView.draw(this.data, this.cartController.cart);
+    ProductsView.setView();
   }
 
   private clear(): void {
@@ -79,27 +86,37 @@ export class FilterPage {
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
     ProductsView.draw(this.data, this.cartController.cart);
+    ProductsView.setView();
   }
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
     const container = createElemDOM('aside', 'filter-block');
-    const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
-    const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
+    const categoriesBlock = createElemDOM('div', 'filter-block-container');
+    const categoriesFieldset = createElemDOM(
+      'fieldset',
+      'filter-block_category'
+    );
+    const categoriesHeading = createElemDOM(
+      'h3',
+      'filter-block_heading',
+      'Categories'
+    );
+    const brandsBlock = createElemDOM('div', 'filter-block-container');
+    const brandsFieldset = createElemDOM('fieldset', 'filter-block_brand');
+    const brandsHeading = createElemDOM('h3', 'filter-block_heading', 'Brands');
 
     const categories = [...new Set(data.map((product) => product.category))];
     const brands = [...new Set(data.map((product) => product.brand))];
 
-    categoriesBlock.append(
-      ...this.createCheckboxBlock(
-        categories,
-        'Категории',
-        'categories',
-        'category'
-      )
+    categoriesFieldset.append(
+      ...this.createCheckboxBlock(categories, 'categories', 'category')
     );
-    brandsBlock.append(
-      ...this.createCheckboxBlock(brands, 'Бренды', 'brands', 'brand')
+    brandsFieldset.append(
+      ...this.createCheckboxBlock(brands, 'brands', 'brand')
     );
+
+    categoriesBlock.append(categoriesHeading, categoriesFieldset);
+    brandsBlock.append(brandsHeading, brandsFieldset);
 
     container.append(
       categoriesBlock,
@@ -112,16 +129,18 @@ export class FilterPage {
 
   private createCheckboxBlock(
     array: string[],
-    title: string,
     prefix: string,
     filterType: string
   ): HTMLElement[] {
-    const heading = createElemDOM('h3', 'filter-block_header', title);
     const items = array.map((item) => {
-      const div = createElemDOM('div', `${prefix}-item`);
       const itemName = `${item[0].toUpperCase()}${item.slice(1)}`;
       const input = createElemDOM('input', `${prefix}-item_input`);
-      const label = createElemDOM('label', `${prefix}-item_label`, itemName);
+      const label = createElemDOM(
+        'label',
+        `${prefix}-item_label checkbox-container`,
+        itemName
+      );
+      const box = createElemDOM('span', 'checkbox');
       input.dataset.type = filterType;
       input.setAttribute('type', 'checkbox');
       input.setAttribute('id', item);
@@ -129,23 +148,57 @@ export class FilterPage {
       input.setAttribute('value', item);
       label.setAttribute('for', item);
 
-      div.append(input, label);
-      return div;
+      label.append(input, box);
+      return label;
     });
 
-    return [heading, ...items];
+    return items;
+  }
+
+  private createViewSwitcher(): HTMLElement {
+    const container = createElemDOM('div', 'switch-view');
+    const listView = createElemDOM(
+      'div',
+      'switch-view_button switch-view_list'
+    );
+    const gridView = createElemDOM(
+      'div',
+      'switch-view_button switch-view_grid view-active'
+    );
+
+    container.append(listView, gridView);
+    return container;
   }
 
   private setListeners(): void {
     this.filterBlock.addEventListener('click', (e) => this.applyFilters(e));
     this.filterBlock.addEventListener('change', (e) => this.applyFilters(e));
     this.searchBar.addEventListener('input', (e) => this.applyFilters(e));
-    this.sorter.element.addEventListener('input', (e: Event) => {
+    this.sorter.element.addEventListener('input', (e) => {
       const target = e.target;
       if (!(target instanceof HTMLSelectElement)) return;
 
       this.sorter.sort(this.data);
       this.update();
+    });
+    this.viewSwitcher.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const listButton = document.querySelector('.switch-view_list');
+      const gridButton = document.querySelector('.switch-view_grid');
+
+      if (target === listButton || target === gridButton) {
+        const productCards = document.querySelectorAll('.card');
+
+        productCards.forEach((card) => {
+          card.classList.toggle('card-big');
+          card.classList.toggle('card-small');
+        });
+        listButton?.classList.remove('view-active');
+        gridButton?.classList.remove('view-active');
+        target.classList.add('view-active');
+      }
     });
   }
 
