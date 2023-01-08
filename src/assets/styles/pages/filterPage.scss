@@ -1,8 +1,10 @@
 .filter-page {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  grid-template-rows: 2rem auto;
+  grid-template-rows: 3rem auto;
   justify-items: start;
+
+  // display: flex;
 
   .card {
     display: grid;
@@ -82,6 +84,7 @@
   justify-content: space-between;
   justify-self: stretch;
   align-items: center;
+  padding: 10px 0;
 
   .switch-view {
     display: flex;
@@ -119,8 +122,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  align-items: center;
-  justify-content: center;
+  // align-items: center;
+  // justify-content: space-around;
   align-content: flex-start;
 
   grid-column: 2 / 3;
