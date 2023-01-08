@@ -32,15 +32,17 @@ export default class DualSliderFactory {
   }
 
   private getSlider(heading: string, dataAttr: string): HTMLElement {
-    const container = createElemDOM('fieldset', 'dual-slider');
+    const container = createElemDOM('div', 'dual-slider-container');
+    const fieldset = createElemDOM('fieldset', 'dual-slider');
     const h3 = createElemDOM('h3', 'dual-slider_heading', heading);
     const slider = this.createSlider(dataAttr);
     const rangeContainer = createElemDOM('div', 'controls-container');
-    const minRangeInput = this.createRangeInput('От', dataAttr, this.min);
-    const maxRangeInput = this.createRangeInput('До', dataAttr, this.max);
+    const minRangeInput = this.createRangeInput('From', dataAttr, this.min);
+    const maxRangeInput = this.createRangeInput('To', dataAttr, this.max);
     rangeContainer.append(minRangeInput, maxRangeInput);
 
-    container.append(h3, slider, rangeContainer);
+    fieldset.append(slider, rangeContainer);
+    container.append(h3, fieldset);
 
     return container;
   }

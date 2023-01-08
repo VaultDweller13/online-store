@@ -1,7 +1,20 @@
+.dual-slider-container {
+  padding: 1rem;
+}
+
 .dual-slider {
   display: flex;
   flex-direction: column;
+  width: 95%;
   border: none;
+  margin: 0;
+  padding: 0;
+
+  &_heading {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 1rem 0;
+  }
 
   .slider {
     position: relative;

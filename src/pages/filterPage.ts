@@ -24,14 +24,14 @@ export class FilterPage {
     this.filteredData = data;
     this.priceSlider = new DualSlider(
       'priceSlider',
-      'Цена',
+      'Price',
       'price',
       getMinValue(data, 'price'),
       getMaxValue(data, 'price')
     );
     this.stockSlider = new DualSlider(
       'stockSlider',
-      'Количество на складе',
+      'Stock',
       'stock',
       getMinValue(data, 'stock'),
       getMaxValue(data, 'stock')
@@ -91,23 +91,32 @@ export class FilterPage {
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
     const container = createElemDOM('aside', 'filter-block');
-    const categoriesBlock = createElemDOM('fieldset', 'filter-block_category');
-    const brandsBlock = createElemDOM('fieldset', 'filter-block_brand');
+    const categoriesBlock = createElemDOM('div', 'filter-block-container');
+    const categoriesFieldset = createElemDOM(
+      'fieldset',
+      'filter-block_category'
+    );
+    const categoriesHeading = createElemDOM(
+      'h3',
+      'filter-block_heading',
+      'Categories'
+    );
+    const brandsBlock = createElemDOM('div', 'filter-block-container');
+    const brandsFieldset = createElemDOM('fieldset', 'filter-block_brand');
+    const brandsHeading = createElemDOM('h3', 'filter-block_heading', 'Brands');
 
     const categories = [...new Set(data.map((product) => product.category))];
     const brands = [...new Set(data.map((product) => product.brand))];
 
-    categoriesBlock.append(
-      ...this.createCheckboxBlock(
-        categories,
-        'Категории',
-        'categories',
-        'category'
-      )
+    categoriesFieldset.append(
+      ...this.createCheckboxBlock(categories, 'categories', 'category')
     );
-    brandsBlock.append(
-      ...this.createCheckboxBlock(brands, 'Бренды', 'brands', 'brand')
+    brandsFieldset.append(
+      ...this.createCheckboxBlock(brands, 'brands', 'brand')
     );
+
+    categoriesBlock.append(categoriesHeading, categoriesFieldset);
+    brandsBlock.append(brandsHeading, brandsFieldset);
 
     container.append(
       categoriesBlock,
@@ -120,13 +129,10 @@ export class FilterPage {
 
   private createCheckboxBlock(
     array: string[],
-    title: string,
     prefix: string,
     filterType: string
   ): HTMLElement[] {
-    const heading = createElemDOM('h3', 'filter-block_header', title);
     const items = array.map((item) => {
-      // const div = createElemDOM('div', `${prefix}-item`);
       const itemName = `${item[0].toUpperCase()}${item.slice(1)}`;
       const input = createElemDOM('input', `${prefix}-item_input`);
       const label = createElemDOM(
@@ -143,11 +149,10 @@ export class FilterPage {
       label.setAttribute('for', item);
 
       label.append(input, box);
-      // div.append(label);
       return label;
     });
 
-    return [heading, ...items];
+    return items;
   }
 
   private createViewSwitcher(): HTMLElement {
