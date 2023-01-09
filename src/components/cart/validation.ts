@@ -1,3 +1,4 @@
+import { maskMMYY } from './../../utils/utils';
 export class Validate {
   static isEmail(email: string): string {
     const regExp = /[a-zA-Z_\d\\.-]+@[a-zA-Z_\\-]+(\.[a-zA-Z]+){1,6}/;
@@ -98,25 +99,12 @@ export class Validate {
           break;
         case 'card':
           target.value = target.value.replace(/\D/, '');
+
           err = Validate.isCredit(target.value);
           errField.textContent = err;
           break;
         case 'mmyy':
-          target.value = target.value.replace(/\D/, '');
-          // eslint-disable-next-line no-case-declarations
-          const x = target.value;
-          // eslint-disable-next-line no-case-declarations
-          let val = target.value;
-
-          if (x?.length) {
-            val = x[2]
-              ? x[3]
-                ? `${x[0]}${x[1]}/${x[2]}${x[3]}`
-                : `${x[0]}${x[1]}/${x[1]}`
-              : target.value;
-          }
-          target.value = val;
-
+          target.value = maskMMYY(target.value);
           err = Validate.isMMYY(target.value);
           errField.textContent = err;
 

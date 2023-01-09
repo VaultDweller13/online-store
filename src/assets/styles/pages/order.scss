@@ -26,3 +26,24 @@
 .button__buy {
   width: 100%;
 }
+.order__pay_visa,
+.order__pay_mk,
+.order__pay_mir {
+  width: 4rem;
+  height: 2rem;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.order__pay_visa {
+  background-image: url('/src/assets/svg/visa.svg');
+}
+.order__pay_mk {
+  background-image: url('/src/assets/svg/mastercard.svg');
+}
+.order__pay_mir {
+  background-image: url('/src/assets/img/mir.png');
+}
+.order_hide {
+  display: none;
+}

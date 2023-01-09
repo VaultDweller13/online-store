@@ -34,8 +34,8 @@ export class OrderView {
     const submit = createElemDOM('button', 'button button__buy', 'Buy');
 
     const payVisa = createElemDOM('div', 'order__pay_visa order_hide');
-    const payMk = createElemDOM('div', 'order__pay_visa order_hide');
-    const payMir = createElemDOM('div', 'order__pay_visa order_hide');
+    const payMk = createElemDOM('div', 'order__pay_mk order_hide');
+    const payMir = createElemDOM('div', 'order__pay_mir order_hide');
 
     form.append(
       inpName,
@@ -69,7 +69,7 @@ export class OrderView {
       if (!(input instanceof HTMLInputElement)) return;
       Validate.checkInput(input);
     });
-    cardNumber.addEventListener('onkeyup', (e: Event) => {
+    cardNumber.addEventListener('keyup', (e: Event) => {
       if (!(e.target instanceof HTMLInputElement)) return;
       const firstLetter = e.target.value;
       if (!firstLetter) return;
@@ -84,17 +84,17 @@ export class OrderView {
           break;
         case '5':
           if (payMk.classList.contains('order_hide'))
-            payVisa.classList.remove('order_hide');
+            payMk.classList.remove('order_hide');
           if (!payVisa.classList.contains('order_hide'))
             payVisa.classList.add('order_hide');
-          if (!payMir.classList.contains('order_hide'))
+          if (!payVisa.classList.contains('order_hide'))
             payVisa.classList.add('order_hide');
           break;
         case '2':
           if (payMir.classList.contains('order_hide'))
-            payVisa.classList.remove('order_hide');
+            payMir.classList.remove('order_hide');
           if (!payMk.classList.contains('order_hide'))
-            payVisa.classList.add('order_hide');
+            payMk.classList.add('order_hide');
           if (!payVisa.classList.contains('order_hide'))
             payVisa.classList.add('order_hide');
           break;
