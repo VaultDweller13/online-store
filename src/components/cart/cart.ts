@@ -82,4 +82,9 @@ export class Cart {
         100
     );
   }
+  clear() {
+    this.cartProducts.splice(0, this.cartProducts.length);
+    this.appliedPromo.splice(0, this.appliedPromo.length);
+    localStorage.setItem('cart-online', JSON.stringify(this.cartProducts));
+  }
 }
