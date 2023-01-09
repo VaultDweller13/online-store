@@ -44,5 +44,19 @@ export default class App {
       this.router.routeHome();
       this.controller.drawFilterPage();
     });
+
+    window.addEventListener('popstate', () => {
+      const path = this.router.getPath();
+
+      if (path === '/' || path.includes('/?')) {
+        console.log(true);
+        this.controller.drawFilterPage();
+      } else if (path === '/cart') {
+        this.controller.drawCartPage();
+      } else if (path.includes('/product')) {
+        const id = path.split('/').reverse()[0];
+        this.controller.drawProductPage(id);
+      }
+    });
   }
 }

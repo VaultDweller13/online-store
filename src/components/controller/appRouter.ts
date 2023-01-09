@@ -23,4 +23,8 @@ export class AppRouter extends Router {
     const url = `${this.root}${this.path}product/${id}`;
     window.history.pushState({}, '', url);
   }
+
+  getPath(): string {
+    return window.location.pathname;
+  }
 }
