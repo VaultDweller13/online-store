@@ -53,7 +53,7 @@ export class CartPage {
           if (currPage instanceof HTMLElement) {
             currPage.textContent = this.pagination.getCurrPage().toString();
           }
-          console.log('prev', this.pagination.getPreviosNumber());
+
           CartView.draw(
             this.pagination.getCurrPageColl(),
             this.pagination.getPreviosNumber()

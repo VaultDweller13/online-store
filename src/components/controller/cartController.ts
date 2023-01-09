@@ -1,4 +1,3 @@
-import { ProductsView } from './../view/product/productsView';
 import { OrderView } from './../view/order/orderView';
 
 import { DialogView } from '../view/dialogView';
@@ -145,7 +144,5 @@ export class CartController {
       throw new Error(`Can't find class card`);
     const productId = card.dataset.productId;
     if (!productId) throw new Error('There is no data-set attribute in card');
-    const product = this.loader.getProduct(productId);
-    ProductsView.drawProduct(product, this.cart);
   }
 }

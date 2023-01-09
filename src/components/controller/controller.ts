@@ -1,3 +1,5 @@
+import { NotFoundPage } from './../../pages/notFoundPage';
+import { ProductPage } from './../../pages/productPage';
 import { CartController } from './cartController';
 import { Cart } from './../cart/cart';
 import { CartPage } from './../../pages/cartPage';
@@ -12,6 +14,8 @@ export class Controller {
   private filterPage: FilterPage;
   private cartPage: CartPage;
   private cartController: CartController;
+  private productPage: ProductPage;
+  private notFoundPage: NotFoundPage;
 
   constructor() {
     this.loader = new Loader(productsData);
@@ -19,8 +23,13 @@ export class Controller {
     this.cart = new Cart();
     this.cartController = new CartController(this.cart, this.loader);
     this.filterPage = new FilterPage(this.products, this.cartController);
+    this.productPage = new ProductPage(
+      this.cartController,
 
+      this.cart
+    );
     this.cartPage = new CartPage(this.cartController);
+    this.notFoundPage = new NotFoundPage();
   }
 
   drawFilterPage() {
@@ -28,5 +37,10 @@ export class Controller {
   }
   drawCartPage() {
     this.cartPage.draw();
+  }
+  drawProductPage(id: string) {
+    const product = this.loader.getProduct(id);
+    if (product) this.productPage.draw(product);
+    else this.notFoundPage.draw();
   }
 }

@@ -1,6 +1,3 @@
-import { OrderView } from './../order/orderView';
-import { DialogView } from './../dialogView';
-import { CartView } from './../cart/cartView';
 import { Cart } from './../../cart/cart';
 import { createElemDOM } from '../../../utils/utils';
 import './../../../assets/styles/components/products.scss';
@@ -64,9 +61,11 @@ export class ProductsView {
 
   public static drawProduct(product: ProductData, cart: Cart): void {
     const fragment = document.createDocumentFragment();
-    const container = document.querySelector('.main');
-    if (!container) throw new Error("Can't find element with class 'main'");
-    const card = createElemDOM('div', 'card_single');
+    const container = document.querySelector('.product-page');
+    if (!container)
+      throw new Error("Can't find element with class 'product-page'");
+    const card = createElemDOM('div', 'card card_single');
+    card.dataset.productId = product.id.toString();
     const title = createElemDOM('h3', 'card__title', product.title);
     // const img = createElemDOM('img', 'card__img');
     // if (img instanceof HTMLImageElement) {
@@ -81,7 +80,6 @@ export class ProductsView {
     product.images.forEach((currImg) => {
       const currImgHTML = createElemDOM('img', 'images__img');
       if (currImgHTML instanceof HTMLImageElement) {
-        console.log(currImg);
         currImgHTML.src = currImg;
         currImgHTML.alt = `img${i++}`;
         images.append(currImgHTML);
@@ -103,22 +101,8 @@ export class ProductsView {
     const buttonBuy = createElemDOM('button', 'button button__buy', 'Buy now');
 
     inCartWrapper.append(buttonDec, count, buttonInc);
-    card.append(
-      title,
-
-      price,
-      stock,
-      images,
-      button,
-      inCartWrapper,
-      buttonBuy
-    );
+    card.append(title, price, stock, images, button, inCartWrapper, buttonBuy);
     fragment.append(card);
-    buttonBuy.addEventListener('click', () => {
-      if (!countInCart) cart.addProduct(product);
-      CartView.draw(cart.cartProducts);
-      DialogView.draw(OrderView.draw(cart));
-    });
 
     container.textContent = '';
     container.append(fragment);
