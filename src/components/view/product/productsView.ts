@@ -59,7 +59,7 @@ export class ProductsView {
     container.append(fragment);
   }
 
-  public static drawProduct(data: ProductData, cart: Cart): void {
+  public static drawProduct(/*data: ProductData, cart: Cart*/): void {
     const fragment = document.createDocumentFragment();
     const container = document.querySelector('.main');
     if (!container) throw new Error("Can't find element with class 'main'");
