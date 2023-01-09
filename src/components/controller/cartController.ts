@@ -13,6 +13,7 @@ export class CartController {
 
   addToCart(e: Event): void {
     if (!e.target || !e.currentTarget) throw new Error('target is null');
+    console.log(e.target);
     const target = <HTMLElement>e.target;
     const card = target.closest('.card');
 

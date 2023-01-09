@@ -14,6 +14,7 @@ export class ProductPage {
 
     this.cart = cart;
     this.page = createElemDOM('div', 'product-page');
+    this.setListeners();
   }
   draw(product: ProductData): void {
     this.product = product;
@@ -21,7 +22,6 @@ export class ProductPage {
     if (!main) throw new Error("Can't find element with class 'main'");
     this.clear();
 
-    this.setListeners();
     main.append(this.page);
     ProductsView.drawProduct(this.product, this.cart);
   }
