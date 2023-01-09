@@ -1,3 +1,6 @@
+import { OrderView } from './../view/order/orderView';
+
+import { DialogView } from '../view/dialogView';
 import { Loader } from './loader';
 import { Cart } from './../cart/cart';
 export class CartController {
@@ -90,7 +93,7 @@ export class CartController {
 
     countHTML.textContent = count.toString();
     const sumCountHTML = card.querySelector('.card__price');
-    if (sumCountHTML && price)
+    if (sumCountHTML && price && document.querySelector('.cart'))
       sumCountHTML.textContent = '$' + (count * price).toString();
   }
   cartFormHandler(e: Event, callBack: () => void): void {
@@ -104,7 +107,7 @@ export class CartController {
       callBack();
     }
     if (target.classList.contains('button__buy')) {
-      alert('buy');
+      DialogView.draw(OrderView.draw(this.cart));
     }
     if (target.classList.contains('promo__btnApply')) {
       const form = target.closest('.cart__form');

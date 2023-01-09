@@ -45,3 +45,9 @@ type sortOptions = [
   prop: 'price' | 'rating',
   order: 'ascending' | 'descending'
 ];
+
+type inputOrder = {
+  target: HTMLInputElement;
+  errors: string[];
+  errorTarget: HTMLElement;
+};
