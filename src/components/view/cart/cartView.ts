@@ -1,8 +1,10 @@
 import { createElemDOM } from './../../../utils/utils';
 
 export class CartView {
-  private static drawCard(data: CartProduct) {
+  private static drawCard(data: CartProduct, index: number) {
     const card = createElemDOM('div', 'card');
+
+    const number = createElemDOM('p', 'card__number', index.toString());
 
     const img = createElemDOM('img', 'card__img');
     const price = createElemDOM(
@@ -48,11 +50,11 @@ export class CartView {
 
     wrapp.append(title, categ, description, brand, buttonView);
     costWrapp.append(price, cartWrapp, stock);
-    card.append(img, wrapp, costWrapp);
+    card.append(number, img, wrapp, costWrapp);
 
     return card;
   }
-  public static draw(data: CartProduct[]): void {
+  public static draw(data: CartProduct[], prev?: number): void {
     const fragment = document.createDocumentFragment();
     const container = document.querySelector('.cart');
     if (!container) throw new Error("Can't find element with class 'products'");
@@ -60,7 +62,12 @@ export class CartView {
     if (!data.length) {
       fragment.append(createElemDOM('p', '', 'Cart is empty'));
     } else {
-      data.forEach((product) => fragment.append(CartView.drawCard(product)));
+      data.forEach((product, index) => {
+        console.log(prev);
+        fragment.append(
+          CartView.drawCard(product, (prev ? prev : 0) + index + 1)
+        );
+      });
     }
 
     container.textContent = '';

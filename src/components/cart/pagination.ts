@@ -23,7 +23,6 @@ export class Pagination<T> {
     return this.currPage;
   }
   incPage(): number {
-    console.log(this.getPagesCount());
     if (this.currPage + 1 > this.getPagesCount()) return this.currPage;
     this.currPage += 1;
     return this.currPage;
@@ -47,5 +46,8 @@ export class Pagination<T> {
     }
 
     return subCol;
+  }
+  getPreviosNumber(): number {
+    return (this.currPage - 1) * this.elemsOnPage;
   }
 }

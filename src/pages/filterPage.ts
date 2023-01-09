@@ -91,7 +91,7 @@ export class FilterPage {
   }
 
   private update() {
-    console.log(this.data.length);
+   
     const products = document.querySelector('.products');
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
