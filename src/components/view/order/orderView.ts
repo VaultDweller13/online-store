@@ -28,7 +28,7 @@ export class OrderView {
     const tel = OrderView.fiedset('+X XXX XXX XX XX', 'tel', 10);
     const address = OrderView.fiedset('Delivery address', 'address');
     const mail = OrderView.fiedset('email', 'email');
-    const cardNumber = OrderView.fiedset('number of card', 'card', 16);
+    const cardNumber = OrderView.fiedset('number of card', 'card', 19);
     const cardMonth = OrderView.fiedset('MM/YY', 'mmyy', 5);
     const cardCVV = OrderView.fiedset('CVV', 'cvv', 3);
     const submit = createElemDOM('button', 'button button__buy', 'Buy');
