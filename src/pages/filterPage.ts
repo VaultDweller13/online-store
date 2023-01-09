@@ -55,6 +55,7 @@ export class FilterPage {
   }
 
   public draw(): void {
+    console.log('draw');
     const main = document.querySelector('.main');
     if (!main) throw new Error("Can't find element with class 'main'");
 

@@ -51,3 +51,8 @@ type inputOrder = {
   errors: string[];
   errorTarget: HTMLElement;
 };
+
+type route = {
+  route: string;
+  data: string;
+};

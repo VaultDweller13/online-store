@@ -1,11 +1,14 @@
 // import { CartController } from './../controller/cartController';
 import { Controller } from '../controller/controller';
+import { AppRouter } from '../controller/appRouter';
 
 export default class App {
   private controller: Controller;
+  router: AppRouter;
 
   constructor() {
     this.controller = new Controller();
+    this.router = new AppRouter();
   }
 
   start() {
@@ -13,7 +16,11 @@ export default class App {
     const btnCart: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.to-cart')
     );
-    btnCart.addEventListener('click', () => this.controller.drawCartPage());
+    // btnCart.addEventListener('click', () => this.controller.drawCartPage());
+    btnCart.addEventListener('click', () => {
+      this.router.routeToCart();
+      this.controller.drawCartPage();
+    });
     const main: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.main')
     );
@@ -30,6 +37,13 @@ export default class App {
           throw new Error('There is no data-set attribute in card');
         this.controller.drawProductPage(productId);
       }
+    });
+
+    const logo = document.querySelector('.header_heading');
+    logo?.addEventListener('click', () => {
+      this.router.routeHome();
+      this.controller.drawFilterPage();
+      // this.router.route();
     });
   }
 }
