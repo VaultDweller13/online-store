@@ -1,3 +1,4 @@
+import { ProductsView } from './../view/product/productsView';
 import { OrderView } from './../view/order/orderView';
 
 import { DialogView } from '../view/dialogView';
@@ -28,6 +29,8 @@ export class CartController {
       card?.querySelector('.card__cart')?.classList.toggle('hide');
       this.refreshTotalCount();
       this.refreshTotalSum();
+    } else if (target.classList.contains('button_details')) {
+      this.details(e);
     } else {
       this.changeCart(e, () => {
         card?.querySelector('.button_add')?.classList.toggle('hide');
@@ -132,5 +135,17 @@ export class CartController {
         }
       }
     }
+  }
+  details(e: Event): void {
+    if (!e.target || !e.currentTarget) throw new Error('target is null');
+    const target = <HTMLElement>e.target;
+    if (!target.classList.contains('button_details')) return;
+    const card = target.closest('.card');
+    if (!(card instanceof HTMLElement))
+      throw new Error(`Can't find class card`);
+    const productId = card.dataset.productId;
+    if (!productId) throw new Error('There is no data-set attribute in card');
+    const product = this.loader.getProduct(productId);
+    ProductsView.drawProduct(product, this.cart);
   }
 }
