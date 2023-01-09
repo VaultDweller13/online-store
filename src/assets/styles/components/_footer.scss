@@ -1,0 +1,42 @@
+.footer {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  background-color: $color-f-green;
+  margin-top: 10px;
+  color: $bg-light;
+
+  .social-list {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+
+    &__item {
+      list-style: none;
+    }
+
+    a {
+      color: $bg-light;
+    }
+
+    .rs-logo {
+      width: 100px;
+      height: 60px;
+
+      // filter: invert();
+    }
+
+    .authors {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .copyright:before {
+      content: '©';
+    }
+  }
+}

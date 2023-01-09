@@ -1,0 +1,26 @@
+.header {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $bg-light;
+  background-color: $color-f-green;
+
+  padding: 0 1rem;
+
+  .shopping-cart {
+    width: 50px;
+
+    .to-cart {
+      width: 36px;
+      height: 36px;
+      margin: auto;
+      background: url('../../svg/cart.svg') center/cover;
+
+      &:hover {
+        transform: scale(1.2);
+        transition: 0.2s ease-out;
+      }
+    }
+  }
+}
