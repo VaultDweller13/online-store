@@ -33,8 +33,10 @@ export const maskMMYY = (data: string): string => {
   return val;
 };
 
-// export const maskCard = (data: string): string => {
-//   const x = data.replace(/\D/, '');
-//   let val = x;
-//   return val;
-// };
+export const maskCard = (data: string): string => {
+  let str = data.replace(/\D/, '');
+
+  if (str.length > 4 * 4) str = str.slice(0, 17);
+  const res = str.split(/(\d{4})/g).map((elem) => elem.trim());
+  return res.filter((elem) => elem.trim() != '').join(' ');
+};
