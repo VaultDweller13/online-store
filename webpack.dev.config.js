@@ -5,5 +5,6 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     watchFiles: ['src'],
+    historyApiFallback: true,
   },
 };

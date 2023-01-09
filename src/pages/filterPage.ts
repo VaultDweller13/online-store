@@ -60,7 +60,6 @@ export class FilterPage {
 
     this.clear();
 
-    console.log('draw');
     const page = createElemDOM('div', 'filter-page');
     const topControlsPanel = createElemDOM('div', 'top-panel');
     const products = this.productsHTML;
@@ -234,7 +233,6 @@ export class FilterPage {
       }
     });
     this.productsHTML.addEventListener('click', (e: Event) => {
-      console.log('fdfd');
       this.cartController.addToCart(e);
     });
   }
