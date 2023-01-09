@@ -59,6 +59,15 @@ export class ProductsView {
     container.append(fragment);
   }
 
+  public static drawProduct(data: ProductData, cart: Cart): void {
+    const fragment = document.createDocumentFragment();
+    const container = document.querySelector('.main');
+    if (!container) throw new Error("Can't find element with class 'main'");
+
+    container.textContent = '';
+    container.append(fragment);
+  }
+
   public static setView() {
     const viewButton = document.querySelector('.view-active');
     const className = viewButton?.classList.contains('switch-view_list')
