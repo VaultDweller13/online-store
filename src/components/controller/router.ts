@@ -16,8 +16,8 @@ export default class Router {
   deleteQuery(name: string) {
     this.params.delete(name);
     const url = this.params.toString()
-      ? `?${this.params.toString()}`
-      : this.url.origin;
+      ? `${this.url.pathname}/?${this.params.toString()}`
+      : `${this.url.pathname}`;
     window.history.replaceState(null, '', url);
   }
 
@@ -32,7 +32,8 @@ export default class Router {
   }
 
   resetURL() {
-    window.history.replaceState(null, '', this.url.origin);
+    const url = `${this.url.origin}${this.url.pathname}`;
+    window.history.replaceState(null, '', url);
     this.url.search = '';
     this.params = new URLSearchParams(this.url.search);
   }
