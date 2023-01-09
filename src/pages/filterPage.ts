@@ -55,15 +55,14 @@ export class FilterPage {
   }
 
   public draw(): void {
-    console.log('draw');
     const main = document.querySelector('.main');
     if (!main) throw new Error("Can't find element with class 'main'");
 
     this.clear();
 
+    console.log('draw');
     const page = createElemDOM('div', 'filter-page');
     const topControlsPanel = createElemDOM('div', 'top-panel');
-    // const wrapper = createElemDOM('div', 'content-wrapper');
     const products = this.productsHTML;
 
     topControlsPanel.append(
@@ -71,7 +70,6 @@ export class FilterPage {
       this.searchBar,
       this.viewSwitcher
     );
-    // wrapper.append(topControlsPanel, products);
     page.append(this.filterBlock, topControlsPanel, products);
     main.append(page);
 

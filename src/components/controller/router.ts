@@ -22,6 +22,8 @@ export default class Router {
   }
 
   getQuery(name: string): string | null {
+    console.log(this.url);
+    this.params = new URLSearchParams(this.url.search);
     const value = this.params.get(name);
     return value;
   }

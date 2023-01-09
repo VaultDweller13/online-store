@@ -16,7 +16,6 @@ export default class App {
     const btnCart: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.to-cart')
     );
-    // btnCart.addEventListener('click', () => this.controller.drawCartPage());
     btnCart.addEventListener('click', () => {
       this.router.routeToCart();
       this.controller.drawCartPage();
@@ -35,6 +34,7 @@ export default class App {
         const productId = card.dataset.productId;
         if (!productId)
           throw new Error('There is no data-set attribute in card');
+        this.router.routeToProduct(productId);
         this.controller.drawProductPage(productId);
       }
     });
@@ -43,7 +43,6 @@ export default class App {
     logo?.addEventListener('click', () => {
       this.router.routeHome();
       this.controller.drawFilterPage();
-      // this.router.route();
     });
   }
 }
