@@ -40,7 +40,7 @@ export class CartView {
     cartWrapp.append(buttonDec, count, buttonInc);
     if (img instanceof HTMLImageElement) {
       img.alt = data.productData.title;
-      img.src = data.productData.images[0];
+      img.src = data.productData.thumbnail;
     }
     const stock = createElemDOM(
       'p',

@@ -38,18 +38,13 @@
     justify-self: flex-start;
     align-self: center;
   }
+  .wrapper_butt {
+    grid-area: add;
+    display: flex;
+    align-items: center;
+  }
   .button_add {
-    grid-area: add;
-    margin: 1rem 1rem 1rem 0;
     width: 150px;
-  }
-  .button_details {
-    grid-area: details;
-    margin: 1rem 0 1rem 0;
-  }
-  .card__cart {
-    grid-area: add;
-    margin: 1rem 1rem 1rem 0;
   }
 }
 
@@ -57,7 +52,7 @@
   display: flex;
   // justify-content: center;
   gap: 10px;
-  padding: 10px 0 0 1rem;
+  // padding: 10px 0 0 1rem;
 }
 
 .filter-block {

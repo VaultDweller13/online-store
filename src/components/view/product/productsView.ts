@@ -8,7 +8,7 @@ export class ProductsView {
     const title = createElemDOM('h3', 'card__title', data.title);
     const img = createElemDOM('img', 'card__img');
 
-    const price = createElemDOM('p', 'card__price', `Price: ${data.price}`);
+    const price = createElemDOM('p', 'card__price', `Price: $${data.price}`);
     const stock = createElemDOM('p', 'card__stock', `Stock: ${data.stock}`);
 
     const button = createElemDOM(
@@ -19,7 +19,7 @@ export class ProductsView {
     card.dataset.productId = data.id.toString();
     if (img instanceof HTMLImageElement) {
       img.alt = data.title;
-      img.src = data.images[0];
+      img.src = data.thumbnail;
     }
 
     const inCartWrapper = createElemDOM(
@@ -37,7 +37,9 @@ export class ProductsView {
     );
 
     inCartWrapper.append(buttonDec, count, buttonInc);
-    card.append(img, title, price, stock, button, inCartWrapper, buttonView);
+    const buttWrap = createElemDOM('div', 'wrapper_butt');
+    buttWrap.append(inCartWrapper, buttonView, button);
+    card.append(img, title, price, stock, buttWrap);
     return card;
   }
 
@@ -67,14 +69,39 @@ export class ProductsView {
     const card = createElemDOM('div', 'card card_single');
     card.dataset.productId = product.id.toString();
     const title = createElemDOM('h3', 'card__title', product.title);
-    // const img = createElemDOM('img', 'card__img');
-    // if (img instanceof HTMLImageElement) {
-    //   img.alt = product.title;
-    //   img.src = product.images[0];
-    // }
-    const price = createElemDOM('p', 'card__price', `Price: ${product.price}`);
-    const stock = createElemDOM('p', 'card__stock', `Stock: ${product.stock}`);
+    const img = createElemDOM('img', 'card__img');
+    if (img instanceof HTMLImageElement) {
+      img.alt = product.title;
+      img.src = product.thumbnail;
+    }
+    const category = createElemDOM(
+      'p',
+      'card__category',
+      `<strong>Category: </strong>${product.category}`
+    );
+    const description = createElemDOM(
+      'p',
+      'card__description',
+      `<strong>Description: </strong>${product.description}`
+    );
+    const brand = createElemDOM(
+      'p',
+      'card__brand',
+      `<strong>Brand: </strong>${product.brand}`
+    );
+
+    const price = createElemDOM(
+      'p',
+      'card__price',
+      `<strong>Price: </strong>$${product.price}`
+    );
+    const stock = createElemDOM(
+      'p',
+      'card__stock',
+      `<strong>Stock: </strong>${product.stock}`
+    );
     const images = createElemDOM('div', 'card__images');
+
     let i = 0;
     const countInCart = cart.getProductCount(product);
     product.images.forEach((currImg) => {
@@ -101,7 +128,18 @@ export class ProductsView {
     const buttonBuy = createElemDOM('button', 'button button__buy', 'Buy now');
 
     inCartWrapper.append(buttonDec, count, buttonInc);
-    card.append(title, price, stock, images, button, inCartWrapper, buttonBuy);
+    const wrapPrice = createElemDOM('div', 'card__wrapper_price');
+    wrapPrice.append(price, stock, button, inCartWrapper, buttonBuy);
+    card.append(
+      title,
+      images,
+      img,
+      brand,
+      category,
+      description,
+
+      wrapPrice
+    );
     fragment.append(card);
 
     container.textContent = '';

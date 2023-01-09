@@ -14,7 +14,7 @@
   grid-template-areas:
     'img img img img'
     'title title title stock'
-    'price  details add add';
+    'price  add add add';
   justify-items: flex-end;
   width: 20rem;
 }
@@ -34,4 +34,60 @@
   align-items: center;
 
   gap: 1rem;
+}
+
+.product-page {
+  display: flex;
+  max-width: 80vw;
+  width: 100%;
+  margin: auto;
+  justify-content: center;
+  .card {
+    padding: 2rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-rows: 1fr 0.5fr 0.5fr 2fr;
+    grid-template-areas:
+      'title title title title'
+      'imgs img brand price'
+      'imgs img category price'
+      'imgs img description price';
+  }
+  .card__title {
+    grid-area: title;
+  }
+  .card__images {
+    grid-area: imgs;
+    display: flex;
+    flex-direction: column;
+    gap: 1 rem;
+    .images__img {
+      width: 50px;
+      height: 50px;
+      gap: 1rem;
+    }
+  }
+  .card__img {
+    width: 300px;
+    height: 300px;
+  }
+  .card__wrapper_price {
+    display: flex;
+    flex-direction: column;
+    grid-area: price;
+    gap: 1rem;
+  }
+  .card__brand {
+    grid-area: brand;
+  }
+  .card__img {
+    grid-area: img;
+  }
+  .card__category {
+    grid-area: category;
+  }
+  .card__description {
+    grid-area: description;
+    max-width: 400px;
+  }
 }
