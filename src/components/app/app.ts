@@ -12,7 +12,8 @@ export default class App {
   }
 
   start() {
-    this.controller.drawFilterPage();
+    this.handleLocation();
+    // this.controller.drawFilterPage();
     const btnCart: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.to-cart')
     );
@@ -45,18 +46,19 @@ export default class App {
       this.controller.drawFilterPage();
     });
 
-    window.addEventListener('popstate', () => {
-      const path = this.router.getPath();
+    window.addEventListener('popstate', () => this.handleLocation());
+  }
 
-      if (path === '/' || path.includes('/?')) {
-        console.log(true);
-        this.controller.drawFilterPage();
-      } else if (path === '/cart') {
-        this.controller.drawCartPage();
-      } else if (path.includes('/product')) {
-        const id = path.split('/').reverse()[0];
-        this.controller.drawProductPage(id);
-      }
-    });
+  handleLocation() {
+    const path = this.router.getPath();
+    console.log(path);
+    if (path === '/online-store/' || path.includes('/online-store/?')) {
+      this.controller.drawFilterPage();
+    } else if (path === '/online-store/cart') {
+      this.controller.drawCartPage();
+    } else if (path.includes('/online-store/product')) {
+      const id = path.split('/').reverse()[0];
+      this.controller.drawProductPage(id);
+    }
   }
 }

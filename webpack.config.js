@@ -35,6 +35,7 @@ const baseConfig = {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
+    // publicPath: '/online-store',
   },
   plugins: [
     new HtmlWebpackPlugin({
