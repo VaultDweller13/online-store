@@ -19,6 +19,7 @@ export class CartPage {
     this.paginationView = new PaginationView(this.pagination);
     this.cart = createElemDOM('div', 'cart');
     this.cartForm = createElemDOM('div', 'cart__total');
+    this.setListeners();
   }
   draw(): void {
     const main = document.querySelector('.main');
@@ -30,9 +31,12 @@ export class CartPage {
     paginWrapp.append(this.paginationView.draw(), this.cart);
 
     page.append(paginWrapp, this.cartForm);
-    this.setListeners();
+
     main.append(page);
-    CartView.draw(this.pagination.getCurrPageColl());
+    CartView.draw(
+      this.pagination.getCurrPageColl(),
+      this.pagination.getPreviosNumber()
+    );
     CartSum.draw(this.cartController.cart);
   }
 
@@ -46,17 +50,24 @@ export class CartPage {
       this.cartController.changeCart(
         e,
         () => {
-          CartView.draw(this.pagination.getCurrPageColl());
           const currPage = document.querySelector('.pagin__page');
           if (currPage instanceof HTMLElement) {
             currPage.textContent = this.pagination.getCurrPage().toString();
           }
+
+          CartView.draw(
+            this.pagination.getCurrPageColl(),
+            this.pagination.getPreviosNumber()
+          );
         },
         () => {
           CartSum.draw(this.cartController.cart);
         }
       );
     });
+    this.cart.addEventListener('click', (e: Event) =>
+      this.cartController.details(e)
+    );
     this.cartForm.addEventListener('click', (e: Event) => {
       this.cartController.cartFormHandler(e, () =>
         CartSum.draw(this.cartController.cart)

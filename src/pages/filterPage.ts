@@ -21,6 +21,7 @@ export class FilterPage {
   searchBar: HTMLElement;
   viewSwitcher: HTMLElement;
   router: FilterPageRouter;
+  productsHTML: HTMLElement;
 
   constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
@@ -48,6 +49,7 @@ export class FilterPage {
     this.sorter = new Sorter();
     this.searchBar = this.filter.searchBar.element;
     this.viewSwitcher = this.createViewSwitcher();
+    this.productsHTML = createElemDOM('section', 'products');
 
     this.setListeners();
   }
@@ -61,7 +63,7 @@ export class FilterPage {
     const page = createElemDOM('div', 'filter-page');
     const topControlsPanel = createElemDOM('div', 'top-panel');
     // const wrapper = createElemDOM('div', 'content-wrapper');
-    const products = createElemDOM('section', 'products');
+    const products = this.productsHTML;
 
     topControlsPanel.append(
       this.sorter.element,
@@ -71,9 +73,7 @@ export class FilterPage {
     // wrapper.append(topControlsPanel, products);
     page.append(this.filterBlock, topControlsPanel, products);
     main.append(page);
-    products.addEventListener('click', (e: Event) =>
-      this.cartController.addToCart(e)
-    );
+
     this.cartController.refreshTotalCount();
     this.cartController.refreshTotalSum();
 
@@ -91,7 +91,6 @@ export class FilterPage {
   }
 
   private update() {
-    console.log(this.data.length);
     const products = document.querySelector('.products');
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
@@ -234,6 +233,10 @@ export class FilterPage {
       } else if (target.dataset.type === 'copy') {
         this.router.copyURL();
       }
+    });
+    this.productsHTML.addEventListener('click', (e: Event) => {
+      console.log('fdfd');
+      this.cartController.addToCart(e);
     });
   }
 

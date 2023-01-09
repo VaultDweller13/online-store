@@ -39,19 +39,28 @@ export class PaginationView {
     this.btnDec.addEventListener('click', () => {
       this.currPage.textContent = this.pagination.decPage().toString();
 
-      CartView.draw(this.pagination.getCurrPageColl());
+      CartView.draw(
+        this.pagination.getCurrPageColl(),
+        this.pagination.getPreviosNumber()
+      );
     });
     this.btnInc.addEventListener('click', () => {
       console.log('inc');
       const currPageVal = this.pagination.incPage();
       this.currPage.textContent = currPageVal.toString();
-      CartView.draw(this.pagination.getCurrPageColl());
+      CartView.draw(
+        this.pagination.getCurrPageColl(),
+        this.pagination.getPreviosNumber()
+      );
     });
     this.elemsOnPage.addEventListener('change', (e: Event) => {
       this.pagination.setElemsOnPage(
         Number((<HTMLInputElement>e.target).value)
       );
-      CartView.draw(this.pagination.getCurrPageColl());
+      CartView.draw(
+        this.pagination.getCurrPageColl(),
+        this.pagination.getPreviosNumber()
+      );
     });
   }
   createElemsOnPage(): HTMLInputElement {
