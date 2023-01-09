@@ -1,19 +1,26 @@
 // import { CartController } from './../controller/cartController';
 import { Controller } from '../controller/controller';
+import { AppRouter } from '../controller/appRouter';
 
 export default class App {
   private controller: Controller;
+  router: AppRouter;
 
   constructor() {
     this.controller = new Controller();
+    this.router = new AppRouter();
   }
 
   start() {
-    this.controller.drawFilterPage();
+    this.handleLocation();
+    // this.controller.drawFilterPage();
     const btnCart: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.to-cart')
     );
-    btnCart.addEventListener('click', () => this.controller.drawCartPage());
+    btnCart.addEventListener('click', () => {
+      this.router.routeToCart();
+      this.controller.drawCartPage();
+    });
     const main: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.main')
     );
@@ -28,8 +35,32 @@ export default class App {
         const productId = card.dataset.productId;
         if (!productId)
           throw new Error('There is no data-set attribute in card');
+        this.router.routeToProduct(productId);
         this.controller.drawProductPage(productId);
       }
     });
+
+    const logo = document.querySelector('.header_heading');
+    logo?.addEventListener('click', () => {
+      this.router.routeHome();
+      this.controller.drawFilterPage();
+    });
+
+    window.addEventListener('popstate', () => this.handleLocation());
+  }
+
+  handleLocation() {
+    console.log('here');
+    const path = this.router.getPath();
+    console.log(path);
+
+    if (path === '/' || path.includes('/?')) {
+      this.controller.drawFilterPage();
+    } else if (path === '/cart') {
+      this.controller.drawCartPage();
+    } else if (path.includes('/product')) {
+      const id = path.split('/').reverse()[0];
+      this.controller.drawProductPage(id);
+    }
   }
 }

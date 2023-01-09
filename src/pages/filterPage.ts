@@ -62,7 +62,6 @@ export class FilterPage {
 
     const page = createElemDOM('div', 'filter-page');
     const topControlsPanel = createElemDOM('div', 'top-panel');
-    // const wrapper = createElemDOM('div', 'content-wrapper');
     const products = this.productsHTML;
 
     topControlsPanel.append(
@@ -70,7 +69,6 @@ export class FilterPage {
       this.searchBar,
       this.viewSwitcher
     );
-    // wrapper.append(topControlsPanel, products);
     page.append(this.filterBlock, topControlsPanel, products);
     main.append(page);
 
@@ -235,7 +233,6 @@ export class FilterPage {
       }
     });
     this.productsHTML.addEventListener('click', (e: Event) => {
-      console.log('fdfd');
       this.cartController.addToCart(e);
     });
   }
