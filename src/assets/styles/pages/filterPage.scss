@@ -55,9 +55,9 @@
 
 .reset-block {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   gap: 10px;
-  padding: 10px;
+  padding: 10px 0 0 1rem;
 }
 
 .filter-block {
@@ -95,6 +95,7 @@
 
   .switch-view {
     display: flex;
+    padding: 1rem;
     &_list,
     &_grid {
       width: 36px;

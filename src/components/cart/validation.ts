@@ -1,12 +1,14 @@
-import { maskMMYY } from './../../utils/utils';
+import { maskMMYY, maskCard } from './../../utils/utils';
 export class Validate {
   static isEmail(email: string): string {
     const regExp = /[a-zA-Z_\d\\.-]+@[a-zA-Z_\\-]+(\.[a-zA-Z]+){1,6}/;
     if (!regExp.test(email)) return 'Email is not valid';
     return '';
   }
-  static isCredit(numCard: string): string {
+  static isCredit(data: string): string {
     let rez = false;
+    const numCard = data.replace(/\s/g, '');
+
     const regExp =
       /^(?:4\d{12}(?:\d{3}){0,2}|5[1-5]\d{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})|(?:(5018|5020|5038|5893|6304|6759|6761|6762|6763)\d{12,15})$/;
     if (regExp.test(numCard)) {
@@ -99,7 +101,7 @@ export class Validate {
           break;
         case 'card':
           target.value = target.value.replace(/\D/, '');
-
+          target.value = maskCard(target.value);
           err = Validate.isCredit(target.value);
           errField.textContent = err;
           break;
