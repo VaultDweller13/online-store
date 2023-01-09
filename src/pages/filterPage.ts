@@ -6,10 +6,12 @@ import Filter from '../components/filter/filter';
 import DualSlider from '../components/filter/dualSlider/dualSlider';
 import { Elements } from '../types/enums';
 import { Sorter } from '../components/filter/sorter';
+import FilterPageRouter from '../components/controller/filterPageRouter';
 
 export class FilterPage {
   data: ProductData[];
   filteredData: ProductData[];
+  buttonsBlock: HTMLElement;
   filterBlock: HTMLElement;
   filter: Filter;
   cartController: CartController;
@@ -18,9 +20,11 @@ export class FilterPage {
   sorter: Sorter;
   searchBar: HTMLElement;
   viewSwitcher: HTMLElement;
+  router: FilterPageRouter;
 
   constructor(data: ProductData[], cartController: CartController) {
     this.data = data;
+    this.router = new FilterPageRouter();
     this.filteredData = data;
     this.priceSlider = new DualSlider(
       'priceSlider',
@@ -36,12 +40,12 @@ export class FilterPage {
       getMinValue(data, 'stock'),
       getMaxValue(data, 'stock')
     );
+    this.buttonsBlock = this.createResetCopyButtons();
     this.filterBlock = this.createFiltersBlock(data);
     this.filter = new Filter(data);
 
     this.cartController = cartController;
     this.sorter = new Sorter();
-    this.sorter.sort(this.data);
     this.searchBar = this.filter.searchBar.element;
     this.viewSwitcher = this.createViewSwitcher();
 
@@ -70,6 +74,10 @@ export class FilterPage {
     );
     this.cartController.refreshTotalCount();
     this.cartController.refreshTotalSum();
+
+    this.restoreInputs();
+    this.data = this.filter.filter();
+    this.sorter.sort(this.data);
     ProductsView.draw(this.data, this.cartController.cart);
     ProductsView.setView();
   }
@@ -85,6 +93,7 @@ export class FilterPage {
     const products = document.querySelector('.products');
     if (!products) throw new Error("Can't find element with class 'main'");
     products.innerHTML = '';
+    this.sorter.sort(this.data);
     ProductsView.draw(this.data, this.cartController.cart);
     ProductsView.setView();
   }
@@ -119,6 +128,7 @@ export class FilterPage {
     brandsBlock.append(brandsHeading, brandsFieldset);
 
     container.append(
+      this.buttonsBlock,
       categoriesBlock,
       brandsBlock,
       this.priceSlider.el,
@@ -166,6 +176,9 @@ export class FilterPage {
       'switch-view_button switch-view_grid view-active'
     );
 
+    listView.dataset.type = 'list';
+    gridView.dataset.type = 'grid';
+
     container.append(listView, gridView);
     return container;
   }
@@ -180,7 +193,9 @@ export class FilterPage {
 
       this.sorter.sort(this.data);
       this.update();
+      this.router.setSorting();
     });
+
     this.viewSwitcher.addEventListener('click', (e) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
@@ -198,11 +213,29 @@ export class FilterPage {
         listButton?.classList.remove('view-active');
         gridButton?.classList.remove('view-active');
         target.classList.add('view-active');
+
+        this.router.setView();
+      }
+    });
+
+    this.buttonsBlock.addEventListener('click', (e) => {
+      const target = e.target;
+
+      if (!(target instanceof HTMLButtonElement)) return;
+
+      if (target.dataset.type === 'reset') {
+        this.router.resetURL();
+        this.router.getQueryString();
+        this.restoreInputs();
+        this.data = this.filter.filter();
+        this.update();
+      } else if (target.dataset.type === 'copy') {
+        this.router.copyURL();
       }
     });
   }
 
-  applyFilters(e: Event) {
+  private applyFilters(e: Event) {
     const target = e.target;
 
     if (!(target instanceof HTMLInputElement)) return;
@@ -233,7 +266,86 @@ export class FilterPage {
       );
     }
 
-    this.sorter.sort(this.data);
+    if (target.dataset.type === 'category') this.router.setCategories();
+    if (target.dataset.type === 'brand') this.router.setBrands();
+    if (target.dataset.type === 'price') this.router.setPrice();
+    if (target.dataset.type === 'stock') this.router.setStock();
+    if (target.dataset.type === 'search') this.router.setSearch();
+
     this.update();
+  }
+
+  private restoreInputs(): void {
+    const categories = this.router.getValues('categories');
+    const brands = this.router.getValues('brands');
+    const price = this.router.getValues('price');
+    const stock = this.router.getValues('stock');
+    const search = this.router.getValues('search');
+    const isListView = this.router.getView();
+    const sorting = this.router.getSorting();
+
+    const categoriesInputs = [
+      ...document.querySelectorAll('.categories-item_input'),
+    ];
+    const brandsInputs = [...document.querySelectorAll('.brands-item_input')];
+
+    categoriesInputs.forEach((input) => {
+      if (input instanceof HTMLInputElement) {
+        if (categories?.includes(input.value.toLowerCase())) {
+          input.checked = true;
+        } else input.checked = false;
+      }
+    });
+
+    brandsInputs.forEach((input) => {
+      if (input instanceof HTMLInputElement) {
+        if (brands?.includes(input.value.toLowerCase())) {
+          input.checked = true;
+        } else input.checked = false;
+      }
+    });
+
+    this.priceSlider.reset();
+    this.stockSlider.reset();
+    this.priceSlider.setRange(+price[0], +price[1]);
+    this.filter.setPriceRange();
+    this.stockSlider.setRange(+stock[0], +stock[1]);
+    this.filter.setStockRange();
+
+    this.filter.searchBar.setInput(search[0]);
+
+    const gridButton = document.querySelector('.switch-view_grid');
+    const listButton = document.querySelector('.switch-view_list');
+
+    if (isListView) {
+      listButton?.classList.add('view-active');
+      gridButton?.classList.remove('view-active');
+    } else {
+      listButton?.classList.remove('view-active');
+      gridButton?.classList.add('view-active');
+    }
+
+    this.sorter.setValue(sorting);
+  }
+
+  private createResetCopyButtons(): HTMLElement {
+    const container = createElemDOM('div', 'reset-block');
+    const resetButton = createElemDOM(
+      'button',
+      'button-reset button',
+      'Reset filters'
+    );
+    const copyButton = createElemDOM(
+      'button',
+      'button-reset button',
+      'Copy filters'
+    );
+
+    resetButton.dataset.type = 'reset';
+    copyButton.dataset.type = 'copy';
+
+    container.append(resetButton, copyButton);
+
+    return container;
   }
 }

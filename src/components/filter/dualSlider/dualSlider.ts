@@ -8,6 +8,8 @@ export default class DualSlider {
   maxThumb: HTMLInputElement;
   minValueInput: HTMLInputElement;
   maxValueInput: HTMLInputElement;
+  private min: number;
+  private max: number;
 
   constructor(
     name: string,
@@ -17,6 +19,8 @@ export default class DualSlider {
     max: number
   ) {
     const slider = new DualSliderFactory(name, heading, dataAttr, min, max);
+    this.min = min;
+    this.max = max;
     this.el = slider.slider;
     this.minThumb = slider.minThumb;
     this.maxThumb = slider.maxThumb;
@@ -29,12 +33,17 @@ export default class DualSlider {
   }
 
   public setRange(min: number, max: number) {
+    if (isNaN(min) || isNaN(max)) return;
+
     this.minThumb.value = min.toString();
     this.maxThumb.value = max.toString();
-    // this.minValueInput
 
     this.processMinThumb();
     this.processMaxThumb();
+  }
+
+  public reset() {
+    this.setRange(this.min, this.max);
   }
 
   private setListeners() {

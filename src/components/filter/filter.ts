@@ -38,12 +38,14 @@ export default class Filter {
     const { category, brand } = this.getFilterOptions();
     const { minPrice, maxPrice, minStock, maxStock } =
       this.currentFilterOptions;
-    return this.searchBar
+    const data = this.searchBar
       .search()
       .filter((item) => category.includes(item.category))
       .filter((item) => brand.includes(item.brand))
       .filter((item) => item.price >= minPrice && item.price <= maxPrice)
       .filter((item) => item.stock >= minStock && item.stock <= maxStock);
+
+    return data;
   }
 
   private getRange(data: ProductData[], prop: 'price' | 'stock') {

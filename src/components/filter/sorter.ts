@@ -44,4 +44,11 @@ export class Sorter {
         break;
     }
   }
+
+  public setValue(value: string) {
+    const selector = this.element.querySelector('select');
+    if (!(selector instanceof HTMLSelectElement)) return;
+
+    selector.value = value || 'price-ascending';
+  }
 }
