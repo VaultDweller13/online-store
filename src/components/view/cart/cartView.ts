@@ -22,6 +22,11 @@ export class CartView {
       'card__description',
       data.productData.description
     );
+    const buttonView = createElemDOM(
+      'button',
+      'button button_details',
+      'Details'
+    );
     const costWrapp = createElemDOM('div', 'card__wrapper');
     const cartWrapp = createElemDOM('div', 'card__cart');
 
@@ -41,7 +46,7 @@ export class CartView {
       `Stock: ${data.productData.stock.toString()}`
     );
 
-    wrapp.append(title, categ, description, brand);
+    wrapp.append(title, categ, description, brand, buttonView);
     costWrapp.append(price, cartWrapp, stock);
     card.append(img, wrapp, costWrapp);
 

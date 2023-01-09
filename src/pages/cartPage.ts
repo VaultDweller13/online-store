@@ -57,6 +57,9 @@ export class CartPage {
         }
       );
     });
+    this.cart.addEventListener('click', (e: Event) =>
+      this.cartController.details(e)
+    );
     this.cartForm.addEventListener('click', (e: Event) => {
       this.cartController.cartFormHandler(e, () =>
         CartSum.draw(this.cartController.cart)
