@@ -3,4 +3,26 @@
   color: $color-err;
   margin: 0.5rem 5px;
   font-size: smaller;
+  width: 100%;
+}
+.order__form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+  gap: 1rem;
+}
+.form__field {
+  width: 100%;
+}
+
+.form__input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.button__buy {
+  width: 100%;
 }

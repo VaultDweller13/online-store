@@ -44,69 +44,91 @@ export class Validate {
     return regExp.test(phone) ? '' : 'The phone number is not valid';
   }
   static isAddress(address: string) {
-    const regExp = /([\w]{5,}){3,}/;
+    const regExp = /.*[\w]{5,}.*[\w]{5,}.*[\w]{5,}.*/;
     return regExp.test(address) ? '' : 'The address is not valid';
   }
-  static checkInput(e: Event): void {
-    if (!(e.target instanceof HTMLInputElement)) return;
-    const id = e.target.id;
-    if (!id) return;
-    const errField = e.target
+  static isCVV(cvv: string) {
+    const regExp = /\d{3}/;
+    return regExp.test(cvv) ? '' : 'Minimum length is three numbers';
+  }
+
+  static validateAll(form: HTMLElement): boolean {
+    let isValid = true;
+    form.querySelectorAll('input').forEach((input) => {
+      const isValidInput = Validate.checkInput(input);
+      if (!isValidInput) isValid = false;
+    });
+    return isValid;
+  }
+
+  static checkInput(target: HTMLInputElement): boolean {
+    const id = target.id;
+    if (!id) throw new Error(`input ${target.toString()} has no id`);
+    const errField = target
       .closest('.form__field')
       ?.querySelector('.input__error');
     let err: string;
-    if (!(errField instanceof HTMLElement)) return;
-    err = Validate.isEmpty(e.target.value);
+    if (!(errField instanceof HTMLElement))
+      throw new Error('errField not HTML Element');
+    err = Validate.isEmpty(target.value);
     if (err) {
       errField.textContent = err;
     } else {
       switch (id) {
         case 'name':
-          err = Validate.isName(e.target.value);
+          err = Validate.isName(target.value);
           errField.textContent = err;
 
           break;
         case 'tel':
-          e.target.value = e.target.value.replace(/[^+\d]/, '');
+          target.value = target.value.replace(/[^+\d]/, '');
 
-          err = Validate.isPhone(e.target.value);
+          err = Validate.isPhone(target.value);
           errField.textContent = err;
+          if (target.value.length < 10)
+            errField.textContent = 'Phone number has minimum nine digits';
           break;
         case 'address':
-          err = Validate.isAddress(e.target.value);
+          err = Validate.isAddress(target.value);
           errField.textContent = err;
           break;
         case 'email':
-          err = Validate.isEmail(e.target.value);
+          err = Validate.isEmail(target.value);
           errField.textContent = err;
           break;
         case 'card':
-          e.target.value = e.target.value.replace(/\D/, '');
+          target.value = target.value.replace(/\D/, '');
+          err = Validate.isCredit(target.value);
+          errField.textContent = err;
           break;
         case 'mmyy':
-          e.target.value = e.target.value.replace(/\D/, '');
+          target.value = target.value.replace(/\D/, '');
           // eslint-disable-next-line no-case-declarations
-          const x = e.target.value;
+          const x = target.value;
           // eslint-disable-next-line no-case-declarations
-          let val = e.target.value;
+          let val = target.value;
 
           if (x?.length) {
             val = x[2]
               ? x[3]
                 ? `${x[0]}${x[1]}/${x[2]}${x[3]}`
                 : `${x[0]}${x[1]}/${x[1]}`
-              : e.target.value;
+              : target.value;
           }
-          e.target.value = val;
+          target.value = val;
 
-          err = Validate.isMMYY(e.target.value);
+          err = Validate.isMMYY(target.value);
           errField.textContent = err;
 
           break;
         case 'cvv':
-          e.target.value = e.target.value.replace(/\D/, '');
+          target.value = target.value.replace(/\D/, '');
+          err = Validate.isCVV(target.value);
+          errField.textContent = err;
           break;
       }
     }
+
+    return err ? false : true;
   }
 }
