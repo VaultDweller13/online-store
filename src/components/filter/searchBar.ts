@@ -15,7 +15,7 @@ export class SearchBar {
     const container = createElemDOM('div', 'search-bar');
     const input = createElemDOM('input', 'search-bar_input');
     input.setAttribute('type', 'text');
-    input.setAttribute('placeholder', 'Найти товар');
+    input.setAttribute('placeholder', 'Search');
     input.dataset.type = 'search';
 
     container.append(input);

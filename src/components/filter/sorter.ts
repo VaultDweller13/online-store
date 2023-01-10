@@ -12,10 +12,10 @@ export class Sorter {
     const input = createElemDOM('select', 'sorter_input');
     input.setAttribute('type', 'select');
     const sortOptions = [
-      this.addOption('price-ascending', 'По возрастанию цены'),
-      this.addOption('price-descending', 'По убыванию цены'),
-      this.addOption('rating-ascending', 'По возрастанию рейтинга'),
-      this.addOption('rating-descending', 'По убыванию рейтинга'),
+      this.addOption('price-ascending', 'Price ascending'),
+      this.addOption('price-descending', 'Price descending'),
+      this.addOption('rating-ascending', 'Rating ascending'),
+      this.addOption('rating-descending', 'Rating descending'),
     ];
 
     input.append(...sortOptions);
