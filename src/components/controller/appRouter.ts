@@ -20,7 +20,6 @@ export class AppRouter extends Router {
   }
 
   routeToProduct(id: string) {
-    console.log(id);
     const url = `${this.root}/product/${id}`;
     window.history.pushState({}, '', url);
   }

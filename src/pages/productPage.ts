@@ -4,6 +4,7 @@ import { createElemDOM } from './../utils/utils';
 import { Cart } from './../components/cart/cart';
 import { ProductsView } from './../components/view/product/productsView';
 import { CartController } from './../components/controller/cartController';
+import { Breadcrumbs } from '../components/filter/breadcrumbs';
 export class ProductPage {
   cartController: CartController;
   product?: ProductData;
@@ -18,12 +19,15 @@ export class ProductPage {
   }
   draw(product: ProductData): void {
     this.product = product;
+    const breadcrumbs = Breadcrumbs.get(product);
+
     const main = document.querySelector('.main');
     if (!main) throw new Error("Can't find element with class 'main'");
     this.clear();
-
+    console.log('draw');
     main.append(this.page);
     ProductsView.drawProduct(this.product, this.cart);
+    this.page.prepend(breadcrumbs);
     this.cartController.refreshTotalSum();
     this.cartController.refreshTotalCount();
   }
@@ -32,6 +36,7 @@ export class ProductPage {
     if (!main) throw new Error("Can't find element with class 'main'");
     main.innerHTML = '';
   }
+
   private setListeners(): void {
     this.page.addEventListener('click', (e: Event) => {
       if (!e.target || !e.currentTarget) throw new Error('target is null');
