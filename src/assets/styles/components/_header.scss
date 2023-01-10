@@ -10,7 +10,24 @@
 
   .header_heading {
     cursor: pointer;
+
+    .underline {
+      display: block;
+      width: 0px;
+      height: 3px;
+      background-color: $bg-light;
+      transition: 0.6s;
+    }
+
+    &:hover .underline {
+      width: 100%;
+      transition: 0.6s ease-out;
+    }
+
+   
   }
+
+
 
   .shopping-cart {
     position: relative;

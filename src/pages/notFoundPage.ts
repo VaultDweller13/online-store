@@ -5,6 +5,9 @@ export class NotFoundPage {
     if (!main) throw new Error("Can't find element with class 'main'");
     main.innerHTML = '';
 
-    main.append(createElemDOM('p', '', '404 the information not found'));
+    const container = createElemDOM('div', 'not-found');
+    container.append(createElemDOM('p', 'not-found_code', '404'), createElemDOM('p', 'not-found_status', 'information not found'));
+
+    main.append(container);
   }
 }
