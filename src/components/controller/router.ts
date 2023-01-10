@@ -10,19 +10,17 @@ export default class Router {
   setQuery(name: string, value: string): void {
     this.params.set(name, value);
     window.history.replaceState(null, '', `?${this.params.toString()}`);
-    // this.url = new URL(window.location.href);
   }
 
   deleteQuery(name: string) {
     this.params.delete(name);
     const url = this.params.toString()
-      ? `${this.url.pathname}/?${this.params.toString()}`
-      : `${this.url.pathname}`;
+      ? `${this.url.origin}${this.url.pathname}?${this.params.toString()}`
+      : `${this.url.origin}${this.url.pathname}`;
     window.history.replaceState(null, '', url);
   }
 
   getQuery(name: string): string | null {
-    // this.params = new URLSearchParams(this.url.search);
     this.params = new URLSearchParams(window.location.search);
     const value = this.params.get(name);
     return value;
