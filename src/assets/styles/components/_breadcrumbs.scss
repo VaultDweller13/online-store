@@ -1,0 +1,15 @@
+.breadcrumbs {
+    margin-bottom: 10px;
+
+    font-family: 'Montserrat';
+    font-size: 24px;
+
+    .breadcrumbs_path {
+      color: rgb(177, 177, 177);
+      text-decoration: none;
+    }
+
+    .breadcrumbs_path:hover {
+      color: #000000;
+    }
+}
