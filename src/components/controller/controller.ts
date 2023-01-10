@@ -33,8 +33,10 @@ export class Controller {
   }
 
   drawFilterPage() {
+    this.filterPage.data = this.products;
     this.filterPage.draw();
   }
+
   drawCartPage() {
     this.cartPage.draw();
   }

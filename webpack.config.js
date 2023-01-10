@@ -4,6 +4,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { web } = require('webpack');
+const { NetlifyPlugin } = require('netlify-webpack-plugin');
 
 const baseConfig = {
   mode: 'development',
@@ -35,6 +36,7 @@ const baseConfig = {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
+    publicPath: '/',
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -43,6 +45,15 @@ const baseConfig = {
     }),
     new CleanWebpackPlugin(),
     new ESLintPlugin({ extensions: 'ts' }),
+    new NetlifyPlugin({
+      redirects: [
+        {
+          from: '/*',
+          to: '/index.html',
+          status: 200,
+        },
+      ],
+    }),
   ],
 };
 

@@ -75,7 +75,7 @@ export default class FilterPageRouter extends Router {
   getValues(name: string): string[] {
     const queryString = super.getQuery(name);
     if (!queryString) return [];
-
+    console.log(queryString);
     return queryString.split('↕').map((value) => value.toLowerCase());
   }
 
