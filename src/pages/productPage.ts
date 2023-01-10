@@ -24,6 +24,8 @@ export class ProductPage {
 
     main.append(this.page);
     ProductsView.drawProduct(this.product, this.cart);
+    this.cartController.refreshTotalSum();
+    this.cartController.refreshTotalCount();
   }
   private clear() {
     const main = document.querySelector('.main');
@@ -46,8 +48,19 @@ export class ProductPage {
         if (!this.product) throw new Error('no product data');
         const countInCart = this.cart.getProductCount(this.product);
         if (!countInCart) this.cart.addProduct(this.product);
-        // TODO redirect
+
         DialogView.draw(OrderView.draw(this.cart));
+      }
+      if (target.classList.contains('images__img')) {
+        const img = document.querySelector('.card__img');
+
+        if (
+          img instanceof HTMLImageElement &&
+          target instanceof HTMLImageElement
+        ) {
+          img.src = target.src;
+          img.alt = target.alt;
+        }
       }
     });
   }

@@ -38,6 +38,8 @@ export class CartPage {
       this.pagination.getPreviosNumber()
     );
     CartSum.draw(this.cartController.cart);
+    this.cartController.refreshTotalSum();
+    this.cartController.refreshTotalCount();
   }
 
   private clear() {
