@@ -229,6 +229,8 @@ export class FilterPage {
         this.update();
       } else if (target.dataset.type === 'copy') {
         this.router.copyURL();
+        target.textContent = 'Copied!';
+        setTimeout(() => target.textContent = 'Copy filters', 1000);
       }
     });
     this.productsHTML.addEventListener('click', (e: Event) => {
