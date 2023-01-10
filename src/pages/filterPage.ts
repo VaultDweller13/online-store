@@ -80,6 +80,7 @@ export class FilterPage {
     this.sorter.sort(this.data);
     ProductsView.draw(this.data, this.cartController.cart);
     ProductsView.setView();
+    this.setFoundNumber(this.data.length);
   }
 
   private clear(): void {
@@ -95,10 +96,13 @@ export class FilterPage {
     this.sorter.sort(this.data);
     ProductsView.draw(this.data, this.cartController.cart);
     ProductsView.setView();
+    this.setFoundNumber(this.data.length);
   }
 
   private createFiltersBlock(data: ProductData[]): HTMLElement {
     const container = createElemDOM('aside', 'filter-block');
+    const foundText = createElemDOM('div', 'found-text', 'Found: ');
+    const foundNum = createElemDOM('span', 'found-num');
     const categoriesBlock = createElemDOM('div', 'filter-block-container');
     const categoriesFieldset = createElemDOM(
       'fieldset',
@@ -123,11 +127,13 @@ export class FilterPage {
       ...this.createCheckboxBlock(brands, 'brands', 'brand')
     );
 
+    foundText.append(foundNum);
     categoriesBlock.append(categoriesHeading, categoriesFieldset);
     brandsBlock.append(brandsHeading, brandsFieldset);
 
     container.append(
       this.buttonsBlock,
+      foundText,
       categoriesBlock,
       brandsBlock,
       this.priceSlider.el,
@@ -276,6 +282,7 @@ export class FilterPage {
     if (target.dataset.type === 'search') this.router.setSearch();
 
     this.update();
+    this.setFoundNumber(this.data.length);
   }
 
   private restoreInputs(): void {
@@ -350,5 +357,11 @@ export class FilterPage {
     container.append(resetButton, copyButton);
 
     return container;
+  }
+
+  private setFoundNumber(value: number) {
+    const span = document.querySelector('.found-num');
+    if (!(span)) return;
+    span.textContent = value.toString();
   }
 }
