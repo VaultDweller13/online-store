@@ -1,0 +1,13 @@
+.not-found {
+  text-align: center;
+  align-items: center;
+
+  &_code {
+    font-size: 64px;
+    font-weight: 900;
+  }
+
+  &_status {
+    text-transform: uppercase;
+  }
+}
