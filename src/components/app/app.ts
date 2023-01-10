@@ -1,4 +1,3 @@
-// import { CartController } from './../controller/cartController';
 import { Controller } from '../controller/controller';
 import { AppRouter } from '../controller/appRouter';
 
@@ -13,7 +12,6 @@ export default class App {
 
   start() {
     this.handleLocation();
-    // this.controller.drawFilterPage();
     const btnCart: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.to-cart')
     );
@@ -50,9 +48,7 @@ export default class App {
   }
 
   handleLocation() {
-    console.log('here');
     const path = this.router.getPath();
-    console.log(path);
 
     if (path === '/' || path.includes('/?')) {
       this.controller.drawFilterPage();

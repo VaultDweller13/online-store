@@ -11,16 +11,17 @@ export class AppRouter extends Router {
   }
 
   routeHome() {
-    window.history.pushState({}, '', this.path);
+    window.history.pushState({}, '', this.root);
   }
 
   routeToCart() {
-    const url = `${this.root}${this.path}cart`;
+    const url = `${this.root}/cart`;
     window.history.pushState({}, '', url);
   }
 
   routeToProduct(id: string) {
-    const url = `${this.root}${this.path}product/${id}`;
+    console.log(id);
+    const url = `${this.root}/product/${id}`;
     window.history.pushState({}, '', url);
   }
 
