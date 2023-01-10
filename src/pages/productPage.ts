@@ -51,6 +51,17 @@ export class ProductPage {
 
         DialogView.draw(OrderView.draw(this.cart));
       }
+      if (target.classList.contains('images__img')) {
+        const img = document.querySelector('.card__img');
+
+        if (
+          img instanceof HTMLImageElement &&
+          target instanceof HTMLImageElement
+        ) {
+          img.src = target.src;
+          img.alt = target.alt;
+        }
+      }
     });
   }
 }
