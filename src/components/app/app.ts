@@ -1,4 +1,3 @@
-// import { CartController } from './../controller/cartController';
 import { Controller } from '../controller/controller';
 import { AppRouter } from '../controller/appRouter';
 
@@ -13,7 +12,6 @@ export default class App {
 
   start() {
     this.handleLocation();
-    // this.controller.drawFilterPage();
     const btnCart: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.to-cart')
     );
@@ -51,13 +49,13 @@ export default class App {
 
   handleLocation() {
     const path = this.router.getPath();
-    console.log(path);
-    if (path === '/online-store/' || path.includes('/online-store/?')) {
+    if (path === '/' || path.includes('/?')) {
       this.controller.drawFilterPage();
-    } else if (path === '/online-store/cart') {
+    } else if (path === '/cart') {
       this.controller.drawCartPage();
-    } else if (path.includes('/online-store/product')) {
+    } else if (path.includes('/product')) {
       const id = path.split('/').reverse()[0];
+      console.log(id);
       this.controller.drawProductPage(id);
     }
   }
