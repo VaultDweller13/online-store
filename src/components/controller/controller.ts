@@ -45,4 +45,7 @@ export class Controller {
     if (product) this.productPage.draw(product);
     else this.notFoundPage.draw();
   }
+  drawPageNotFound() {
+    this.notFoundPage.draw();
+  }
 }
