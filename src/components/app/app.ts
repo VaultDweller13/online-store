@@ -49,13 +49,13 @@ export default class App {
 
   handleLocation() {
     const path = this.router.getPath();
+
     if (path === '/' || path.includes('/?')) {
       this.controller.drawFilterPage();
     } else if (path === '/cart') {
       this.controller.drawCartPage();
     } else if (path.includes('/product')) {
       const id = path.split('/').reverse()[0];
-      console.log(id);
       this.controller.drawProductPage(id);
     }
   }
