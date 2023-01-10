@@ -224,7 +224,6 @@ export class FilterPage {
 
       if (target.dataset.type === 'reset') {
         this.router.resetURL();
-        this.router.getQueryString();
         this.restoreInputs();
         this.data = this.filter.filter();
         this.update();
