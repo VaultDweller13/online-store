@@ -29,27 +29,32 @@
       }
     }
 
-    // .cart__totalcount {
-    //   position: absolute;
-    //   right: 5px;
-    //   top: 20px;
-    //   // padding: 2px;
-    //   width: 20px;
-    //   height: 20px;
-    //   text-align: center;
-    //   border-radius: 50%;
-    //   background-color: red;
-    //   cursor: pointer;
-    // }
+    .cart__totalcount_visible {
+      position: absolute;
+      right: 5px;
+      top: 20px;
+      // padding: 2px;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+      border-radius: 50%;
+      background-color: red;
+      cursor: pointer;
+    }
 
-    // .cart__totalsum {
-    //   display: block;
-    //   padding-top: 10px;
-    //   text-align: center;
+    .cart__totalsum_visible {
+      display: block;
+      padding-top: 10px;
+      text-align: center;
 
-    //   &::before {
-    //     content: '$';
-    //   }
-    // }
+      &::before {
+        content: '$';
+      }
+    }
+
+    .font-small {
+      font-size: 10px;
+    }
   }
 }
