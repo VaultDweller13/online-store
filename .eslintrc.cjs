@@ -18,7 +18,7 @@ module.exports = {
     browser: true,
     node: true,
   },
-  ignorePatterns: ['*.js', '*.cjs'],
+  ignorePatterns: ['*.js', '*.cjs', '*.test.ts'],
   rules: {
     'no-console': 0,
     'class-methods-use-this': 'off',
