@@ -37,14 +37,8 @@ export default class App {
         this.controller.drawProductPage(productId);
       }
       if (target.classList.contains('button__buy')) {
-        // if (!this.product) throw new Error('no product data');
-
-        // const countInCart = this.cart.getProductCount(this.product);
-        // if (!countInCart) this.cart.addProduct(this.product);
         this.router.routeToCart();
         this.controller.drawCartPage();
-
-        // DialogView.draw(OrderView.draw(this.controller.cart));
       }
     });
 

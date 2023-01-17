@@ -79,12 +79,14 @@ export class CartController {
     if (!totalCountHTML)
       throw new Error("Can't find element with class 'cart__totalcount'");
     const totalSum = this.cart.getCountCart();
-    const textContent = totalSum > 99 ? '99+' : totalSum.toString(); 
+    const textContent = totalSum > 99 ? '99+' : totalSum.toString();
     totalCountHTML.textContent = totalSum ? textContent : '';
-    if (totalCountHTML.textContent) {    
+    if (totalCountHTML.textContent) {
       totalCountHTML.classList.add('cart__totalcount_visible');
-      totalSum > 99 ? totalCountHTML.classList.add('font-small') : totalCountHTML.classList.remove('font-small');
-    } else totalCountHTML.classList.remove('cart__totalcount_visible')
+      totalSum > 99
+        ? totalCountHTML.classList.add('font-small')
+        : totalCountHTML.classList.remove('font-small');
+    } else totalCountHTML.classList.remove('cart__totalcount_visible');
   }
   refreshTotalSum(): void {
     const totalCountHTML = document.querySelector('.cart__totalsum');
@@ -129,12 +131,9 @@ export class CartController {
         if (this.cart.applyPromo(promoVal)) {
           callBack();
           const sumWithPromo = form?.querySelector('.cart__sumWithPromo');
-
-          // if (sumWithPromo instanceof HTMLElement) {
           (<HTMLElement>sumWithPromo).textContent = this.cart
             .getSumWithPromo()
             .toString();
-          // }
           input.value = '';
           (<HTMLElement>helper).textContent = '';
         } else {
@@ -153,5 +152,4 @@ export class CartController {
     const productId = card.dataset.productId;
     if (!productId) throw new Error('There is no data-set attribute in card');
   }
-
 }

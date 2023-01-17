@@ -23,11 +23,7 @@
       width: 100%;
       transition: 0.6s ease-out;
     }
-
-   
   }
-
-
 
   .shopping-cart {
     position: relative;
@@ -45,8 +41,7 @@
         transition: 0.3s ease-in;
       }
     }
-    .cart__totalcount{
-
+    .cart__totalcount {
       &_visible {
         position: absolute;
         right: 5px;
@@ -59,7 +54,6 @@
         background-color: red;
         cursor: pointer;
       }
-
     }
 
     .cart__totalsum {
