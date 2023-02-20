@@ -22,7 +22,7 @@ export default class App {
     const main: HTMLDivElement = <HTMLDivElement>(
       document.querySelector('.main')
     );
-    main.addEventListener('click', (e) => {
+    main.addEventListener('click', (e: Event) => {
       if (!e.target || !e.currentTarget) throw new Error('target is null');
       const target = <HTMLElement>e.target;
       const card = target.closest('.card');

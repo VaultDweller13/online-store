@@ -13,7 +13,6 @@ export class Breadcrumbs{
       secondCrumb.setAttribute('href', `/?categories=${category}&brands=${brand}`);
       thirdCrumb.setAttribute('href', `/product/${id}`);
 
-
       container.append(firstCrumb, sep, secondCrumb, sep.cloneNode(true), thirdCrumb)
 
       return container;
