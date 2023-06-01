@@ -9,7 +9,7 @@ export class DialogView {
     const dialogContent = createElemDOM('div', 'dialog__content');
     dialogContent.append(content);
     modal.append(dialogContent);
-    modal.addEventListener('click', (e) => {
+    modal.addEventListener('click', (e: Event) => {
       if (!e.target || !e.currentTarget) return;
       if (!(<HTMLElement>e.target).classList.contains('dialog')) return;
 

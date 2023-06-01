@@ -189,10 +189,16 @@ export class FilterPage {
   }
 
   private setListeners(): void {
-    this.filterBlock.addEventListener('click', (e) => this.applyFilters(e));
-    this.filterBlock.addEventListener('change', (e) => this.applyFilters(e));
-    this.searchBar.addEventListener('input', (e) => this.applyFilters(e));
-    this.sorter.element.addEventListener('input', (e) => {
+    this.filterBlock.addEventListener('click', (e: Event) =>
+      this.applyFilters(e)
+    );
+    this.filterBlock.addEventListener('change', (e: Event) =>
+      this.applyFilters(e)
+    );
+    this.searchBar.addEventListener('input', (e: Event) =>
+      this.applyFilters(e)
+    );
+    this.sorter.element.addEventListener('input', (e: Event) => {
       const target = e.target;
       if (!(target instanceof HTMLSelectElement)) return;
 
@@ -201,7 +207,7 @@ export class FilterPage {
       this.router.setSorting();
     });
 
-    this.viewSwitcher.addEventListener('click', (e) => {
+    this.viewSwitcher.addEventListener('click', (e: Event) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
 
@@ -223,7 +229,7 @@ export class FilterPage {
       }
     });
 
-    this.buttonsBlock.addEventListener('click', (e) => {
+    this.buttonsBlock.addEventListener('click', (e: Event) => {
       const target = e.target;
 
       if (!(target instanceof HTMLButtonElement)) return;
@@ -236,7 +242,7 @@ export class FilterPage {
       } else if (target.dataset.type === 'copy') {
         this.router.copyURL();
         target.textContent = 'Copied!';
-        setTimeout(() => target.textContent = 'Copy filters', 1000);
+        setTimeout(() => (target.textContent = 'Copy filters'), 1000);
       }
     });
     this.productsHTML.addEventListener('click', (e: Event) => {
@@ -361,7 +367,7 @@ export class FilterPage {
 
   private setFoundNumber(value: number) {
     const span = document.querySelector('.found-num');
-    if (!(span)) return;
+    if (!span) return;
     span.textContent = value.toString();
   }
 }

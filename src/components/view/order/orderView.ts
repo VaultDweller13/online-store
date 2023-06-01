@@ -50,7 +50,7 @@ export class OrderView {
       cardCVV,
       submit
     );
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', (e: Event) => {
       e.preventDefault();
 
       if (Validate.validateAll(form)) {
@@ -64,7 +64,7 @@ export class OrderView {
         }, 3000);
       }
     });
-    form.addEventListener('keyup', (e) => {
+    form.addEventListener('keyup', (e: Event) => {
       const input = e.target;
       if (!(input instanceof HTMLInputElement)) return;
       Validate.checkInput(input);

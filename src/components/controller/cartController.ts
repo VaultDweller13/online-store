@@ -19,7 +19,7 @@ export class CartController {
     if (!(card instanceof HTMLElement)) return;
 
     if (target.classList.contains('button_add')) {
-      const productId = card.dataset.productId;
+      const { productId } = card.dataset;
       if (!productId) throw new Error('There is no data-set attribute in card');
       const product = this.loader.getProduct(productId);
       const count = this.cart.addProduct(product);
