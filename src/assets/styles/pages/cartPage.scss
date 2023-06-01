@@ -1,0 +1,150 @@
+@import '../main.scss';
+body {
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $color-bg;
+  margin: 0;
+}
+.main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+.cart-page {
+  display: flex;
+  max-width: 80vw;
+  width: 100%;
+  margin: auto;
+  justify-content: center;
+  gap: 3rem;
+  flex-grow: 1;
+  .h2 {
+    color: $dark;
+
+    margin-right: auto;
+  }
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
+  .button__buy {
+    width: 100%;
+  }
+
+  .promo__text {
+    font-weight: bold;
+    flex-grow: 1;
+    color: $dark;
+  }
+  .cart__count {
+    font-weight: bold;
+    color: $dark;
+    font-size: 1.2rem;
+  }
+  .cart__sum,
+  .cart__sumWithPromo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: $dark;
+  }
+  .cart__sum_old {
+    color: $dark;
+    font-size: 1.2rem;
+    text-decoration: line-through;
+  }
+  .promo__btnApply,
+  .promo__btnDrop {
+    width: 30%;
+  }
+}
+.cart__total {
+  .input {
+    width: 70%;
+  }
+}
+
+@media (max-width: $tablet) {
+  .cart__total {
+    order: 1;
+  }
+  .pagin__wrapp {
+    order: 2;
+  }
+}
+
+.pagin__wrapp {
+  flex-grow: 1;
+}
+
+.pagin__menu {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.input {
+  border: 1.5px solid $border-grey;
+  padding: 0.5rem;
+}
+.pagin__input {
+  width: 2rem;
+}
+.cart {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .card {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    height: 15rem;
+  }
+  .card__img {
+    object-fit: contain;
+    width: 30%;
+  }
+  .card__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 20%;
+  }
+  .card__wrapper_desc {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 3fr 1fr;
+  }
+  .card__title,
+  .card__categ {
+    margin: 0;
+    text-transform: capitalize;
+  }
+  .card__title {
+    color: $dark;
+  }
+  .card__categ {
+    font-weight: bold;
+  }
+  .card__priceText {
+    font-size: 1.2rem;
+  }
+  .card__price {
+    color: $dark;
+    font-weight: bold;
+  }
+}
+
+.promos__wrapp_input {
+  display: flex;
+}

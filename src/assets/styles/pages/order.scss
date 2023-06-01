@@ -1,0 +1,49 @@
+@import '../main.scss';
+.input__error {
+  color: $color-err;
+  margin: 0.5rem 5px;
+  font-size: smaller;
+  width: 100%;
+}
+.order__form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+  gap: 1rem;
+}
+.form__field {
+  width: 100%;
+}
+
+.form__input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.button__buy {
+  width: 100%;
+}
+.order__pay_visa,
+.order__pay_mk,
+.order__pay_mir {
+  width: 4rem;
+  height: 2rem;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.order__pay_visa {
+  background-image: url('/src/assets/svg/visa.svg');
+}
+.order__pay_mk {
+  background-image: url('/src/assets/svg/mastercard.svg');
+}
+.order__pay_mir {
+  background-image: url('/src/assets/img/mir.png');
+}
+.order_hide {
+  display: none;
+}

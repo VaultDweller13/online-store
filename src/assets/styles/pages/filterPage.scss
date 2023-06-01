@@ -1,0 +1,135 @@
+.filter-page {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 3rem auto;
+  justify-items: start;
+
+  .card {
+    display: grid;
+  }
+  .card__img {
+    grid-area: img;
+    width: 100%;
+    height: 250px;
+  }
+  .card__title {
+    grid-area: title;
+    margin: 1rem;
+    justify-self: flex-start;
+    font-size: 1rem;
+  }
+  .card__stock {
+    grid-area: stock;
+
+    margin: 1rem;
+  }
+  .card__price {
+    grid-area: price;
+    margin: 1rem;
+    justify-self: flex-start;
+    align-self: center;
+  }
+  .wrapper_butt {
+    grid-area: add;
+    display: flex;
+    align-items: center;
+  }
+  .button_add {
+    width: 150px;
+  }
+}
+
+.reset-block {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px 0 0 1rem;
+
+  .button-reset {
+    min-width: 108px;
+  }
+}
+
+.filter-block {
+  min-width: 20%;
+  grid-row: 1 / 3;
+
+  font-family: 'Montserrat';
+
+  &-container {
+    padding: 1rem;
+  }
+
+  &_heading {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 1rem 0;
+  }
+
+  &_category,
+  &_brand {
+    max-height: 40vh;
+    overflow-y: scroll;
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .found-text {
+    padding: 1rem 0 0 1rem;
+  }
+}
+
+.top-panel {
+  display: flex;
+  justify-content: space-between;
+  justify-self: stretch;
+  align-items: center;
+  padding: 10px 0;
+
+  .switch-view {
+    display: flex;
+    padding: 1rem;
+    &_list,
+    &_grid {
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+    }
+
+    &_list {
+      background: url('../../svg/list-icon.svg') center / cover;
+    }
+
+    &_grid {
+      background: url('../../svg/grid-icon.svg') center / cover;
+    }
+
+    &_list:hover,
+    &_grid:hover,
+    .view-active {
+      filter: brightness(0) saturate(100%) invert(22%) sepia(54%) saturate(442%)
+        hue-rotate(131deg) brightness(92%) contrast(100%);
+      transition: 0.3s ease-in;
+    }
+
+    .view-active {
+      pointer-events: none;
+    }
+  }
+}
+
+.products {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-content: flex-start;
+
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+.hide {
+  display: none;
+}
