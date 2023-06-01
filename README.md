@@ -2,6 +2,15 @@
 
 Rolling Scopes School JavaScript/Front-end 2022Q3 team project.
 
+Simple storefront written in vanilla Typescript.
+
+## Features
+
+- SPA
+- Routing via History API
+- Items search/sorting/filtering
+- Cart with checkout form
+
 ## Deploy
 
 [Click here](https://vaultdweller13-online-store.netlify.app/)
@@ -34,7 +43,7 @@ Rolling Scopes School JavaScript/Front-end 2022Q3 team project.
    npm run build
    ```
 
-   Start dev-server:
+   Start dev server:
 
    ```
    npm run start
